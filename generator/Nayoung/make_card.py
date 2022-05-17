@@ -13,7 +13,7 @@ from template.font import font_list
 ### load font, logo ###
 #######################
 
-logo_dir = "/opt/ml/_card_generator/logo"
+logo_dir = "/opt/ml/final-project-level3-cv-05/generator/logo"
 font_dir = "/opt/ml/final-project-level3-cv-05/generator/font"
 
 ext = [".jpg", ".png"]
