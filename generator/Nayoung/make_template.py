@@ -5,7 +5,7 @@ import os
 ## template generator ##
 ########################
 
-template_dir = "/opt/ml/final-project-level3-cv-05/generator/Nayoung/template"
+template_dir = "template"
 dir = os.getcwd()
 
 with open(f"{template_dir}/template.json", "r") as f:

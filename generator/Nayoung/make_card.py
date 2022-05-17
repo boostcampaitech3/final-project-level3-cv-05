@@ -1,20 +1,30 @@
+import argparse
 import glob
 import json
 import os
 import random
 
 from PIL import Image, ImageDraw, ImageFont
+from tqdm import tqdm
 
 from generate import generate
 from make_template import *
 from template.font import font_list
 
 #######################
+### argument parser ###
+#######################
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--num", required=True, help="the number of images")
+parser.add_argument("--dir", required=True, help="directory of json file")
+
+#######################
 ### load font, logo ###
 #######################
 
-logo_dir = "/opt/ml/final-project-level3-cv-05/generator/logo"
-font_dir = "/opt/ml/final-project-level3-cv-05/generator/font"
+logo_dir = "../../generator/logo"
+font_dir = "../../generator/font"
 
 ext = [".jpg", ".png"]
 logo = []
@@ -35,6 +45,7 @@ cat_num = ["phone_number", "tel", "fax"]  # num에 속하는 하위 카테고리
 #######################
 ### image generator ###
 #######################
+
 
 def make_dir(directory: str):
     if not os.path.exists(directory):
@@ -71,7 +82,14 @@ def make_json(directory: str):
     return json_data
 
 
-def shorten(type, bbox_length, font_size, font_family, content, item):
+def shorten(
+    type: int,
+    bbox_length: int,
+    font_size: int,
+    font_family: str,
+    content: str,
+    item: str,
+):
     font = ImageFont.truetype(font_family, font_size)
     text_length = font.getsize(content)[type]
 
@@ -89,7 +107,9 @@ def shorten(type, bbox_length, font_size, font_family, content, item):
     return int(font_size), content
 
 
-def check_size(bbox_size, font_size, font_family, content, item):
+def check_size(
+    bbox_size: float, font_size: int, font_family: str, content: str, item: str
+):
     font = ImageFont.truetype(font_family, font_size)
     text_width, text_height = font.getsize(content)
 
@@ -111,7 +131,6 @@ def check_size(bbox_size, font_size, font_family, content, item):
         text_width, text_height = font.getsize(content)
         width_ratio = text_width / bbox_size[0]
         height_ratio = text_height / bbox_size[1]
-
     return int(font_size), content
 
 
@@ -135,7 +154,7 @@ def get_category_id(item: str):
     return category_id
 
 
-def card_generator(info, info_dir: str):
+def card_generator(info: dict, info_dir: str):
     random_index = random.randint(2, len(images))
     open_shape = [2, 11, 17, 18]  # bbox의 길이에 관계없는 템플릿
 
@@ -189,7 +208,7 @@ def card_generator(info, info_dir: str):
         font_size = font_list[str(random_index)][font_item]["font_size"]
         font_family = font_families[
             random.randint(0, len(font_families) - 1)
-        ]  # 폰트 통일이 필요한 항목 따지기?
+        ]  
         font = ImageFont.truetype(font_family, font_size)
         font_color = font_list[str(random_index)][font_item]["font_color"]
 
@@ -201,8 +220,16 @@ def card_generator(info, info_dir: str):
             )
             font = ImageFont.truetype(font_family, font_size)
 
+        # bbox 왼쪽 아래의 지점을 기준으로 생성
+        x = template_list[random_index]["bbox"][item][0]
+        y = (
+            template_list[random_index]["bbox"][item][1]
+            + template_list[random_index]["bbox_size"][item][1]
+            - font.getsize(content)[1]
+        )
+
         draw.text(
-            template_list[random_index]["bbox"][item],
+            (x, y),
             content,
             font=font,
             fill=font_color,
@@ -215,7 +242,7 @@ def card_generator(info, info_dir: str):
         temp_word["text"] = content
 
         text_width, text_height = font.getsize(content)
-        start_x, start_y = template_list[random_index]["bbox"][item]
+        start_x, start_y = x, y
         temp_word["points"] = [
             [start_x, start_y],
             [start_x + text_width, start_y],
@@ -246,7 +273,7 @@ def card_generator(info, info_dir: str):
                 int(template_list[random_index]["bbox"]["logo"][1]),
             ),
             resized_logo,
-        )  # 투명 배경 png는 paste로 하면 제대로 나오지 않음 # alpha 값을 고려해야
+        )  
 
     json_ocr = {}
     json_ocr["word"] = word
@@ -259,3 +286,14 @@ def card_generator(info, info_dir: str):
         json.dump(json_data, make_file, indent="\t", ensure_ascii=False)
 
     card_img.save(f"{example_directory}/images/{image_name:04}.png")
+
+
+def main(num: str, dir: str):
+    for _ in tqdm(range(int(num))):
+        info = generate()
+        card_generator(info, dir)
+
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    main(args.num, args.dir)

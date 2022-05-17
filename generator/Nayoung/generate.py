@@ -2,7 +2,7 @@ import random
 
 import pandas as pd
 
-data_directory = "/opt/ml/final-project-level3-cv-05/generator/data"
+data_directory = "../../generator/data"
 
 # 이름
 name_df = pd.read_csv(f"{data_directory}/name.csv")
@@ -25,7 +25,7 @@ site_df = pd.read_csv(f"{data_directory}/site.csv")
 country_num = pd.read_csv(f"{data_directory}/country_num.csv")
 
 
-def random_number(min_c, max_c):
+def random_number(min_c: int, max_c: int):
     return "".join(
         [str(random.randint(0, 9)) for _ in range(random.randint(min_c, max_c))]
     )
