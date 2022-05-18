@@ -100,9 +100,9 @@ def image_generate(info, test_mode=False):
         includes["fax"] = True  # FOR TEST
 
     # font 지정
-    fonts = os.listdir(FONT_PATA)
-    font = fonts[random.randint(0, len(fonts) - 1)]
-    font = f"../font/{font}"
+    Logo_font = "../font/logo/" + random.choice(os.listdir(FONT_PATA + "/logo"))
+    Main_font = "../font/main/" + random.choice(os.listdir(FONT_PATA + "/main"))
+    Sub_font = "../font/sub/" + random.choice(os.listdir(FONT_PATA + "/sub"))
 
     # 빈 이미지 생성
     height = 500
@@ -118,9 +118,6 @@ def image_generate(info, test_mode=False):
     # 기준 font size
     standard = height // 10 + random.randint(-10, 0)
     margin = standard // 4
-    Logo_font = font
-    Main_font = font
-    Sub_font = font
     logobox_x = width * (random.randint(5, 10) / 100)
     namebox_x = width * (random.randint(5, 30) / 100)
     optionbox_x = width * (random.randint(5, 10) / 100)
@@ -170,7 +167,7 @@ def image_generate(info, test_mode=False):
     image_info.append(name_annotation)
 
     if includes["department"]:
-        d_font, d_size = get_font(department, font, (0.7, 0.8))
+        d_font, d_size = get_font(department, Main_font, (0.7, 0.8))
         d_x, d_y = namebox_x, namebox_y
         if namebox_align == "right" and n_case == 0 and random.random() < 0.25:
             d_x += name_size[0] + margin
@@ -194,12 +191,12 @@ def image_generate(info, test_mode=False):
         logobox_align = random.choice(["left", "right"])
         company_padding = random.randint(0, 2) if len(company) < 4 else 0
         company_x, company_y = logobox_x, logobox_y
-        company_font, company_size = get_font(company, Logo_font, (1.4, 1.6), padding=company_padding)
+        company_font, company_size = get_font(company, Logo_font, (0.5, 1.6), padding=company_padding)
         comapny_annotation = draw_font(company, image, company_font, Color_Logo, company_x, company_y, categories["company"], logobox_align, padding=company_padding)
         image_info.append(comapny_annotation)
         if includes["wise"]:
             wise_x, wise_y = logobox_x, logobox_y
-            wise_font, wise_size = get_font(wise, Logo_font, (0.4, 0.5))
+            wise_font, wise_size = get_font(wise, Sub_font, (0.4, 0.5))
             wise_y = random.choice([wise_y + company_size[1] + 5, wise_y - wise_size[1] - 5])
             wise_annotation = draw_font(wise, image, wise_font, Color_Sub, wise_x, wise_y, categories["wise"], logobox_align)
             image_info.append(wise_annotation)
