@@ -1,0 +1,17 @@
+{
+    "images": [],
+    "categories": {
+        "0": "UNKNOWN",
+        "1": "name",
+        "2": "phone",
+        "3": "email",
+        "4": "position",
+        "5": "company",
+        "6": "department",
+        "7": "address",
+        "8": "site",
+        "9": "account",
+        "10": "wise"
+    },
+    "annotations": []
+}
