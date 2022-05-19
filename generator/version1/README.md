@@ -32,7 +32,7 @@ generator/
     	└── 📄 info.json			# annotations
 ```
 
-폰트 다운로드: https://drive.google.com/file/d/1DG2EJLKO-e9_tXyqEhh0aRguG21YKaBH/view?usp=sharing
+폰트는 [여기](https://drive.google.com/file/d/1DG2EJLKO-e9_tXyqEhh0aRguG21YKaBH/view?usp=sharing)를 눌러 다운로드
 
 ### workflow
 
