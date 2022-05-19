@@ -7,8 +7,13 @@ Classes:
 
 from typing import List
 import pandas as pd
+import re
 
 class TabTransform:
+    """
+    Feature Engineering 연산 및 적용하는 class
+    """
+
     def __init__(self, df: pd.DataFrame) -> None:
         self.point_1 = df['point_1']
         self.point_2 = df['point_2']
@@ -51,6 +56,9 @@ class TabTransform:
         df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
         df_result['is_alpha'] = self.text.transform(self.check_is_alpha)
         df_result['is_alnum'] = self.text.transform(self.check_is_alnum)
+        df_result['is_kr'] = self.text.transform(self.check_only_kr)
+        df_result['is_digit'] = self.text.transform(self.check_only_digit)
+        df_result['is_krdigit'] = self.text.transform(self.check_krdigit)
         df_result['text_length'] = self.text.transform(self.calculate_text_length)
 
         # label
@@ -122,7 +130,6 @@ class TabTransform:
         else:
             return 0
 
-    # phone_type_text : 숫자 or '.' or '+' or '(' or ')' or '-' or ' ' 만 포함된 경우 1, 아닌 경우 0
     def check_phone_type_text(self, text: str) -> int:
         """
         text 가 phone type text(숫자, '.', '+', '(', ')', '-', ' ') 로만 이루어졌는지 확인한다
@@ -134,32 +141,118 @@ class TabTransform:
             int: 숫자 or '.' or '+' or '(' or ')' or '-' or ' ' 문자만 포함된 경우 1, 아닌 경우 0을 반환
         """
 
-        '''
-            Verify it is phone type text
-        '''
         phone_type_char = '0123456789.+()- '
         
         for c in text:
             if c not in phone_type_char:
                 return 0
-        return 1    
+        return 1
 
-    # is_alpha : Text 구성이 알파벳 또는 한글로만 이루어진 경우
     def check_is_alpha(self, text: str) -> int:
-        if text.isalpha():
+        """
+        Text 구성이 알파벳 또는 한글로만 이루어졌는지 확인
+
+        Args:
+            text (str): 전달받은 text
+
+        Returns:
+            int: 0,1 - Text 구성이 알파벳 또는 한글로만 이루어졌는지 여부
+        """
+
+        post_text = re.sub('\W+','', text)
+
+        if post_text.isalpha():
             return 1
         else:
             return 0
 
-    # is_alnum : 알파벳 또는 한글 또는 숫자로만 이루어진 경우
     def check_is_alnum(self, text: str) -> int:
-        if text.isalnum():
+        """
+        알파벳 또는 한글 또는 숫자로만 이루어졌는지 확인
+
+        Args:
+            text (str): 전달받은 text
+
+        Returns:
+            int: 0,1 - 알파벳 또는 한글 또는 숫자로만 이루어졌는지 여부
+        """
+
+        post_text = re.sub('\W+','', text)
+        
+        if post_text.isalnum():
             return 1
         else:
             return 0    
 
-    # text_length : Text 의 길이
     def calculate_text_length(self, text: str) -> int:
+        """
+        Text 의 길이를 계산한다
+
+        Args:
+            text (str): 전달받은 text
+
+        Returns:
+            int: text 길이
+        """
+
         text_length = len(text)
         
         return text_length
+    
+    def check_only_kr(self, text: str) -> int:
+        """
+        한글로만 이뤄졌는지 체크한다
+
+        Args:
+            text (str): 전달받은 text 
+
+        Returns:
+            int: 0,1 - 한글만 포함 여부    
+        """
+
+        post_text = re.sub('\W+','', text)
+
+        for chr in post_text:
+            if ord('가') <= ord(chr) <= ord('힣'):
+                continue
+            else:
+                return 0
+        return 1
+    
+    def check_only_digit(self, text: str) -> int:
+        """
+        숫자로만 이뤄졌는지 체크한다
+
+        Args:
+            text (str): 전달받은 text 
+
+        Returns:
+            int: 0,1 - 숫자만 포함 여부    
+        """
+
+        post_text = re.sub('\W+','', text)
+
+        if post_text.isdigit() :
+            return 1
+        else:
+            return 0
+
+    def check_krdigit(self, text: str) -> int:
+        """
+        한글과 숫자로만 이뤄졌는지 체크한다
+
+        Args:
+            text (str): 전달받은 text 
+
+        Returns:
+            int: 0,1 - 한글 및 숫자만 포함 여부    
+        """
+
+        post_text = re.sub('\W+','', text)
+
+        for chr in post_text:
+            if self.check_only_kr(chr) or self.check_only_digit(chr):
+                continue
+            else:
+                return 0
+        return 1 
