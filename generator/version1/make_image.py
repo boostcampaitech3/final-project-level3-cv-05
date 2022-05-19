@@ -3,45 +3,69 @@ from generate import generate
 from drawer import image_generate
 import json
 import argparse
+from multiprocessing import Process, cpu_count, Value, Manager
+import time
 
+start = time.time()
 
 # number of make images
-def makeImage(number):
+def makeImage(idx, amount, images_list, annotations_list, number, process_num, process_nums, progress):
+    s = idx + amount * process_num
+    e = s + amount if not process_num + 1 == process_nums else idx + number
+
+    for i in range(s, e):
+        info = generate()
+        image, image_info, width, height = image_generate(info)
+        images_list.append({"width": width, "height": height, "file": f"{i:04}.png", "id": i})
+        annotation = {"image_id": i, "ocr": {"word": image_info}}
+        annotations_list.append(annotation)
+        image.save(f"results/images/{i:04}.png")
+        progress.value += 1 / number * 100
+        print(f"\r▷  Progress is {progress.value:0.2f}% Completed...", end="")
+
+
+if __name__ == "__main__":
+    process_nums = cpu_count()
+    print("▶  Number of CPU :", process_nums)
+    print("▷  Load Json")
+
     for dir in ["results", "results/images"]:
         os.makedirs(dir, exist_ok=True)
-
-    idx = len(os.listdir("results/images"))
     if os.path.exists("results/info.json"):
         with open("results/info.json", "r", encoding="UTF-8") as j:
             json_object = json.load(j)
     else:
         with open("sample.json", "r", encoding="UTF-8") as j:
             json_object = json.load(j)
-    for _ in range(number):
-        info = generate()
-        image, image_info, width, height = image_generate(info)
-        json_object["images"].append({"width": width, "height": height, "file": f"{idx:04}.png", "id": idx})
-        annotation = {"image_id": idx, "ocr": {"word": image_info}}
-        json_object["annotations"].append(annotation)
-        image.save(f"results/images/{idx:04}.png")
-        idx += 1
 
-        p = number - idx
-        pr = int((1 - p / number) * 100)
-        print(f"\rImage Generation : {pr}% Completed", end="")
-
-    print("")
-    print("Image Generation is Done.")
-
-    with open("results/info.json", "w", encoding="UTF-8") as j:
-        json_string = json.dump(json_object, j, indent=2)
-    print("Json File : Completed.")
-
-
-if __name__ == "__makeImage__":
+    images_list = Manager().list(json_object["images"])
+    annotations_list = Manager().list(json_object["annotations"])
     parser = argparse.ArgumentParser(description="Image Generator")
     parser.add_argument("--number", required=True, default=1000, type=int, help="Number of generation")
     args = parser.parse_args()
     number = int(args.number)
-    makeImage(number)
-    print("Work Done")
+
+    progress = Value("d", 0.000)
+    idx = len(os.listdir("results/images"))
+
+    if process_nums > 2:
+        print("▶  Start Multiprocess Work")
+    else:
+        print("▶  Start Process")
+    amounts = number // process_nums
+    for process_num in range(process_nums):
+        globals()[f"p{process_num}"] = Process(target=makeImage, args=(idx, amounts, images_list, annotations_list, number, process_num, process_nums, progress))
+        globals()[f"p{process_num}"].start()
+
+    for process_num in range(process_nums):
+        globals()[f"p{process_num}"].join()
+    print("")
+    print(f"▶  {number} Images are Generated")
+    print("▷ Set Json File...")
+    json_object["images"] = list(images_list)
+    json_object["annotations"] = list(annotations_list)
+    with open("results/info.json", "w", encoding="UTF-8") as j:
+        json_string = json.dump(json_object, j, indent=2)
+    print("▶  Completed")
+    lag = time.time() - start
+    print(f"▷  Time spended : {lag:.2f} seconds")
