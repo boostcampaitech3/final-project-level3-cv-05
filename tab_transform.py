@@ -37,21 +37,19 @@ class TabTransform:
 
         df_result = pd.DataFrame()
 
-        # file_name
+        # features not used for lenaring
         df_result['file_name'] = self.file_name
-        
-        # features by points
         df_result['point_1'] = self.point_1
         df_result['point_2'] = self.point_2
         df_result['point_3'] = self.point_3
         df_result['point_4'] = self.point_4
+        df_result['text'] = self.text
+
+        # features used for lenaring
         df_result['width'] = self.scaled_width
         df_result['height'] = self.scaled_height
         df_result['ratio(h/w)'] = self.height / self.width
         df_result['area'] = self.scaled_height * self.scaled_width
-
-        # features by text
-        df_result['text'] = self.text
         df_result['include_AT_SIGN'] = self.text.transform(self.check_include_at_sign)
         df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
         df_result['is_alpha'] = self.text.transform(self.check_is_alpha)
