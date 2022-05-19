@@ -62,8 +62,8 @@ if __name__ == "__main__":
     print("")
     print(f"▶  {number} Images are Generated")
     print("▷ Set Json File...")
-    json_object["images"] = list(images_list)
-    json_object["annotations"] = list(annotations_list)
+    json_object["images"] = sorted(list(images_list), key=(lambda x: x["file"]))
+    json_object["annotations"] = sorted(list(annotations_list), key=(lambda x: int(x["image_id"])))
     with open("results/info.json", "w", encoding="UTF-8") as j:
         json_string = json.dump(json_object, j, indent=2)
     print("▶  Completed")

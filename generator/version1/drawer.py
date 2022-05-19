@@ -29,7 +29,7 @@ def draw_font(feature, image, font, color, loc_x, loc_y, category=0, align="left
     if padding:
         for _ in range(padding):
             feature = " ".join(feature)
-    while loc_x + font.getsize(feature)[0] >= width:
+    while loc_x + font.getsize(feature)[0] >= width and font.size > 2:
         font = ImageFont.truetype(font.path, font.size - 1)
     if align == "right":
         loc_x = width - loc_x - font.getsize(feature)[0]
