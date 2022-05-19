@@ -2,6 +2,7 @@
 import os
 from PIL import Image, ImageFont, ImageDraw
 import random
+import pandas as pd
 
 FONT_PATA = "../font"
 categories = {"UNKNOWN": 0, "name": 1, "phone": 2, "fax": 2, "call": 2, "email": 3, "position": 4, "company": 5, "department": 6, "address": 7, "site": 8, "account": 9, "wise": 10}
@@ -51,28 +52,29 @@ def draw_font(feature, image, font, color, loc_x, loc_y, category=0, align="left
 def image_generate(info, test_mode=False):
     keywords = list(info.keys())
     # keyword 변수 선언
-    company = info["company"]
-    position = info["position"]
-    position = info["position"]
-    department = info["department"]
-    name = info["name"]
-    head = True if random.random() < 0.9 else False
+    company, position, position, department, name, phone, call, fax, email, site, address, company, license_number, wise = (
+        info["company"],
+        info["position"],
+        info["position"],
+        info["department"],
+        info["name"],
+        info["phone"][0],
+        info["phone"][1],
+        info["phone"][2],
+        info["email"],
+        info["site"],
+        info["address"],
+        info["company"],
+        info["license_number"],
+        info["wise"],
+    )
+    head = True if get_TF(0.9) else False
     splt = random.choice([".", " :", "", ")"])
-    phone_head, call_head, fax_head, email_head, site_head = "Phone" + splt, "Call" + splt, "Fax" + splt, "Email" + splt, random.choice(["Web", "site"]) + splt
-    phone = info["phone"][0]
-    call = info["phone"][1]
-    fax = info["phone"][2]
-    email = info["email"]
-    site = info["site"]
-    address = info["address"]
-    company = info["company"]
     license_head = "사업자등록번호 :"
-    license_number = info["license_number"]
-    wise = info["wise"]
+    phone_head, call_head, fax_head, email_head, site_head = "Phone" + splt, "Call" + splt, "Fax" + splt, "Email" + splt, random.choice(["Web", "site"]) + splt
 
     # includes: 특정 내용 포함 여부
     includes = dict(zip(keywords, [False for _ in range(len(keywords))]))
-    includes["company"] = True if get_TF(0.8) else False
     includes["position"] = True if get_TF(0.8) else False
     if includes["position"]:
         includes["department"] = True if get_TF(0.75) else False
@@ -81,6 +83,7 @@ def image_generate(info, test_mode=False):
     includes["call"] = True if get_TF(0.5) else False
     includes["fax"] = True if get_TF(0.5) else False
     includes["email"] = True if get_TF(0.9) else False
+    includes["company"] = True if get_TF(0.8) else False
     if includes["company"]:
         includes["address"] = True if get_TF(0.7) else False
         includes["site"] = True if get_TF(0.5) else False
@@ -91,16 +94,12 @@ def image_generate(info, test_mode=False):
     random_name = tuple([255 - c for c in random_bg])
     random_logo = tuple([int(c * 0.9) for c in random_name])
     random_sub = tuple([int(c * 1.1) for c in random_name])
-    colormap = [
-        ("white", ["blue", "green", "red", "purple"][random.randint(0, 3)], "black", "gray",),
-        (random_bg, random_logo, random_name, random_sub),
-    ]
-    Color_BG, Color_Logo, Color_Main, Color_Sub = colormap[random.randint(0, len(colormap) - 1)]
+    colormap = pd.read_csv("colormap.csv")
+    c_id = random.randint(0, len(colormap) - 1)
+    Color_BG, Color_Logo, Color_Main, Color_Sub = colormap["Color_BG"][c_id], colormap["Color_Logo"][c_id], colormap["Color_Main"][c_id], colormap["Color_Sub"][c_id]
 
-    if test_mode == True:
-        includes = dict(zip(keywords, [True for _ in range(len(keywords))]))  # FOR TEST
-        includes["call"] = True  # FOR TEST
-        includes["fax"] = True  # FOR TEST
+    if test_mode:
+        includes = dict(zip(includes.keys(), [True for _ in range(len(includes.keys()))]))  # FOR TEST
 
     # font 지정
     Logo_font = "../font/logo/" + random.choice(os.listdir(FONT_PATA + "/logo"))
@@ -121,9 +120,9 @@ def image_generate(info, test_mode=False):
     # 기준 font size
     standard = height // 10 + random.randint(-10, 0)
     margin = standard // 4 + random.randint(0, 3)
-    logobox_x = width * (random.randint(5, 10) / 100)
+    logobox_x = width * (random.randint(5, 25) / 100)
     namebox_x = width * (random.randint(5, 30) / 100)
-    optionbox_x = width * (random.randint(5, 16) / 100)
+    optionbox_x = width * (random.randint(5, 10) / 100)
 
     # 박스 y축 최대 크기
     #   logobox: 25% namebox: 25% optionbox: 35%
@@ -150,9 +149,9 @@ def image_generate(info, test_mode=False):
 
     name_x, name_y = namebox_x, namebox_y
     name_font, name_size = get_font(name, Main_font, (0.95, 1.05), padding=name_padding)
+    n_case = random.choice([0, 1])
     if includes["position"]:
         position_font, position_size = get_font(position, Main_font, (0.75, 0.85))
-        n_case = random.choice([0, 1])
         position_x, position_y = namebox_x, namebox_y
         if n_case:
             name_x += position_size[0] + margin
