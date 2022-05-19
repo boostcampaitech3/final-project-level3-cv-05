@@ -1,13 +1,15 @@
 import json
-import torch
 import os
-from torch.utils.data import Dataset, DataLoader
-from pytorch_lightning import LightningDataModule
-import torchvision.transforms as transform
-from typing import List, Dict, Union
 from functools import partial
+from typing import List, Dict
+
 import cv2
-import numpy as np
+from PIL import Image
+import torchvision.transforms as transform
+from pytorch_lightning import LightningDataModule
+from torch.utils.data import Dataset, DataLoader
+
+import feature_engineering
 
 
 def insert_image_id(word: Dict, image_id) -> Dict:
@@ -26,50 +28,66 @@ def get_annotations(annotations: List) -> List[Dict]:
     return annotation_list
 
 
-class PostTabProcess:
-    def __init__(self):
-        pass
-
-    def __call__(self, target_data: Dict, tabs: Union[List, Dict]) -> np.ndarray:
-        return np.array(tabs)
+def get_transform():
+    transforms = {
+        "train": transform.Compose([
+            transform.Resize((224, 224)),
+            transform.ToTensor(),
+            transform.Normalize(std=(50, 50, 50), mean=(50, 50, 50)),
+        ]),
+        "val": transform.Compose([
+            transform.Resize((224, 224)),
+            transform.ToTensor(),
+            transform.Normalize(std=(50, 50, 50), mean=(50, 50, 50)),
+        ])
+    }
+    return transforms
 
 
 class PostOCRDataset(Dataset):
     def __init__(self, data_dir: str,
                  json_dir: str,
                  transforms: transform = None,
-                 tab_process: PostTabProcess = None,
                  margin: int = 3):
         self.data_dir = data_dir
-        with open(json_dir, "rb") as f:
-            json_data = json.load(f)
-        self.data = get_annotations(json_data['annotations'])
-        self.group_data = json_data['annotations']
-        self.image_data = json_data['images']
+        self.data = feature_engineering.tab_process(json_dir)
         self.transform = transforms
-        self.tab_process = tab_process
         self.margin = margin
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, index):
-        data = self.data[index]
-        group_data = self.group_data[data['image_id']]
-        image_info = self.image_data[data['image_id']]
-        image = cv2.imread(os.path.join(self.data_dir, image_info['file']))
+        data = self.data.iloc[index]
+        image = cv2.imread(os.path.join(self.data_dir, data["file_name"]))
 
-        p1, p2, p3, p4 = data['points']
-        image = image[p1[0]:p4[0], p1[1]:p4[1]]
-
+        p1, p3 = data['point_1'], data['point_3']
+        image = image[p1[1]-self.margin:p3[1]+self.margin, p1[0]-self.margin:p3[0]+self.margin]
+        image = Image.fromarray(image)
         label = data['category_id']
         if self.transform:
             image = self.transform(image)
-        if self.tab_process:
-            data = self.tab_process(data, group_data)
 
-        return image, data, label
+        # ret = {'image': image, "tabs": data.to_numpy()[6:]}
+        ret_data = data.to_numpy()[6:].astype(float)
+        return image, ret_data, label
 
 
 class PostOCRDataLoader(LightningDataModule):
-    pass
+    def __init__(self, cfg, data_dir, train_json: str, val_json: str = None, test_json: str = None, margin=3):
+        super().__init__()
+        self.data_dir = data_dir
+        self.train_json = train_json
+        self.val_json = val_json
+        self.test_json = test_json
+        self.transform = get_transform()
+        self.config = cfg
+        self.margin = margin
+
+    def train_dataloader(self):
+        train_dataset = PostOCRDataset(self.data_dir, self.train_json, self.transform['train'], self.margin)
+        return DataLoader(train_dataset, **self.config.Dataloader)
+
+    def val_dataloader(self):
+        val_dataset = PostOCRDataset(self.data_dir, self.val_json, self.transform['val'], self.margin)
+        return DataLoader(val_dataset, **self.config.Dataloader)
