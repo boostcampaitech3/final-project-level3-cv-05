@@ -22,6 +22,8 @@ def _json_to_dataframe(info: dict, pre_features: List[str]) -> pd.DataFrame:
 
     for idx in range(image_len):
         file_name = info['images'][idx]['file']
+        image_width = info['images'][idx]['width']
+        image_height = info['images'][idx]['height']
         words = info['annotations'][idx]['ocr']['word']
         temp_dict = {}
         
@@ -33,6 +35,8 @@ def _json_to_dataframe(info: dict, pre_features: List[str]) -> pd.DataFrame:
             text = word['text']
             temp_dict = {
                 'file_name' : file_name,
+                'image_width' : image_width,
+                'image_height' : image_height,
                 'category_id' : category_id,
                 'points' : [points],
                 'point_1' : [point_1],

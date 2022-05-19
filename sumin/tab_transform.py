@@ -16,6 +16,8 @@ class TabTransform:
         self.point_4 = df['point_4']
         self.width = df['points'].transform(self.calculate_width)
         self.height = df['points'].transform(self.calculate_height)
+        self.scaled_width = self.width / df['image_width']
+        self.scaled_height = self.height / df['image_height']
         self.file_name = df['file_name']
         self.text = df['text']
         self.label = df['category_id']
@@ -38,10 +40,10 @@ class TabTransform:
         df_result['point_2'] = self.point_2
         df_result['point_3'] = self.point_3
         df_result['point_4'] = self.point_4
-        df_result['width'] = self.width
-        df_result['height'] = self.height
+        df_result['width'] = self.scaled_width
+        df_result['height'] = self.scaled_height
         df_result['ratio(h/w)'] = self.height / self.width
-        df_result['area'] = self.height * self.width
+        df_result['area'] = self.scaled_height * self.scaled_width
 
         # features by text
         df_result['text'] = self.text

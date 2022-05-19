@@ -29,14 +29,13 @@ def tab_process(json_dir: str) -> pd.DataFrame:
 
     info_paths = [DATA_DIR_HH + '/info.json', DATA_DIR_NY + '/info.json']
     # info_paths = json_dir
-    pre_features = ['file_name', 'category_id', 'points', 'point_1', 'point_2', 'point_3', 'point_4', 'orientation', 'text']
+    pre_features = ['file_name', 'image_width', 'image_height', 'category_id', 'points', 'point_1', 'point_2', 'point_3', 'point_4', 'orientation', 'text']
 
     df_namecard_pre = convert_to_dataframe(info_paths, pre_features)
     tab_transform = TabTransform(df_namecard_pre)
     df_namecard_post = tab_transform.transform()
 
-    print(df_namecard_post.head()) # test print
-    print(df_namecard_post['text'])
+    df_namecard_post.to_csv('./test.csv') # test save
 
     return df_namecard_post
 
