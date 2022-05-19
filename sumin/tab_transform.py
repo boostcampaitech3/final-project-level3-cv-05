@@ -10,8 +10,13 @@ import pandas as pd
 
 class TabTransform:
     def __init__(self, df: pd.DataFrame) -> None:
+        self.point_1 = df['point_1']
+        self.point_2 = df['point_2']
+        self.point_3 = df['point_3']
+        self.point_4 = df['point_4']
         self.width = df['points'].transform(self.calculate_width)
         self.height = df['points'].transform(self.calculate_height)
+        self.file_name = df['file_name']
         self.text = df['text']
         self.label = df['category_id']
     
@@ -25,13 +30,21 @@ class TabTransform:
 
         df_result = pd.DataFrame()
 
+        # file_name
+        df_result['file_name'] = self.file_name
+        
         # features by points
+        df_result['point_1'] = self.point_1
+        df_result['point_2'] = self.point_2
+        df_result['point_3'] = self.point_3
+        df_result['point_4'] = self.point_4
         df_result['width'] = self.width
         df_result['height'] = self.height
         df_result['ratio(h/w)'] = self.height / self.width
         df_result['area'] = self.height * self.width
 
         # features by text
+        df_result['text'] = self.text
         df_result['include_AT_SIGN'] = self.text.transform(self.check_include_at_sign)
         df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
         df_result['is_alpha'] = self.text.transform(self.check_is_alpha)
