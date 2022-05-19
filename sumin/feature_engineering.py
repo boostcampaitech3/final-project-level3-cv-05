@@ -5,8 +5,7 @@ Functions:
     tab_process(json_dir: str) : data를 Feature Engineering하여 반환하는 함수
 """
 
-from typing import List
-import numpy as np
+import pandas as pd
 from tab_utils import convert_to_dataframe
 from tab_transform import TabTransform
 
@@ -17,7 +16,7 @@ DATA_DIR_HH = WORK_DIR + '/sample_data_HH'
 DATA_DIR_NY = WORK_DIR + '/sample_data_NY'
 
 
-def tab_process(json_dir: str) -> List[np.array]:
+def tab_process(json_dir: str) -> pd.DataFrame:
     """
     학습 시에 tabular type으로 사용할 data를 Feature Engineering하여 반환하는 함수
 
@@ -25,7 +24,7 @@ def tab_process(json_dir: str) -> List[np.array]:
         json_dir (str): dat info를 담은 json 파일의 path
 
     Returns:
-        List[np.array]: feature engineering 이 적용된 numpy 자료형 List
+        pd.DataFrame: feature engineering 이 적용된 DataFrame
     """
 
     info_paths = [DATA_DIR_HH + '/info.json', DATA_DIR_NY + '/info.json']
@@ -39,10 +38,6 @@ def tab_process(json_dir: str) -> List[np.array]:
     print(df_namecard_post.head()) # test print
     print(df_namecard_post['text'])
 
-    tab_data = df_namecard_post.to_numpy()
-
-    # print(tab_data) # test print
-
-    return tab_data
+    return df_namecard_post
 
 tab_process('test')
