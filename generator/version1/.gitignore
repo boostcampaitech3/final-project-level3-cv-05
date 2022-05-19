@@ -1,3 +1,9 @@
+# test
+test.ipynb
+test.py
+test.*
+
+# output
 results
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
