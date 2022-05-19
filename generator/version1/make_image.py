@@ -26,13 +26,22 @@ def makeImage(number):
         image.save(f"results/images/{idx:04}.png")
         idx += 1
 
+        p = number - idx
+        pr = int((1 - p / number) * 100)
+        print(f"\rImage Generation : {pr}% Completed", end="")
+
+    print("")
+    print("Image Generation is Done.")
+
     with open("results/info.json", "w", encoding="UTF-8") as j:
         json_string = json.dump(json_object, j, indent=2)
+    print("Json File : Completed.")
 
 
-if __name__ == "__main__":
+if __name__ == "__makeImage__":
     parser = argparse.ArgumentParser(description="Image Generator")
     parser.add_argument("--number", required=True, default=1000, type=int, help="Number of generation")
     args = parser.parse_args()
     number = int(args.number)
     makeImage(number)
+    print("Work Done")

@@ -41,9 +41,10 @@ def draw_font(feature, image, font, color, loc_x, loc_y, category=0, align="left
     annotation = {
         "category_id": category,
         "orientation": "Horizontal",
-        "points": [[loc_x, loc_y], [loc_x + w, loc_y], [loc_x + w, loc_y + h,], [loc_x, loc_y + h],],
+        "points": [[loc_x, loc_y], [loc_x + w, loc_y], [loc_x + w, loc_y + h,], [loc_x, loc_y + h]],
         "text": origin,
     }
+    assert annotation["category_id"] in range(0, 11) and annotation["orientation"] and annotation["points"] and annotation["text"]
     return annotation
 
 
@@ -56,7 +57,7 @@ def image_generate(info, test_mode=False):
     department = info["department"]
     name = info["name"]
     head = True if random.random() < 0.9 else False
-    splt = random.choice([". ", " : ", "  ", ") "])
+    splt = random.choice([".", " :", "", ")"])
     phone_head, call_head, fax_head, email_head, site_head = "Phone" + splt, "Call" + splt, "Fax" + splt, "Email" + splt, random.choice(["Web", "site"]) + splt
     phone = info["phone"][0]
     call = info["phone"][1]
@@ -65,7 +66,7 @@ def image_generate(info, test_mode=False):
     site = info["site"]
     address = info["address"]
     company = info["company"]
-    license_head = "사업자등록번호 : "
+    license_head = "사업자등록번호 :"
     license_number = info["license_number"]
     wise = info["wise"]
 
@@ -119,7 +120,7 @@ def image_generate(info, test_mode=False):
     ################################## 위치 & 폰트 지정 #################################
     # 기준 font size
     standard = height // 10 + random.randint(-10, 0)
-    margin = standard // 4
+    margin = standard // 4 + random.randint(0, 3)
     logobox_x = width * (random.randint(5, 10) / 100)
     namebox_x = width * (random.randint(5, 30) / 100)
     optionbox_x = width * (random.randint(5, 16) / 100)
@@ -213,13 +214,13 @@ def image_generate(info, test_mode=False):
         license_head_font, license_head_size = get_font(license_head, Sub_font, optional_scale)
         license_head_annotation = draw_font(license_head, image, license_head_font, Color_Main, optional_x, optional_y, categories["UNKNOWN"], option_align)
         image_info.append(license_head_annotation)
-        license_number_annotation = draw_font(license_number, image, license_number_font, Color_Main, optional_x + license_head_size[0], optional_y, categories["UNKNOWN"], option_align)
+        license_number_annotation = draw_font(license_number, image, license_number_font, Color_Main, optional_x + license_head_size[0] + margin, optional_y, categories["UNKNOWN"], option_align)
         image_info.append(license_number_annotation)
     if includes["address"]:
         address_font, address_size = get_font(address, Sub_font, optional_scale)
         optional_y -= address_size[1] + margin
         address_annotation = draw_font(address, image, address_font, Color_Main, optional_x, optional_y, categories["address"], option_align)
-        image_info.extend(address_annotation)
+        image_info.append(address_annotation)
 
     add_width = width // 2 + random.randint(-20, 20)
 
@@ -235,7 +236,7 @@ def image_generate(info, test_mode=False):
             site_head_font, site_head_size = get_font(site_head, Sub_font, optional_scale)
             site_head_annotation = draw_font(site_head, image, site_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
             image_info.append(site_head_annotation)
-            optional_x += site_head_size[0]
+            optional_x += site_head_size[0] + margin
         site_annotation = draw_font(site, image, site_font, Color_Main, optional_x, optional_y, categories["site"], option_align)
         image_info.append(site_annotation)
         up += 1
@@ -250,7 +251,7 @@ def image_generate(info, test_mode=False):
             email_head_font, email_head_size = get_font(email_head, Sub_font, optional_scale)
             email_head_annotation = draw_font(email_head, image, email_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
             image_info.append(email_head_annotation)
-            optional_x += email_head_size[0]
+            optional_x += email_head_size[0] + margin
         email_annotation = draw_font(email, image, email_font, Color_Main, optional_x, optional_y, categories["email"], option_align)
         image_info.append(email_annotation)
         up += 1
@@ -265,7 +266,7 @@ def image_generate(info, test_mode=False):
             fax_head_font, fax_head_size = get_font(fax_head, Sub_font, optional_scale)
             fax_head_annotation = draw_font(fax_head, image, fax_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
             image_info.append(fax_head_annotation)
-            optional_x += fax_head_size[0]
+            optional_x += fax_head_size[0] + margin
         fax_annotation = draw_font(fax, image, fax_font, Color_Main, optional_x, optional_y, categories["fax"], option_align)
         image_info.append(fax_annotation)
         up += 1
@@ -280,7 +281,7 @@ def image_generate(info, test_mode=False):
             call_head_font, call_head_size = get_font(call_head, Sub_font, optional_scale)
             call_head_annotation = draw_font(call_head, image, call_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
             image_info.append(call_head_annotation)
-            optional_x += call_head_size[0]
+            optional_x += call_head_size[0] + margin
         call_annotation = draw_font(call, image, call_font, Color_Main, optional_x, optional_y, categories["call"], option_align)
         image_info.append(call_annotation)
         up += 1
@@ -295,7 +296,7 @@ def image_generate(info, test_mode=False):
             phone_head_font, phone_head_size = get_font(phone_head, Sub_font, optional_scale)
             phone_head_annotation = draw_font(phone_head, image, phone_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
             image_info.append(phone_head_annotation)
-            optional_x += phone_head_size[0]
+            optional_x += phone_head_size[0] + margin
         phone_annotation = draw_font(phone, image, phone_font, Color_Main, optional_x, optional_y, categories["phone"], option_align)
         image_info.append(phone_annotation)
         up += 1
