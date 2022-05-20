@@ -1,9 +1,7 @@
 import random
 import json
-import glob
 import argparse
 import os
-from tokenize import Name
 from generate import generate
 from PIL import Image, ImageDraw, ImageFont
 from tqdm import tqdm
@@ -125,7 +123,7 @@ def draw_and_write(bbox: tuple, content: str, item: str, font, draw):
         bbox,
         content,
         font=font,
-        fill=font_color,
+        fill=font_color[item],
     )
     put_word(item, content.strip(), bbox, font)
 
@@ -137,8 +135,10 @@ def put_word(item: str, content: str, start: tuple, font):
     temp_word["orientation"] = "Horizontal"
     temp_word["text"] = content
 
-    text_width, text_height = font.getsize(content)
-    start_x, start_y = start
+    text_width, text_height = int(font.getsize(content)[0]), int(
+        font.getsize(content)[1]
+    )
+    start_x, start_y = int(start[0]), int(start[1])
     temp_word["points"] = [
         [start_x, start_y],
         [start_x + text_width, start_y],
@@ -368,8 +368,6 @@ def main(args):
             json_data = json.load(f)
 
     for i in tqdm(range(0, int(args.num))):
-        background_color = (255, 255, 255)
-        image = img = Image.new("RGB", (900, 500), background_color)
         info = generate()
         word = []
 
@@ -386,6 +384,9 @@ def main(args):
 
         font_family = make_font_family()
         font_size = make_font_size()
+        background_color, font_color = make_font_color()
+
+        image = img = Image.new("RGB", (900, 500), background_color)
 
         #  start
         company_height = make_company(info)

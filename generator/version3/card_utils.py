@@ -2,19 +2,20 @@ import os
 import glob
 import random
 from generate import generate
+import pandas as pd
 
 ########################
 ## card util funtions ##
 ########################
 
-current_dir = os.getcwd()
+# current_dir = os.getcwd()
 
-sub_font_dir = f"{current_dir}/font/sub"
-main_font_dir = f"{current_dir}/font/main"
+sub_font_dir = f"font/sub"
+main_font_dir = f"font/main"
 sub_font_families = glob.glob(f"{sub_font_dir}/*.ttf")
 main_font_families = glob.glob(f"{main_font_dir}/*.ttf")
 
-font_color = (0, 0, 0)
+colormap = pd.read_csv("data/colormap.csv")
 
 
 def make_font_size():
@@ -29,6 +30,31 @@ def make_font_size():
     font_size["company"] = random.randint(60, 70)
     font_size["wise"] = random.randint(15, 20)
     return font_size
+
+
+def make_font_color():
+    font_color = dict()
+    c_id = random.randint(0, len(colormap) - 1)
+    Color_BG, Color_Logo, Color_Main, Color_Sub = (
+        colormap["Color_BG"][c_id],
+        colormap["Color_Logo"][c_id],
+        colormap["Color_Main"][c_id],
+        colormap["Color_Sub"][c_id],
+    )
+
+    font_color["name"] = font_color["company"] = Color_Main
+    font_color["phone"] = font_color["tel"] = font_color["website"] = font_color[
+        "license_number"
+    ] = font_color["fax"] = font_color["email"] = font_color["address"] = font_color[
+        "position"
+    ] = font_color[
+        "department"
+    ] = font_color[
+        "wise"
+    ] = font_color[
+        "UNKNOWN"
+    ] = Color_Sub
+    return Color_BG, font_color
 
 
 def make_font_family():
