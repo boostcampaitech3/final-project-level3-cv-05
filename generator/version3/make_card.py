@@ -173,7 +173,10 @@ class NumTemplate:
         mode_index = random.randint(0, len(self.mode) - 1)
         mode = self.mode[mode_index]
         start = self.start[mode_index]
-        for item in self.items:
+
+        random_items = list(self.items.keys())
+        random.shuffle(random_items)
+        for item in random_items:
             item_name, content = item, self.items[item]
 
             font = ImageFont.truetype(font_family[item_name], font_size[item_name])
