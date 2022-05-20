@@ -1,13 +1,15 @@
+from typing import List
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
-from timm import create_model
-from pytorch_lightning import LightningModule
-from munch import Munch
 import torchmetrics
+from munch import Munch
+from pytorch_lightning import LightningModule
+from timm import create_model
+
 from loss import create_criterion
-from typing import List
 
 
 class BackboneBlock(nn.Module):
@@ -64,7 +66,7 @@ class PostOCRModel(nn.Module):
         """
         x_feature = self.cnn_feature(x)
         tab_feature = self.mlp_feature(tab)
-        feature = torch.concat((x_feature, tab_feature))
+        feature = torch.concat((x_feature, tab_feature), 1)
         output = self.classifier(feature)
         return output
 
@@ -76,6 +78,7 @@ class PostOCRLearner(LightningModule):
         self.feature = PostOCRModel(**cfg.Model)
         self._criterion = create_criterion(cfg.Loss)
         self.learning_rate = self.cfg.learning_rate
+        self.accuracy = torchmetrics.Accuracy()
 
     def forward(self, x, tabs):
         return self.feature(x, tabs)

@@ -3,12 +3,13 @@ import os
 from functools import partial
 from typing import List, Dict
 
+import torch
 import cv2
 from PIL import Image
 import torchvision.transforms as transform
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import Dataset, DataLoader
-
+import numpy as np
 import feature_engineering
 
 
@@ -62,14 +63,15 @@ class PostOCRDataset(Dataset):
         image = cv2.imread(os.path.join(self.data_dir, data["file_name"]))
 
         p1, p3 = data['point_1'], data['point_3']
-        image = image[p1[1]-self.margin:p3[1]+self.margin, p1[0]-self.margin:p3[0]+self.margin]
+        p1 = [max(p1[0]-self.margin, 0), max(p1[1]-self.margin, 0)]
+        p3 = [min(p3[0]+self.margin, 900-1), min(p3[1]+self.margin, 500-1)]
+        image = image[p1[1]:p3[1], p1[0]:p3[0]]
         image = Image.fromarray(image)
         label = data['category_id']
         if self.transform:
             image = self.transform(image)
-
-        # ret = {'image': image, "tabs": data.to_numpy()[6:]}
-        ret_data = data.to_numpy()[6:].astype(float)
+        data = data.drop(labels=['category_id', 'point_1', 'point_2', 'point_3', 'point_4', 'text', 'file_name'])
+        ret_data = torch.from_numpy(data.values.astype(np.float32))
         return image, ret_data, label
 
 
