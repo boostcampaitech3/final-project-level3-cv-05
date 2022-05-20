@@ -58,9 +58,9 @@ def image_generate(info, test_mode=False):
         info["position"],
         info["department"],
         info["name"],
-        info["phone"][0],
-        info["phone"][1],
-        info["phone"][2],
+        info["phone"],
+        info["call"],
+        info["fax"],
         info["email"],
         info["site"],
         info["address"],
@@ -71,7 +71,13 @@ def image_generate(info, test_mode=False):
     head = True if get_TF(0.9) else False
     splt = random.choice([".", " :", "", ")"])
     license_head = "사업자등록번호 :"
-    phone_head, call_head, fax_head, email_head, site_head = "Phone" + splt, "Call" + splt, "Fax" + splt, "Email" + splt, random.choice(["Web", "site"]) + splt
+    header = {
+        "phone": "Phone" + splt,
+        "call": "Call" + splt,
+        "fax": "Fax" + splt,
+        "email": "Email" + splt,
+        "site": random.choice(["Web", "site"]) + splt,
+    }
 
     # includes: 특정 내용 포함 여부
     includes = dict(zip(keywords, [False for _ in range(len(keywords))]))
@@ -94,7 +100,7 @@ def image_generate(info, test_mode=False):
     random_name = tuple([255 - c for c in random_bg])
     random_logo = tuple([int(c * 0.9) for c in random_name])
     random_sub = tuple([int(c * 1.1) for c in random_name])
-    colormap = pd.read_csv("colormap.csv")
+    colormap = pd.read_csv("../data/colormap.csv")
     c_id = random.randint(0, len(colormap) - 1)
     Color_BG, Color_Logo, Color_Main, Color_Sub = colormap["Color_BG"][c_id], colormap["Color_Logo"][c_id], colormap["Color_Main"][c_id], colormap["Color_Sub"][c_id]
 
@@ -224,82 +230,24 @@ def image_generate(info, test_mode=False):
     add_width = width // 2 + random.randint(-20, 20)
 
     up = 0
-    if includes["site"]:
-        site_font, site_size = get_font(site, Sub_font, optional_scale)
-        if up % 2:
-            optional_x = optionbox_x + add_width
-        else:
-            optional_x = optionbox_x
-            optional_y -= site_size[1] + margin
-        if head:
-            site_head_font, site_head_size = get_font(site_head, Sub_font, optional_scale)
-            site_head_annotation = draw_font(site_head, image, site_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
-            image_info.append(site_head_annotation)
-            optional_x += site_head_size[0] + margin
-        site_annotation = draw_font(site, image, site_font, Color_Main, optional_x, optional_y, categories["site"], option_align)
-        image_info.append(site_annotation)
-        up += 1
-    if includes["email"]:
-        email_font, email_size = get_font(email, Sub_font, optional_scale)
-        if up % 2:
-            optional_x = optionbox_x + add_width
-        else:
-            optional_x = optionbox_x
-            optional_y -= email_size[1] + margin
-        if head:
-            email_head_font, email_head_size = get_font(email_head, Sub_font, optional_scale)
-            email_head_annotation = draw_font(email_head, image, email_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
-            image_info.append(email_head_annotation)
-            optional_x += email_head_size[0] + margin
-        email_annotation = draw_font(email, image, email_font, Color_Main, optional_x, optional_y, categories["email"], option_align)
-        image_info.append(email_annotation)
-        up += 1
-    if includes["fax"]:
-        fax_font, fax_size = get_font(fax, Sub_font, optional_scale)
-        if up % 2:
-            optional_x = optionbox_x + add_width
-        else:
-            optional_x = optionbox_x
-            optional_y -= fax_size[1] + margin
-        if head:
-            fax_head_font, fax_head_size = get_font(fax_head, Sub_font, optional_scale)
-            fax_head_annotation = draw_font(fax_head, image, fax_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
-            image_info.append(fax_head_annotation)
-            optional_x += fax_head_size[0] + margin
-        fax_annotation = draw_font(fax, image, fax_font, Color_Main, optional_x, optional_y, categories["fax"], option_align)
-        image_info.append(fax_annotation)
-        up += 1
-    if includes["call"]:
-        call_font, call_size = get_font(call, Sub_font, optional_scale)
-        if up % 2:
-            optional_x = optionbox_x + add_width
-        else:
-            optional_x = optionbox_x
-            optional_y -= call_size[1] + margin
-        if head:
-            call_head_font, call_head_size = get_font(call_head, Sub_font, optional_scale)
-            call_head_annotation = draw_font(call_head, image, call_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
-            image_info.append(call_head_annotation)
-            optional_x += call_head_size[0] + margin
-        call_annotation = draw_font(call, image, call_font, Color_Main, optional_x, optional_y, categories["call"], option_align)
-        image_info.append(call_annotation)
-        up += 1
-    if includes["phone"]:
-        phone_font, phone_size = get_font(phone, Sub_font, optional_scale)
-        if up % 2:
-            optional_x = optionbox_x + add_width
-        else:
-            optional_x = optionbox_x
-            optional_y -= phone_size[1] + margin
-        if head:
-            phone_head_font, phone_head_size = get_font(phone_head, Sub_font, optional_scale)
-            phone_head_annotation = draw_font(phone_head, image, phone_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
-            image_info.append(phone_head_annotation)
-            optional_x += phone_head_size[0] + margin
-        phone_annotation = draw_font(phone, image, phone_font, Color_Main, optional_x, optional_y, categories["phone"], option_align)
-        image_info.append(phone_annotation)
-        up += 1
-
+    head_kw = ["site", "email", "fax", "call", "phone"]
+    random.shuffle(head_kw)
+    for var in head_kw:
+        if includes[var]:
+            var_font, var_size = get_font(info[var], Sub_font, optional_scale)
+            if up % 2:
+                optional_x = optionbox_x + add_width
+            else:
+                optional_x = optionbox_x
+                optional_y -= var_size[1] + margin
+            if head:
+                var_head_font, var_head_size = get_font(header[var], Sub_font, optional_scale)
+                var_head_annotation = draw_font(header[var], image, var_head_font, Color_Sub, optional_x, optional_y, categories["UNKNOWN"], option_align)
+                image_info.append(var_head_annotation)
+                optional_x += var_head_size[0] + margin
+            var_annotation = draw_font(info[var], image, var_font, Color_Main, optional_x, optional_y, categories[var], option_align)
+            image_info.append(var_annotation)
+            up += 1
     ####################################################################################
 
     return image, image_info, width, height

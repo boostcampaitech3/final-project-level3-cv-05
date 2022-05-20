@@ -11,7 +11,7 @@
 ```python
 generator/
 └── 📂 data/
-    ├── 🗒️ *.csv
+    ├── 🗒️ *.csv					 # DB
     │
     📂 font/						# 구글 드라이브에서 다운로드
     ├── 📂 logo/
@@ -19,11 +19,13 @@ generator/
     ├── 📂 sub/
     │
 	📄 __itit__.py
+    📄 colormap.csv			    	# colormap
     📄 drawer.py					# image & bbox return
     📄 generate.py					# csv load & random return
     📄 generator_notebook.ipynb		# 이미지 생성용 노트북 파일
     📄 make_image.py				# 이미지 생성용 py 파일
     📄 sample.json					# 최초 생성에 사용하는 template json
+    📄 viewer.ipynb					# 이미지 확인용 노트북 파일(EDA 예정)
     │
     │
     │
