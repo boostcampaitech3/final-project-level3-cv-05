@@ -70,14 +70,7 @@ def image_generate(info, test_mode=False):
     )
     head = True if get_TF(0.9) else False
     splt = random.choice([".", " :", "", ")"])
-    license_head = "사업자등록번호 :"
-    header = {
-        "phone": "Phone" + splt,
-        "call": "Call" + splt,
-        "fax": "Fax" + splt,
-        "email": "Email" + splt,
-        "site": random.choice(["Web", "site"]) + splt,
-    }
+    header = {"phone": "Phone" + splt, "call": "Call" + splt, "fax": "Fax" + splt, "email": "Email" + splt, "site": random.choice(["Web", "site"]) + splt, "license_number": "사업자등록번호 :"}
 
     # includes: 특정 내용 포함 여부
     includes = dict(zip(keywords, [False for _ in range(len(keywords))]))
@@ -213,19 +206,20 @@ def image_generate(info, test_mode=False):
     optional_scale = random.uniform(0.4, 0.45)
     option_align = "left"  # random.choice(["left", "right"])
 
-    if includes["license_number"]:
-        license_number_font, license_number_size = get_font(license_number, Sub_font, optional_scale)
-        optional_y -= license_number_size[1] + margin
-        license_head_font, license_head_size = get_font(license_head, Sub_font, optional_scale)
-        license_head_annotation = draw_font(license_head, image, license_head_font, Color_Main, optional_x, optional_y, categories["UNKNOWN"], option_align)
-        image_info.append(license_head_annotation)
-        license_number_annotation = draw_font(license_number, image, license_number_font, Color_Main, optional_x + license_head_size[0] + margin, optional_y, categories["UNKNOWN"], option_align)
-        image_info.append(license_number_annotation)
-    if includes["address"]:
-        address_font, address_size = get_font(address, Sub_font, optional_scale)
-        optional_y -= address_size[1] + margin
-        address_annotation = draw_font(address, image, address_font, Color_Main, optional_x, optional_y, categories["address"], option_align)
-        image_info.append(address_annotation)
+    optional_x, optional_y = optionbox_x, optionbox_y
+
+    for var in ["address", "license_number"]:
+        if includes[var]:
+            optional_x = optionbox_x
+            var_font, var_size = get_font(info[var], Sub_font, optional_scale)
+            optional_y -= var_size[1] + margin
+            if header.get(var, -1) != -1:
+                var_head_font, var_head_size = get_font(header[var], Sub_font, optional_scale)
+                var_head_annotation = draw_font(header[var], image, var_head_font, Color_Main, optional_x, optional_y, categories["UNKNOWN"], option_align)
+                image_info.append(var_head_annotation)
+                optional_x += var_head_size[0]
+            var_annotation = draw_font(info[var], image, var_font, Color_Main, optional_x + margin, optional_y, categories["UNKNOWN"], option_align)
+            image_info.append(var_annotation)
 
     add_width = width // 2 + random.randint(-20, 20)
 
