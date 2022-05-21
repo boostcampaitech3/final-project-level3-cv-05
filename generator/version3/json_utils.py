@@ -1,15 +1,33 @@
+# json_utils.py
+"""
+json 파일 생성에 필요한 모듈입니다.
+
+Functions:
+    get_category_id(item): 정보 항목의 이름에 맞는 category_id를 반환합니다.
+
+    make_json(directory): 디렉토리에 json 파일을 새로 생성하고,
+                          json 파일에 들어갈 내용을 딕셔너리에 담아 반환합니다.
+    make_dir(directory): 디렉토리 존재 여부를 확인하고,
+                              없으면 디렉토리를 새로 생성합니다.
+
+    check_file_num(directory, ext): 디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다.
+"""
 import os
 import glob
 import json
-
-########################
-## json util funtions ##
-########################
-
-num = ["phone", "tel", "website", "license_number", "fax", "email", "address"]
+from typing import Dict, Any
 
 
-def get_category_id(item: str):
+def get_category_id(item: str) -> int:
+    """
+    정보 항목의 이름에 맞는 category_id를 반환합니다.
+
+    Args:
+        item (str): 정보 항목의 이름
+
+    Returns:
+        category_id (int): 정보 항목의 이름에 맞는 category id
+    """
     if item in "name":
         category_id = 1
     elif item in "phone":
@@ -33,7 +51,17 @@ def get_category_id(item: str):
     return category_id
 
 
-def make_json(directory: str):
+def make_json(directory: str) -> Dict[str, Any]:
+    """
+    디렉토리에 json 파일을 새로 생성하고,
+    json 파일에 들어갈 내용을 딕셔너리에 담아 반환합니다.
+
+    Args:
+        directory (str): json 파일의 디렉토리
+
+    Returns:
+        json_data (dict): json 파일에 들어갈 내용 저장
+    """
     json_data = {}
     json_data["images"] = []
     json_data["categories"] = (
@@ -58,11 +86,28 @@ def make_json(directory: str):
 
 
 def make_dir(directory: str):
+    """
+    디렉토리 존재 여부를 확인하고,
+    없으면 디렉토리를 새로 생성합니다.
+
+    Args:
+        directory (str): 확인 및 생성할 디렉토리
+    """
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
 
-def check_file_num(directory: str, ext: str):
+def check_file_num(directory: str, ext: str) -> int:
+    """
+    디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다.
+
+    Args:
+        directory (str): 확인할 디렉토리
+        ext (str): 확인할 확장자명
+
+    Returns:
+        length (int): 디렉토리에 존재하는 파일의 개수
+    """
     file_list = glob.glob(f"{directory}/*{ext}")
     length = len(file_list)
     return length
