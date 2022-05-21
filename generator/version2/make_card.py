@@ -38,7 +38,8 @@ cat_num = ["phone_number", "tel", "fax"]  # num에 속하는 하위 카테고리
 
 
 def regenerate(key: str) -> str:
-    """명함에 적용할 정보 (str)를 다시 생성합니다.
+    """
+    명함에 적용할 정보 (str)를 다시 생성합니다.
 
     Args:
         key (str): 정보 항목의 이름
@@ -57,7 +58,8 @@ def regenerate(key: str) -> str:
 
 
 def make_dir(directory: str):
-    """ 디렉토리 존재 여부를 확인하고, 없으면 디렉토리를 새로 생성합니다. 
+    """ 
+    디렉토리 존재 여부를 확인하고, 없으면 디렉토리를 새로 생성합니다. 
 
     Args:
         directory (str): 확인 및 생성할 디렉토리
@@ -67,7 +69,8 @@ def make_dir(directory: str):
 
 
 def check_file_num(directory: str, ext: str) -> int:
-    """ 디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다. 
+    """ 
+    디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다. 
 
     Args:
         directory (str): 확인할 디렉토리 
@@ -123,7 +126,9 @@ def shorten(
     content: str,
     item: str,
 ) -> int, str:
-    """ 지정된 bbox 영역을 넘어가는 경우, 내용을 변경하거나 폰트 크기를 변경하여 bbox 영역에 들어오도록 만듭니다. 
+    """ 
+    지정된 bbox 영역을 넘어가는 경우, 
+    내용을 변경하거나 폰트 크기를 변경하여 bbox 영역에 들어오도록 만듭니다. 
 
     Args:
         type (int): width 이면, 0 / height 이면, 1
@@ -157,7 +162,9 @@ def shorten(
 def check_size(
     bbox_size: Tuple[int, int], font_size: int, font_family: str, content: str, item: str
 ) -> int, str:
-    """ 지정한 bbox 영역 내에 들어오는지 확인하고, 영역을 벗어날 경우, bbox 범위 내에 들어오도록 shorten() 함수를 적용합니다.
+    """ 
+    지정한 bbox 영역 내에 들어오는지 확인하고, 
+    영역을 벗어날 경우, bbox 범위 내에 들어오도록 shorten() 함수를 적용합니다.
 
     Args:
         bbox_size (tuple): 지정된 bbox의 (width, height)
@@ -223,7 +230,8 @@ def get_category_id(item: str) -> int:
 
 
 def card_generator(info: Dict[str, str], info_dir: str):
-    """ 명함 이미지를 생성하고, 저장합니다. 이와 관련한 json 파일도 생성하고 저장합니다. 
+    """ 
+    명함 이미지를 생성하고, 저장합니다. 이와 관련한 json 파일도 생성하고 저장합니다. 
 
     Args:
         info (dict): 명함 이미지에 적용되는 정보
@@ -362,7 +370,6 @@ def card_generator(info: Dict[str, str], info_dir: str):
 
 def main(num: str, dir: str):
     """
-
     Args:
         num (str): 생성할 이미지의 개수 
         dir (str): json 파일의 디렉토리 
