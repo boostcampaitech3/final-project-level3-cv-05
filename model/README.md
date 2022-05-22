@@ -8,5 +8,5 @@ pandas
 
 ## Training
 ```
-python train.py --config [CONFIG DIR]
+python trainer.py --config [CONFIG DIR]
 ```
