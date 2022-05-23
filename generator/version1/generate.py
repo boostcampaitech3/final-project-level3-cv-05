@@ -6,7 +6,7 @@ import pandas as pd
 # 이름
 name_df = pd.read_csv("../data/name.csv")
 # 이메일
-id_word = ["-", "_",] + list(map(chr, range(97, 123))) + list(map(chr, range(65, 91))) + list(map(chr, range(48, 57)))
+id_word = ["-", "_",] + list(map(chr, range(97, 123))) + list(map(chr, range(48, 57)))
 domain = pd.read_csv("../data/domain.csv")
 # 사이트
 site_df = pd.read_csv("../data/site.csv")

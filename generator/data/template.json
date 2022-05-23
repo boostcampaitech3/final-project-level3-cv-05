@@ -1,0 +1,222 @@
+{
+    "case1": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 75,
+            "formation": "double"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "double"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 300,
+            "formation": "grid"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 425,
+            "formation": "double"
+        }
+    },
+    "case2": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 75,
+            "formation": "double"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "stack"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 450,
+            "loc_y": 200,
+            "formation": "stack"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 425,
+            "formation": "double"
+        }
+    },
+    "case3": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 75,
+            "formation": "double"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 460,
+            "loc_y": 200,
+            "formation": "stack"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "stack"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 425,
+            "formation": "double"
+        }
+    },
+    "case4": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 75,
+            "formation": "double"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "double"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 370,
+            "formation": "grid"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 325,
+            "formation": "double"
+        }
+    },
+    "case5": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 75,
+            "formation": "double"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 460,
+            "loc_y": 280,
+            "formation": "stack"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "double"
+        }
+    }
+}
