@@ -65,15 +65,15 @@ def get_annotation(category, x, y, w, h, feature, dir="Horizontal"):
     return annotation
 
 
-def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg_color, info, header, scale, head=False, formation="stack", vertical=1):  # type = ["grid", "double", "stack", "solo"]
+def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg_color, info, header, scale, head=False, formation="stack", vertical=1):  # type = ["grid", "double", "stack", "single"]
     annotation = []
     random.shuffle(draw_list)
     x_gap = random.randint(10, 14)
     y_gap = random.randint(4, 10)
     align = get_TF(0.5)
-    if formation in ["solo", "double"]:
+    if formation in ["single", "double"]:
         var = draw_list[0]
-        splt = len(draw_list) if formation == "solo" else int(len(draw_list) // 2)
+        splt = len(draw_list) if formation == "single" else int(len(draw_list) // 2)
         if len(draw_list) > 2:
             splt += random.randint(0, 1)
         loc_x, loc_y = box_x, box_y
@@ -86,7 +86,7 @@ def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg
                 var_font = get_font(font, scale[var])
                 image, (width, height) = draw_font(info[var], var_font, bg_color, font_color, padding=padding)
                 line_y = loc_y - height - 5 if idx < splt else loc_y + 5
-                line_x = 900 // vertical - loc_x - width if align else loc_x
+                line_x = background.size[0] // vertical - loc_x - width if align else loc_x
                 background.paste(image, (line_x, line_y))
                 annotation.append(get_annotation(categories[var], line_x, line_y, width, height, info[var]))
                 loc_x += width + x_gap
@@ -131,7 +131,27 @@ def image_generate(select="random", test_mode=False):
     keywords = list(info.keys())
     head = True if get_TF(0.9) else False
     splt = random.choice([".", " :", "", ")"])
-    header = {"phone": "Phone" + splt, "call": "Call" + splt, "fax": "Fax" + splt, "email": "Email" + splt, "site": random.choice(["Web", "site"]) + splt, "license_number": "사업자등록번호 :"}
+    header = random.choice(
+        [
+            {
+                "phone": random.choice(["Phone", "Mobile"]) + splt,
+                "call": "Tel" + splt,
+                "fax": "Fax" + splt,
+                "email": "Email" + splt,
+                "site": random.choice(["Web", "Site"]) + splt,
+                "license_number": "사업자등록번호 :",
+            },
+            {"phone": random.choice(["M", "P"]) + splt, "call": "T" + splt, "fax": "F" + splt, "email": "E" + splt, "site": "H" + splt, "license_number": "사업자등록번호 :"},
+            {
+                "phone": random.choice(["휴대전화", "휴대폰", "무선전화", "핸드폰", "연락처", "무선"]) + splt,
+                "call": random.choice(["유선", "유선전화", "전화", "연락처"]) + splt,
+                "fax": "팩스" + splt,
+                "email": random.choice(["메일", "이메일", "전자우편"]) + splt,
+                "site": random.choice(["웹", "사이트", "홈페이지"]) + splt,
+                "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
+            },
+        ]
+    )
 
     # includes: 특정 내용 포함 여부
     includes = dict(zip(keywords, [False for _ in range(len(keywords))]))
@@ -190,7 +210,7 @@ def image_generate(select="random", test_mode=False):
         case = json_object[select]
     width = case["width"]
     height = case["height"]
-    assert height / width == 5 / 9
+    assert height / width == 5 / 9 or height / width == 9 / 5
     image = Image.new("RGBA", (width, height), Color_BG)
     logobox_list, logobox_x, logobox_y, logo_format = (
         case["logobox"]["draw_list"],
@@ -219,10 +239,14 @@ def image_generate(select="random", test_mode=False):
 
     # bbox 정보
     image_info = []
-    image_info.extend(draw_box(image, Logo_font, Color_Logo, logobox_x, logobox_y, logobox_list, includes, Color_BG, info, header, scale, formation=logo_format))
-    image_info.extend(draw_box(image, Main_font, Color_Main, namebox_x, namebox_y, namebox_list, includes, Color_BG, info, header, scale, formation=name_format))
-    image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox1_x, optionbox1_y, optionbox1_list, includes, Color_BG, info, header, scale, head, formation=opt1_format))
-    image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox2_x, optionbox2_y, optionbox2_list, includes, Color_BG, info, header, scale, head, formation=opt2_format))
+    if logobox_list:
+        image_info.extend(draw_box(image, Logo_font, Color_Logo, logobox_x, logobox_y, logobox_list, includes, Color_BG, info, header, scale, formation=logo_format))
+    if namebox_list:
+        image_info.extend(draw_box(image, Main_font, Color_Main, namebox_x, namebox_y, namebox_list, includes, Color_BG, info, header, scale, formation=name_format))
+    if optionbox1_list:
+        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox1_x, optionbox1_y, optionbox1_list, includes, Color_BG, info, header, scale, head, formation=opt1_format))
+    if optionbox2_list:
+        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox2_x, optionbox2_y, optionbox2_list, includes, Color_BG, info, header, scale, head, formation=opt2_format))
 
     return image, image_info, width, height
 
