@@ -476,5 +476,93 @@
             "loc_y": 325,
             "formation": "double"
         }
+    },
+    "case12": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "logo",
+                "company"
+            ],
+            "loc_x": 0,
+            "loc_y": 100,
+            "formation": "single"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 240,
+            "formation": "single"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 375,
+            "formation": "grid"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 325,
+            "formation": "double"
+        }
+    },
+    "case13": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "logo",
+                "company"
+            ],
+            "loc_x": 0,
+            "loc_y": 60,
+            "formation": "single"
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 220,
+            "formation": "single"
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 300,
+            "formation": "grid"
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 425,
+            "formation": "double"
+        }
     }
 }
