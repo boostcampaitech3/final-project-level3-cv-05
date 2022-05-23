@@ -50,6 +50,9 @@ def draw_font(feature, imagefont, bg_color, font_color, padding=False):
         for _ in range(random.randint(0, 2)):
             feature = " ".join(feature)
     width, height = imagefont.getsize(feature)
+    while 700 < width and imagefont.size > 1:
+        imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
+        width, height = imagefont.getsize(feature)
     image = Image.new("RGBA", (width, height), bg_color)
     ImageDraw.Draw(image).text(xy=(0, 0), text=feature, font=imagefont, fill=font_color)
     return image, (width, height)
@@ -65,31 +68,47 @@ def get_annotation(category, x, y, w, h, feature, dir="Horizontal"):
     return annotation
 
 
-def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg_color, info, header, scale, head=False, formation="stack", vertical=1):  # type = ["grid", "double", "stack", "single"]
+def draw_logo(background, loc_x, loc_y, includes, align):
+    image = Image.open(includes["logo"]).convert("RGBA")
+    l = random.randint(50, 100)
+    image = image.resize((l, l))
+    loc_x = background.size[0] - loc_x - image.size[0] if align else loc_x
+    loc_y = loc_y - image.size[1]
+    background.paste(image, (loc_x, loc_y), image)
+    return background, l
+
+
+def draw_box(background, font, font_color, box_info, infos, head=False, vertical=1):  # type = ["grid", "double", "stack", "single"]
+    draw_list, box_x, box_y, formation = box_info
+    includes, info, header, scale = infos
+    bg_color = (0, 0, 0, 0)
     annotation = []
     random.shuffle(draw_list)
     x_gap = random.randint(10, 14)
     y_gap = random.randint(4, 10)
     align = get_TF(0.5)
     if formation in ["single", "double"]:
-        var = draw_list[0]
         splt = len(draw_list) if formation == "single" else int(len(draw_list) // 2)
         if len(draw_list) > 2:
             splt += random.randint(0, 1)
         loc_x, loc_y = box_x, box_y
         idx = 0
         for var in draw_list:
-            if splt == idx:
-                loc_x, loc_y = box_x, box_y
-            padding = True if var in ["company", "name"] else False
-            if includes[var]:
-                var_font = get_font(font, scale[var])
-                image, (width, height) = draw_font(info[var], var_font, bg_color, font_color, padding=padding)
-                line_y = loc_y - height - 5 if idx < splt else loc_y + 5
-                line_x = background.size[0] // vertical - loc_x - width if align else loc_x
-                background.paste(image, (line_x, line_y))
-                annotation.append(get_annotation(categories[var], line_x, line_y, width, height, info[var]))
-                loc_x += width + x_gap
+            if var == "logo":
+                background, x_push = draw_logo(background, loc_x, loc_y, includes, align)
+                loc_x += x_push
+            else:
+                if splt == idx:
+                    loc_x, loc_y = box_x, box_y
+                padding = True if var in ["company", "name"] else False
+                if includes[var]:
+                    var_font = get_font(font, scale[var])
+                    image, (width, height) = draw_font(info[var], var_font, bg_color, font_color, padding=padding)
+                    line_y = loc_y - height - 5 if idx < splt else loc_y + 5
+                    line_x = background.size[0] // vertical - loc_x - width if align else loc_x
+                    background.paste(image, (line_x, line_y), image)
+                    annotation.append(get_annotation(categories[var], line_x, line_y, width, height, info[var]))
+                    loc_x += width + x_gap
             idx += 1
     else:
         grid_gap = random.randint(400, 420)
@@ -106,8 +125,8 @@ def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg
                     var_head_font = get_font(font, scale[var])
                     head_image, (head_width, head_height) = draw_font(header[var], var_head_font, bg_color, font_color)
                     add_head = Image.new("RGBA", (width + head_width + x_gap, head_height + 10), bg_color)
-                    add_head.paste(head_image, (0, 0))
-                    add_head.paste(image, (head_width + x_gap, 0))
+                    add_head.paste(head_image, (0, 0), head_image)
+                    add_head.paste(image, (head_width + x_gap, 0), image)
                     image = add_head
                     fix += head_width + x_gap
                     head_x = loc_x + grid_gap - width - fix - 100 if align and formation == "stack" else loc_x
@@ -117,7 +136,7 @@ def draw_box(background, font, font_color, box_x, box_y, draw_list, includes, bg
                 annotation.append(get_annotation(categories[var], fix_x, loc_y, width, height, info[var]))
 
                 line_x = loc_x + grid_gap - (width + fix) - 100 if align and formation == "stack" else loc_x
-                background.paste(image, (line_x, loc_y))
+                background.paste(image, (line_x, loc_y), image)
                 if formation == "grid" and col:
                     col = 0
                 else:
@@ -170,6 +189,12 @@ def image_generate(select="random", test_mode=False):
         includes["license_number"] = True if get_TF(0.5) else False
         includes["wise"] = True if get_TF(0.5) else False
 
+    # FOR TEST
+    if test_mode:
+        includes = dict(zip(includes.keys(), [True for _ in range(len(includes.keys()))]))
+
+    includes["logo"] = "../data/images/" + random.choice(os.listdir("../data/images"))
+
     scale = {}
     # scale: 글자 크기 범위
     # logobox
@@ -191,17 +216,16 @@ def image_generate(select="random", test_mode=False):
 
     colormap = pd.read_csv("../data/colormap.csv")
     c_id = random.randint(0, len(colormap) - 1)
-    Color_BG, Color_Logo, Color_Main, Color_Sub = colormap["Color_BG"][c_id], colormap["Color_Logo"][c_id], colormap["Color_Main"][c_id], colormap["Color_Sub"][c_id]
+    Color_BG, Color_Logo, Color_Main, Color_Sub = (
+        colormap["Color_BG"][c_id], colormap["Color_Logo"][c_id], colormap["Color_Main"][c_id], colormap["Color_Sub"][c_id]
+    )
 
-    if test_mode:
-        includes = dict(zip(includes.keys(), [True for _ in range(len(includes.keys()))]))  # FOR TEST
-
-    # font 지정
+    # Font 지정
     Logo_font = "../font/logo/" + random.choice(os.listdir(FONT_PATA + "/logo"))
     Main_font = "../font/main/" + random.choice(os.listdir(FONT_PATA + "/main"))
     Sub_font = "../font/sub/" + random.choice(os.listdir(FONT_PATA + "/sub"))
 
-    # case load
+    # Case Load
     with open("../data/template.json", "r") as j:
         json_object = json.load(j)
     if select == "random":
@@ -211,26 +235,30 @@ def image_generate(select="random", test_mode=False):
     width = case["width"]
     height = case["height"]
     assert height / width == 5 / 9 or height / width == 9 / 5
+
+    # Set Backgroud
     image = Image.new("RGBA", (width, height), Color_BG)
-    logobox_list, logobox_x, logobox_y, logo_format = (
+
+    # Set Boxes
+    logobox = (
         case["logobox"]["draw_list"],
         case["logobox"]["loc_x"] + get_random_margin(width, 5, 25),
         case["logobox"]["loc_y"] + get_random_margin(height, -2, 2),
         case["logobox"]["formation"],
     )
-    namebox_list, namebox_x, namebox_y, name_format = (
+    namebox = (
         case["namebox"]["draw_list"],
         case["namebox"]["loc_x"] + get_random_margin(width, 5, 8),
         case["namebox"]["loc_y"] + get_random_margin(height, -2, 2),
         case["namebox"]["formation"],
     )
-    optionbox1_list, optionbox1_x, optionbox1_y, opt1_format = (
+    optionbox1 = (
         case["optionbox1"]["draw_list"],
         case["optionbox1"]["loc_x"] + get_random_margin(width, 5, 8),
         case["optionbox1"]["loc_y"] + get_random_margin(height, -2, 2),
         case["optionbox1"]["formation"],
     )
-    optionbox2_list, optionbox2_x, optionbox2_y, opt2_format = (
+    optionbox2 = (
         case["optionbox2"]["draw_list"],
         case["optionbox2"]["loc_x"] + get_random_margin(width, 5, 8),
         case["optionbox2"]["loc_y"] + get_random_margin(height, -2, 2),
@@ -239,14 +267,15 @@ def image_generate(select="random", test_mode=False):
 
     # bbox 정보
     image_info = []
-    if logobox_list:
-        image_info.extend(draw_box(image, Logo_font, Color_Logo, logobox_x, logobox_y, logobox_list, includes, Color_BG, info, header, scale, formation=logo_format))
-    if namebox_list:
-        image_info.extend(draw_box(image, Main_font, Color_Main, namebox_x, namebox_y, namebox_list, includes, Color_BG, info, header, scale, formation=name_format))
-    if optionbox1_list:
-        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox1_x, optionbox1_y, optionbox1_list, includes, Color_BG, info, header, scale, head, formation=opt1_format))
-    if optionbox2_list:
-        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox2_x, optionbox2_y, optionbox2_list, includes, Color_BG, info, header, scale, head, formation=opt2_format))
+    infos = includes, info, header, scale
+    if logobox[0]:
+        image_info.extend(draw_box(image, Logo_font, Color_Logo, logobox, infos))
+    if namebox[0]:
+        image_info.extend(draw_box(image, Main_font, Color_Main, namebox, infos))
+    if optionbox1[0]:
+        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox1, infos, head))
+    if optionbox2[0]:
+        image_info.extend(draw_box(image, Sub_font, Color_Sub, optionbox2, infos, head))
 
     return image, image_info, width, height
 
