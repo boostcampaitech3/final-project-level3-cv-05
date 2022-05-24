@@ -213,7 +213,7 @@
             "loc_x": 460,
             "loc_y": 280,
             "formation": "stack",
-            "axis": 900
+            "axis": 1350
         },
         "optionbox1": {
             "draw_list": [
