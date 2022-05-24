@@ -8,8 +8,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 75,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -18,8 +19,9 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 200,
-            "formation": "double"
+            "loc_y": 230,
+            "formation": "double",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -30,8 +32,9 @@
                 "site"
             ],
             "loc_x": 0,
-            "loc_y": 300,
-            "formation": "grid"
+            "loc_y": 330,
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -39,8 +42,9 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double"
+            "loc_y": 455,
+            "formation": "double",
+            "axis": 900
         }
     },
     "case2": {
@@ -52,8 +56,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 75,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -63,7 +68,8 @@
             ],
             "loc_x": 0,
             "loc_y": 200,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 460
         },
         "optionbox1": {
             "draw_list": [
@@ -75,7 +81,8 @@
             ],
             "loc_x": 450,
             "loc_y": 200,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 1350
         },
         "optionbox2": {
             "draw_list": [
@@ -84,7 +91,8 @@
             ],
             "loc_x": 0,
             "loc_y": 425,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case3": {
@@ -96,8 +104,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 75,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -105,9 +114,10 @@
                 "position",
                 "department"
             ],
-            "loc_x": 460,
+            "loc_x": 450,
             "loc_y": 200,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 1350
         },
         "optionbox1": {
             "draw_list": [
@@ -119,7 +129,8 @@
             ],
             "loc_x": 0,
             "loc_y": 200,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 460
         },
         "optionbox2": {
             "draw_list": [
@@ -128,7 +139,8 @@
             ],
             "loc_x": 0,
             "loc_y": 425,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case4": {
@@ -140,8 +152,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 75,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -151,7 +164,8 @@
             ],
             "loc_x": 0,
             "loc_y": 200,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -163,7 +177,8 @@
             ],
             "loc_x": 0,
             "loc_y": 370,
-            "formation": "grid"
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -172,7 +187,8 @@
             ],
             "loc_x": 0,
             "loc_y": 325,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case5": {
@@ -184,8 +200,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 75,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -195,7 +212,8 @@
             ],
             "loc_x": 460,
             "loc_y": 280,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -207,7 +225,8 @@
             ],
             "loc_x": 0,
             "loc_y": 280,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 460
         },
         "optionbox2": {
             "draw_list": [
@@ -216,7 +235,8 @@
             ],
             "loc_x": 0,
             "loc_y": 220,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case6": {
@@ -226,7 +246,8 @@
             "draw_list": [],
             "loc_x": 9999,
             "loc_y": 9999,
-            "formation": "double"
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -236,7 +257,8 @@
             ],
             "loc_x": 0,
             "loc_y": 70,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -248,7 +270,8 @@
             ],
             "loc_x": 0,
             "loc_y": 280,
-            "formation": "grid"
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -257,7 +280,8 @@
             ],
             "loc_x": 0,
             "loc_y": 425,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case7": {
@@ -267,7 +291,8 @@
             "draw_list": [],
             "loc_x": 9999,
             "loc_y": 9999,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -277,7 +302,8 @@
             ],
             "loc_x": 0,
             "loc_y": 70,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -289,7 +315,8 @@
             ],
             "loc_x": 0,
             "loc_y": 370,
-            "formation": "grid"
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -298,7 +325,8 @@
             ],
             "loc_x": 0,
             "loc_y": 325,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case8": {
@@ -310,8 +338,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double"
+            "loc_y": 340,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -321,7 +350,8 @@
             ],
             "loc_x": 0,
             "loc_y": 150,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 460
         },
         "optionbox1": {
             "draw_list": [
@@ -333,7 +363,8 @@
             ],
             "loc_x": 450,
             "loc_y": 150,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 1350
         },
         "optionbox2": {
             "draw_list": [
@@ -342,7 +373,8 @@
             ],
             "loc_x": 0,
             "loc_y": 100,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case9": {
@@ -354,8 +386,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 400,
-            "formation": "double"
+            "loc_y": 340,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -365,7 +398,8 @@
             ],
             "loc_x": 450,
             "loc_y": 150,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 1350
         },
         "optionbox1": {
             "draw_list": [
@@ -377,7 +411,8 @@
             ],
             "loc_x": 0,
             "loc_y": 150,
-            "formation": "stack"
+            "formation": "stack",
+            "axis": 460
         },
         "optionbox2": {
             "draw_list": [
@@ -386,7 +421,8 @@
             ],
             "loc_x": 0,
             "loc_y": 100,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case10": {
@@ -398,8 +434,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 60,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -409,7 +446,8 @@
             ],
             "loc_x": 0,
             "loc_y": 220,
-            "formation": "single"
+            "formation": "single",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -421,7 +459,8 @@
             ],
             "loc_x": 0,
             "loc_y": 300,
-            "formation": "grid"
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -430,7 +469,8 @@
             ],
             "loc_x": 0,
             "loc_y": 425,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     },
     "case11": {
@@ -442,8 +482,9 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 80,
-            "formation": "double"
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
         },
         "namebox": {
             "draw_list": [
@@ -453,7 +494,8 @@
             ],
             "loc_x": 0,
             "loc_y": 240,
-            "formation": "single"
+            "formation": "single",
+            "axis": 900
         },
         "optionbox1": {
             "draw_list": [
@@ -465,7 +507,8 @@
             ],
             "loc_x": 0,
             "loc_y": 375,
-            "formation": "grid"
+            "formation": "grid",
+            "axis": 900
         },
         "optionbox2": {
             "draw_list": [
@@ -474,95 +517,8 @@
             ],
             "loc_x": 0,
             "loc_y": 325,
-            "formation": "double"
-        }
-    },
-    "case12": {
-        "width": 900,
-        "height": 500,
-        "logobox": {
-            "draw_list": [
-                "logo",
-                "company"
-            ],
-            "loc_x": 0,
-            "loc_y": 100,
-            "formation": "single"
-        },
-        "namebox": {
-            "draw_list": [
-                "name",
-                "position",
-                "department"
-            ],
-            "loc_x": 0,
-            "loc_y": 240,
-            "formation": "single"
-        },
-        "optionbox1": {
-            "draw_list": [
-                "phone",
-                "call",
-                "fax",
-                "email",
-                "site"
-            ],
-            "loc_x": 0,
-            "loc_y": 375,
-            "formation": "grid"
-        },
-        "optionbox2": {
-            "draw_list": [
-                "address",
-                "license_number"
-            ],
-            "loc_x": 0,
-            "loc_y": 325,
-            "formation": "double"
-        }
-    },
-    "case13": {
-        "width": 900,
-        "height": 500,
-        "logobox": {
-            "draw_list": [
-                "logo",
-                "company"
-            ],
-            "loc_x": 0,
-            "loc_y": 100,
-            "formation": "single"
-        },
-        "namebox": {
-            "draw_list": [
-                "name",
-                "position",
-                "department"
-            ],
-            "loc_x": 0,
-            "loc_y": 220,
-            "formation": "single"
-        },
-        "optionbox1": {
-            "draw_list": [
-                "phone",
-                "call",
-                "fax",
-                "email",
-                "site"
-            ],
-            "loc_x": 0,
-            "loc_y": 300,
-            "formation": "grid"
-        },
-        "optionbox2": {
-            "draw_list": [
-                "address",
-                "license_number"
-            ],
-            "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double"
+            "formation": "double",
+            "axis": 900
         }
     }
 }
