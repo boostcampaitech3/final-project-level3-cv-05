@@ -53,7 +53,7 @@ def draw_font(feature, imagefont, axis, loc_x, padding=False):
     while axis - loc_x < width and imagefont.size > 1:
         imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
         width, height = imagefont.getsize(feature)
-    return feature, (width, height)
+    return feature, imagefont, (width, height)
 
 
 def get_annotation(category, x, y, w, h, feature, dir="Horizontal"):
@@ -70,7 +70,6 @@ def draw_logo(background, loc_x, loc_y, includes, align):
     image = Image.open(includes["logo"]).convert("RGBA")
     l = random.randint(50, 100)
     image = image.resize((l, l))
-    loc_x = background.size[0] - loc_x - image.size[0] if align else loc_x
     background.paste(image, (loc_x, loc_y), image)
     return background, l
 
@@ -83,8 +82,9 @@ def draw_box(background, font, font_color, box_info, infos, head=False, vertical
     align = get_TF(0.5)
     # logo 포함된 상자의 경우 로고 그리고 밀기
     if "logo" in draw_list:
-        background, x_push = draw_logo(background, box_x, box_y, includes, align=align)
-        box_x += x_push
+        pos_x = background.size[0] - box_x - 50 if align else box_x
+        background, x_push = draw_logo(background, pos_x, box_y, includes, align=align)
+        box_x += x_push + int(background.size[0] * random.uniform(0.01, 0.05))
         draw_list.remove("logo")
     # 순서 셔플
     random.shuffle(draw_list)
@@ -102,7 +102,7 @@ def draw_box(background, font, font_color, box_info, infos, head=False, vertical
             padding = True if var in ["company", "name"] else False
             if includes[var]:
                 var_font = get_font(font, scale[var])
-                feature, (width, height) = draw_font(info[var], var_font, axis, loc_x, padding=padding)
+                feature, var_font, (width, height) = draw_font(info[var], var_font, axis, loc_x, padding=padding)
                 line_y = loc_y - height - 5 if idx < splt else loc_y + 5
                 line_x = background.size[0] // vertical - loc_x - width if align else loc_x
                 draw.text((line_x, line_y), feature, fill=font_color, font=var_font)
@@ -114,20 +114,18 @@ def draw_box(background, font, font_color, box_info, infos, head=False, vertical
         loc_y = box_y
         col = 1
         for var in draw_list:
-            if var == "logo":
-                continue
             loc_x = box_x if col else box_x + grid_gap
             padding = True if var in ["company", "name"] else False
             if includes[var]:
                 var_font = get_font(font, scale[var])
-                feature, (width, height) = draw_font(info[var], var_font, axis, loc_x, padding=padding)
+                feature, var_font, (width, height) = draw_font(info[var], var_font, axis, loc_x, padding=padding)
                 fix = 0
-                if head and header.get(var, 0):
+                if (head and header.get(var, 0)) or var == "license_number":
                     var_head_font = get_font(font, scale[var])
-                    head_feature, (head_width, head_height) = draw_font(header[var], var_head_font, axis, loc_x)
+                    head_feature, head_font, (head_width, head_height) = draw_font(header[var], var_head_font, axis, loc_x)
                     fix += head_width + x_gap
                     head_x = axis - loc_x - width - fix if align and formation == "stack" else loc_x
-                    draw.text((head_x, loc_y), head_feature, fill=font_color, font=var_font)
+                    draw.text((head_x, loc_y), head_feature, fill=font_color, font=head_font)
                     annotation.append(get_annotation(categories["UNKNOWN"], head_x, loc_y, head_width, head_height, header[var]))
                 fix_x = axis - loc_x - width if align and formation == "stack" else loc_x + fix
                 draw.text((fix_x, loc_y), feature, fill=font_color, font=var_font)
@@ -153,9 +151,16 @@ def image_generate(select="random", test_mode=False):
                 "fax": "Fax" + splt,
                 "email": "Email" + splt,
                 "site": random.choice(["Web", "Site"]) + splt,
-                "license_number": "사업자등록번호 :",
+                "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
             },
-            {"phone": random.choice(["M", "P"]) + splt, "call": "T" + splt, "fax": "F" + splt, "email": "E" + splt, "site": "H" + splt, "license_number": "사업자등록번호 :"},
+            {
+                "phone": random.choice(["M", "P"]) + splt,
+                "call": "T" + splt,
+                "fax": "F" + splt,
+                "email": "E" + splt,
+                "site": "H" + splt,
+                "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
+            },
             {
                 "phone": random.choice(["휴대전화", "휴대폰", "무선전화", "핸드폰", "연락처", "무선"]) + splt,
                 "call": random.choice(["유선", "유선전화", "전화", "연락처"]) + splt,
@@ -169,13 +174,13 @@ def image_generate(select="random", test_mode=False):
 
     # includes: 특정 내용 포함 여부
     includes = dict(zip(keywords, [False for _ in range(len(keywords))]))
-    includes["position"] = True if get_TF(0.8) else False
+    includes["position"] = True if get_TF(0.9) else False
     if includes["position"]:
         includes["department"] = True if get_TF(0.75) else False
     includes["name"] = True
     includes["phone"] = True if get_TF(0.95) else False
-    includes["call"] = True if get_TF(0.5) else False
-    includes["fax"] = True if get_TF(0.5) else False
+    includes["call"] = True if get_TF(0.6) else False
+    includes["fax"] = True if get_TF(0.6) else False
     includes["email"] = True if get_TF(0.9) else False
     includes["company"] = True if get_TF(0.8) else False
     if includes["company"]:
@@ -229,7 +234,7 @@ def image_generate(select="random", test_mode=False):
         case = json_object[select]
     width = case["width"]
     height = case["height"]
-    assert height / width == 5 / 9 or height / width == 9 / 5
+    assert height / width == 5 / 9
 
     # Set Backgroud
     image = Image.new("RGBA", (width, height), Color_BG)
@@ -271,11 +276,6 @@ def image_generate(select="random", test_mode=False):
         if logo:
             logobox[0].append("logo")
         image_info.extend(draw_box(image, Logo_font, Color_Logo, logobox, infos))
-    else:
-        if get_TF(0.5):
-            pos_x = 0
-            pos_y = 400 if get_TF(0.5) else 0
-            draw_logo(image, pos_x, pos_y, includes, get_TF(0.5))
     if namebox[0]:
         image_info.extend(draw_box(image, Main_font, Color_Main, namebox, infos))
     if optionbox1[0]:

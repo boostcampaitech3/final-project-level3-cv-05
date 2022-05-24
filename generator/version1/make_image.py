@@ -9,13 +9,12 @@ import time
 start = time.time()
 
 # number of make images
-def makeImage(idx, amount, images_list, annotations_list, number, process_num, process_nums, progress):
+def makeImage(idx, amount, images_list, annotations_list, number, testmode, process_num, process_nums, progress):
     s = idx + amount * process_num
     e = s + amount if not process_num + 1 == process_nums else idx + number
 
     for i in range(s, e):
-        info = generate()
-        image, image_info, width, height = image_generate(info)
+        image, image_info, width, height = image_generate(select="random", test_mode=testmode)
         images_list.append({"width": width, "height": height, "file": f"{i:04}.png", "id": i})
         annotation = {"image_id": i, "ocr": {"word": image_info}}
         annotations_list.append(annotation)
@@ -41,9 +40,11 @@ if __name__ == "__main__":
     images_list = Manager().list(json_object["images"])
     annotations_list = Manager().list(json_object["annotations"])
     parser = argparse.ArgumentParser(description="Image Generator")
-    parser.add_argument("--number", required=True, default=1000, type=int, help="Number of generation")
+    parser.add_argument("--number", required=False, default=1000, type=int, help="Number of generation")
+    parser.add_argument("--testmode", required=False, default=False, type=bool, help="testmode")
     args = parser.parse_args()
     number = int(args.number)
+    testmode = args.testmode
 
     progress = Value("d", 0.000)
     idx = len(os.listdir("results/images"))
@@ -54,7 +55,7 @@ if __name__ == "__main__":
         print("▶  Start Process")
     amounts = number // process_nums
     for process_num in range(process_nums):
-        globals()[f"p{process_num}"] = Process(target=makeImage, args=(idx, amounts, images_list, annotations_list, number, process_num, process_nums, progress))
+        globals()[f"p{process_num}"] = Process(target=makeImage, args=(idx, amounts, images_list, annotations_list, number, testmode, process_num, process_nums, progress))
         globals()[f"p{process_num}"].start()
 
     for process_num in range(process_nums):
