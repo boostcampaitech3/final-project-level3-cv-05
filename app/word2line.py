@@ -41,7 +41,8 @@ def get2points(data: Dict) -> Tuple:
     return data['points'][0].copy(), data['points'][2].copy()
 
 
-def word2line(words: List) -> List[Dict]:
+def word2line(ocr_words: Dict) -> Dict:
+    words = ocr_words['ocr']['word']
     words.sort(key=lambda word: word['points'][3])
     finished = False
     while not finished:
@@ -100,5 +101,5 @@ def word2line(words: List) -> List[Dict]:
 
             # increment
             index += 1
-
-    return words
+    ocr_words['ocr']['word'] = words
+    return ocr_words
