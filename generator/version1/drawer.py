@@ -50,7 +50,7 @@ def draw_font(feature, imagefont, axis, loc_x, padding=False):
         for _ in range(random.randint(0, 2)):
             feature = " ".join(feature)
     width, height = imagefont.getsize(feature)
-    while axis - loc_x < width and imagefont.size > 1:
+    while axis % 900 < loc_x % 450 + width and imagefont.size > 1:
         imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
         width, height = imagefont.getsize(feature)
     return feature, imagefont, (width, height)
@@ -82,9 +82,9 @@ def draw_box(background, font, font_color, box_info, infos, vertical=1):  # type
     align = get_TF(0.5)
     # logo 포함된 상자의 경우 로고 그리고 밀기
     if "logo" in draw_list:
-        pos_x = background.size[0] - box_x - 50 if align else box_x
+        pos_x = axis - box_x - 50 if align else box_x
         background, x_push = draw_logo(background, pos_x, box_y, includes, align=align)
-        box_x += x_push + int(background.size[0] * random.uniform(0.01, 0.05))
+        box_x += x_push + int(axis * random.uniform(0.01, 0.05))
         draw_list.remove("logo")
     # 순서 셔플
     random.shuffle(draw_list)
@@ -267,9 +267,6 @@ def image_generate(select="random", test_mode=False):
         case["optionbox2"]["formation"],
         case["optionbox2"]["axis"],
     )
-
-
-
 
     # bbox 정보
     image_info = []
