@@ -42,8 +42,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 455,
-            "formation": "double",
+            "loc_y": 435,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -90,8 +90,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double",
+            "loc_y": 405,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -138,8 +138,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double",
+            "loc_y": 405,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -186,8 +186,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 325,
-            "formation": "double",
+            "loc_y": 305,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -234,8 +234,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 220,
-            "formation": "double",
+            "loc_y": 200,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -279,8 +279,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double",
+            "loc_y": 405,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -324,8 +324,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 325,
-            "formation": "double",
+            "loc_y": 305,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -372,8 +372,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 100,
-            "formation": "double",
+            "loc_y": 80,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -420,8 +420,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 100,
-            "formation": "double",
+            "loc_y": 80,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -468,8 +468,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 425,
-            "formation": "double",
+            "loc_y": 405,
+            "formation": "stack",
             "axis": 900
         }
     },
@@ -516,8 +516,8 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 325,
-            "formation": "double",
+            "loc_y": 305,
+            "formation": "stack",
             "axis": 900
         }
     }
