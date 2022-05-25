@@ -16,7 +16,8 @@ def overlap(source: Union[List, Tuple], target: Dict, ratio: float = 0.6) -> boo
     source_height = br1[1] - tl1[1]
     target_height = br2[1] - tl2[1]
     if min(source_height / target_height, target_height / source_height) < ratio:
-        return False
+        if target['text'] not in [".", ",", ":"]:
+            return False
 
     # checks
     if tl1[0] >= br2[0] or tl2[0] >= br1[0]:
