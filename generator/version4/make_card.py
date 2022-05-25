@@ -1,4 +1,3 @@
-# make_card.py 
 import random
 import json
 import argparse
@@ -92,32 +91,31 @@ def define_bbox(
 ):
     font = ImageFont.truetype(font_family[item_type], font_size[item_type])
     font_scale = font_size[item_type]
-    while True:
-        if mode == "left":
-            x, y = start[0], start[1]
-        elif mode == "right":
-            x, y = start[0] - font.getsize(content)[0], start[1]
-        elif mode == "center":
-            x, y = start[0] - font.getsize(content)[0] // 2, start[1]
-        bbox_width, bbox_height = font.getsize(content)
 
-        if mode in ["center", "left"] and x > 0 and x + bbox_width < width:
-            break
-        if mode == "right" and x > 0 and x + bbox_width < width and x_limit <= x:
-            break
+    if mode == "left":
+        x, y = start[0], start[1]
+    elif mode == "right":
+        x, y = start[0] - font.getsize(content)[0], start[1]
+    elif mode == "center":
+        x, y = start[0] - font.getsize(content)[0] // 2, start[1]
+    bbox_width, bbox_height = font.getsize(content)
+
+    if mode in ["center", "left"] and x > 0 and x + bbox_width < width:
+        return (x, y), content, font_scale
+    if mode == "right" and x > 0 and x + bbox_width < width and x_limit <= x:
+        return (x, y), content, font_scale
+    else:
+        # 폰트 크기 변경
+        check, font_scale = change_font_size(item_type, content, mode, x, x_limit)
+        if check is True:
+            return (x, y), content, font_scale
+        # 내용 변경
+        font = ImageFont.truetype(font_family["position"], font_scale)
+        check, content = change_content(item_type, mode, x, x_limit, font)
+        if check is True:
+            return (x, y), content, font_scale
         else:
-            # 폰트 크기 변경
-            check, font_scale = change_font_size(item_type, content, mode, x, x_limit)
-            if check is True:
-                break
-            # 내용 변경
-            font = ImageFont.truetype(font_family["position"], font_scale)
-            check, content = change_content(item_type, mode, x, x_limit, font)
-            if check is True:
-                break
-            else:
-                return (x, y), content, 0  # font_scale = 0
-    return (x, y), content, font_scale
+            return (x, y), content, 0  # font_scale = 0
 
 
 def define_dep_pos_bbox(
@@ -126,38 +124,35 @@ def define_dep_pos_bbox(
     sep = position_separator()
     font = ImageFont.truetype(font_family["position"], font_size["position"])
     font_scale = font_size["position"]
-    while True:
-        department, position = info["department"], info["position"]
-        content = department + " " + sep + " " + position
-        if mode == "left":
-            x, y = start[0], start[1]
-        elif mode == "right":
-            x, y = start[0] - font.getsize(content)[0], start[1]
-        elif mode == "center":
-            x, y = start[0] - font.getsize(content)[0] // 2, start[1]
 
-        bbox_width, bbox_height = font.getsize(content)
-        if mode in ["center", "left"] and x >= 0 and x + bbox_width <= width:
-            break
-        if mode == "right" and x >= 0 and x + bbox_width <= width and x_limit <= x:
-            break
+    department, position = info["department"], info["position"]
+    content = department + " " + sep + " " + position
+    if mode == "left":
+        x, y = start[0], start[1]
+    elif mode == "right":
+        x, y = start[0] - font.getsize(content)[0], start[1]
+    elif mode == "center":
+        x, y = start[0] - font.getsize(content)[0] // 2, start[1]
+
+    bbox_width, bbox_height = font.getsize(content)
+    if mode in ["center", "left"] and x >= 0 and x + bbox_width <= width:
+        return (x, y), department, sep, position, font_scale
+    if mode == "right" and x >= 0 and x + bbox_width <= width and x_limit <= x:
+        return (x, y), department, sep, position, font_scale
+    else:
+        # 폰트 크기 변경
+        check, font_scale = change_font_size("department", content, mode, x, x_limit)
+        if check is True:
+            return (x, y), department, sep, position, font_scale
+        # 내용 변경
+        font = ImageFont.truetype(font_family["position"], font_scale)
+        check, department, sep, position = change_dep_pos(
+            start, sep, mode, x_limit, font
+        )
+        if check is True:
+            return (x, y), department, sep, position, font_scale
         else:
-            # 폰트 크기 변경
-            check, font_scale = change_font_size(
-                "department", content, mode, x, x_limit
-            )
-            if check is True:
-                break
-            # 내용 변경
-            font = ImageFont.truetype(font_family["position"], font_scale)
-            check, department, sep, position = change_dep_pos(
-                start, sep, mode, x_limit, font
-            )
-            if check is True:
-                break
-            else:
-                return (x, y), department, sep, position, 0  # font_scale = 0
-    return (x, y), department, sep, position, font_scale
+            return (x, y), department, sep, position, 0  # font_scale = 0
 
 
 def define_num_bbox(start: Tuple[int, int], content: str, item_type: str, mode: str):
@@ -169,6 +164,7 @@ def define_num_bbox(start: Tuple[int, int], content: str, item_type: str, mode: 
     else:
         item_name = item_type + sep
 
+    check = True
     while True:
         full_content = item_name + content
         font = ImageFont.truetype(font_family[item_type], font_size[item_type])
@@ -186,6 +182,8 @@ def define_num_bbox(start: Tuple[int, int], content: str, item_type: str, mode: 
             break
         else:
             # 폰트 크기 변경
+            if check is False:
+                return (x, y), full_content, 0
             check, font_scale = change_font_size(item_type, content, mode, x, 0)
             if check is True:
                 break
