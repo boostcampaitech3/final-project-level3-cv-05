@@ -568,5 +568,100 @@
             "formation": "stack",
             "axis": 450
         }
+    },
+    "case13": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 240,
+            "formation": "stack",
+            "axis": 450
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number"
+            ],
+            "loc_x": 450,
+            "loc_y": 240,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 305,
+            "formation": "stack",
+            "axis": 1350
+        }
+    },
+    "case14": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "stack",
+            "axis": 450
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site"
+            ],
+            "loc_x": 0,
+            "loc_y": 350,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 415,
+            "formation": "stack",
+            "axis": 900
+        }
     }
 }
