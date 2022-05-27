@@ -50,7 +50,7 @@ def draw_font(feature, imagefont, axis, loc_x, padding=False):
         for _ in range(random.randint(0, 2)):
             feature = " ".join(feature)
     width, height = imagefont.getsize(feature)
-    while axis % 900 < loc_x % 450 + width and imagefont.size > 1:
+    while axis % 901 < loc_x % 450 + width and imagefont.size > 1:
         imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
         width, height = imagefont.getsize(feature)
     return feature, imagefont, (width, height)
@@ -74,7 +74,7 @@ def draw_logo(background, loc_x, loc_y, includes, align):
     return background, l
 
 
-def draw_box(background, font, font_color, box_info, infos, vertical=1):  # type = ["grid", "double", "stack", "single"]
+def draw_box(background, font, font_color, box_info, infos):  # type = ["grid", "double", "stack", "single"]
     draw = ImageDraw.Draw(background)
     draw_list, box_x, box_y, formation, axis = box_info
     includes, info, header, scale = infos
@@ -104,10 +104,19 @@ def draw_box(background, font, font_color, box_info, infos, vertical=1):  # type
                 var_font = get_font(font, scale[var])
                 feature, var_font, (width, height) = draw_font(info[var], var_font, axis, loc_x, padding=padding)
                 line_y = loc_y - height - 5 if idx < splt else loc_y + 5
-                line_x = background.size[0] // vertical - loc_x - width if align else loc_x
-                draw.text((line_x, line_y), feature, fill=font_color, font=var_font)
-                annotation.append(get_annotation(categories[var], line_x, line_y, width, height, info[var]))
-                loc_x += width + x_gap
+                fix = 0
+                if header.get(var, 0):
+                    var_head_font = get_font(font, scale[var])
+                    head_feature, head_font, (head_width, head_height) = draw_font(header[var], var_head_font, axis, loc_x)
+                    fix += head_width + x_gap
+                    head_x = axis - loc_x - width - fix if align else loc_x
+                    draw.text((head_x, line_y), head_feature, fill=font_color, font=head_font)
+                    annotation.append(get_annotation(categories[var], head_x, line_y, head_width + x_gap + width, head_height, header[var] + info[var]))
+                fix_x = axis - loc_x - width if align else loc_x + fix
+                draw.text((fix_x, line_y), feature, fill=font_color, font=var_font)
+                if not fix:
+                    annotation.append(get_annotation(categories[var], fix_x, line_y, width, height, info[var]))
+                loc_x += width + x_gap + fix
             idx += 1
     else:
         grid_gap = random.randint(400, 420)
