@@ -19,7 +19,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 230,
+            "loc_y": 170,
             "formation": "double",
             "axis": 900
         },
@@ -29,10 +29,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 330,
+            "loc_y": 280,
             "formation": "grid",
             "axis": 900
         },
@@ -67,7 +69,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 200,
+            "loc_y": 170,
             "formation": "stack",
             "axis": 460
         },
@@ -77,10 +79,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 450,
-            "loc_y": 200,
+            "loc_y": 170,
             "formation": "stack",
             "axis": 1350
         },
@@ -115,7 +119,7 @@
                 "department"
             ],
             "loc_x": 450,
-            "loc_y": 200,
+            "loc_y": 170,
             "formation": "stack",
             "axis": 1350
         },
@@ -125,10 +129,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 200,
+            "loc_y": 170,
             "formation": "stack",
             "axis": 460
         },
@@ -173,7 +179,9 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
             "loc_y": 370,
@@ -211,7 +219,7 @@
                 "department"
             ],
             "loc_x": 460,
-            "loc_y": 280,
+            "loc_y": 250,
             "formation": "stack",
             "axis": 1350
         },
@@ -221,10 +229,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 280,
+            "loc_y": 250,
             "formation": "stack",
             "axis": 460
         },
@@ -234,7 +244,7 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 200,
+            "loc_y": 170,
             "formation": "stack",
             "axis": 900
         }
@@ -266,10 +276,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 280,
+            "loc_y": 230,
             "formation": "grid",
             "axis": 900
         },
@@ -311,10 +323,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 370,
+            "loc_y": 355,
             "formation": "grid",
             "axis": 900
         },
@@ -324,7 +338,7 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 305,
+            "loc_y": 290,
             "formation": "stack",
             "axis": 900
         }
@@ -359,10 +373,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 450,
-            "loc_y": 150,
+            "loc_y": 120,
             "formation": "stack",
             "axis": 1350
         },
@@ -372,7 +388,7 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 80,
+            "loc_y": 10,
             "formation": "stack",
             "axis": 900
         }
@@ -407,7 +423,9 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
             "loc_y": 150,
@@ -420,7 +438,7 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 80,
+            "loc_y": 30,
             "formation": "stack",
             "axis": 900
         }
@@ -455,10 +473,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 300,
+            "loc_y": 270,
             "formation": "grid",
             "axis": 900
         },
@@ -493,7 +513,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 240,
+            "loc_y": 220,
             "formation": "single",
             "axis": 900
         },
@@ -503,10 +523,12 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 375,
+            "loc_y": 355,
             "formation": "grid",
             "axis": 900
         },
@@ -516,7 +538,7 @@
                 "license_number"
             ],
             "loc_x": 0,
-            "loc_y": 305,
+            "loc_y": 285,
             "formation": "stack",
             "axis": 900
         }
@@ -551,7 +573,9 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 450,
             "loc_y": 280,
@@ -601,10 +625,12 @@
                 "email",
                 "site",
                 "address",
-                "license_number"
+                "license_number",
+                "social",
+                "social"
             ],
             "loc_x": 450,
-            "loc_y": 240,
+            "loc_y": 200,
             "formation": "stack",
             "axis": 1350
         },
@@ -646,7 +672,9 @@
                 "call",
                 "fax",
                 "email",
-                "site"
+                "site",
+                "social",
+                "social"
             ],
             "loc_x": 0,
             "loc_y": 350,
@@ -684,7 +712,7 @@
                 "department"
             ],
             "loc_x": 450,
-            "loc_y": 50,
+            "loc_y": 20,
             "formation": "stack",
             "axis": 1350
         },
@@ -696,10 +724,12 @@
                 "email",
                 "site",
                 "address",
-                "license_number"
+                "license_number",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 280,
+            "loc_y": 210,
             "formation": "stack",
             "axis": 900
         },
@@ -731,7 +761,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 50,
+            "loc_y": 20,
             "formation": "stack",
             "axis": 450
         },
@@ -743,10 +773,12 @@
                 "email",
                 "site",
                 "address",
-                "license_number"
+                "license_number",
+                "social",
+                "social"
             ],
             "loc_x": 0,
-            "loc_y": 280,
+            "loc_y": 210,
             "formation": "stack",
             "axis": 900
         },

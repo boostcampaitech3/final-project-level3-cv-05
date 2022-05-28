@@ -31,7 +31,7 @@ def generate():
     # 이름
     name = name_df["name"][random.randint(0, len(name_df) - 1)]
     # 이메일
-    email = "".join([id_word[random.randint(0, len(id_word) - 1)] for _ in range(random.randint(3, 12))]) + "@" + domain["domain"][random.randint(0, len(domain) - 1)]
+    email = "".join([random.choice(id_word) for _ in range(random.randint(3, 12))]) + "@" + domain["domain"][random.randint(0, len(domain) - 1)]
     # 회사
     company = company_df["company"][random.randint(0, len(company_df) - 1)]
     # 주소
@@ -57,6 +57,9 @@ def generate():
     # optional
     wise = wise_df["wise"][random.randint(0, len(wise_df) - 1)]
 
+    # sns
+    social = ["".join([random.choice(id_word) for _ in range(random.randint(5, 10))]) for _ in range(50)]
+
     context = {
         "company": company,
         "department": department,
@@ -70,5 +73,6 @@ def generate():
         "license_number": license_number,
         "site": site,
         "wise": wise,
+        "social": social,
     }
     return context
