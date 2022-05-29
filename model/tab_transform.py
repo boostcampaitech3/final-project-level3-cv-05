@@ -37,7 +37,7 @@ class TabTransform:
 
         df_result = pd.DataFrame()
 
-        # features not used for lenaring
+        # features not used for learning
         df_result['file_name'] = self.file_name
         df_result['point_1'] = self.point_1
         df_result['point_2'] = self.point_2
@@ -45,7 +45,7 @@ class TabTransform:
         df_result['point_4'] = self.point_4
         df_result['text'] = self.text
 
-        # features used for lenaring
+        # features used for learning
         df_result['width'] = self.scaled_width
         df_result['height'] = self.scaled_height
         df_result['ratio(h/w)'] = self.height / self.width
