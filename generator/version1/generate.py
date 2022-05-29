@@ -58,7 +58,7 @@ def generate():
     wise = wise_df["wise"][random.randint(0, len(wise_df) - 1)]
 
     # sns
-    social = ["".join([random.choice(id_word) for _ in range(random.randint(5, 10))]) for _ in range(50)]
+    social_id = ["".join([random.choice(id_word) for _ in range(random.randint(5, 10))]) for _ in range(50)]
 
     context = {
         "company": company,
@@ -73,6 +73,6 @@ def generate():
         "license_number": license_number,
         "site": site,
         "wise": wise,
-        "social": social,
+        "social_id": social_id,
     }
     return context

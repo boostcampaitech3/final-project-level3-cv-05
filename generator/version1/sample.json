@@ -11,7 +11,8 @@
         "7": "address",
         "8": "site",
         "9": "account",
-        "10": "wise"
+        "10": "wise",
+        "11": "social_id"
     },
     "annotations": []
 }

@@ -30,8 +30,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 280,
@@ -80,8 +80,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 450,
             "loc_y": 170,
@@ -130,8 +130,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 170,
@@ -180,8 +180,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 370,
@@ -230,8 +230,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 250,
@@ -277,8 +277,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 230,
@@ -324,8 +324,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 355,
@@ -374,8 +374,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 450,
             "loc_y": 120,
@@ -424,8 +424,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 150,
@@ -474,8 +474,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 270,
@@ -524,8 +524,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 355,
@@ -574,8 +574,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 450,
             "loc_y": 280,
@@ -626,8 +626,8 @@
                 "site",
                 "address",
                 "license_number",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 450,
             "loc_y": 200,
@@ -673,8 +673,8 @@
                 "fax",
                 "email",
                 "site",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 350,
@@ -725,8 +725,8 @@
                 "site",
                 "address",
                 "license_number",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 210,
@@ -774,8 +774,8 @@
                 "site",
                 "address",
                 "license_number",
-                "social",
-                "social"
+                "social_id",
+                "social_id"
             ],
             "loc_x": 0,
             "loc_y": 210,

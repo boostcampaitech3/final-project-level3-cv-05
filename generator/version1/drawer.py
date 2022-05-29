@@ -24,7 +24,7 @@ categories = {
     "site": 8,
     "account": 9,
     "wise": 10,
-    "social": 11,
+    "social_id": 11,
 }
 
 
@@ -116,7 +116,7 @@ def draw_box(background, font, font_color, box_info, infos):  # type = ["grid", 
             fix = 0
             head_height = 0
             if header.get(var, 0):
-                if var == "social":
+                if var == "social_id":
                     if get_TF(0.3):
                         var_head_font = get_font(font, scale[var])
                         social_header = random.choice(["kakao.", "instagram.", "facebook."])
@@ -171,7 +171,7 @@ def image_generate(select="random", test_mode=False):
                 "email": "Email" + splt,
                 "site": random.choice(["Web", "Site"]) + splt,
                 "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
-                "social": list(pd.read_csv("../data/sns_logo.csv")["images"]),
+                "social_id": list(pd.read_csv("../data/sns_logo.csv")["images"]),
             },
             {
                 "phone": random.choice(["M", "P"]) + splt,
@@ -180,7 +180,7 @@ def image_generate(select="random", test_mode=False):
                 "email": "E" + splt,
                 "site": "H" + splt,
                 "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
-                "social": list(pd.read_csv("../data/sns_logo.csv")["images"]),
+                "social_id": list(pd.read_csv("../data/sns_logo.csv")["images"]),
             },
             {
                 "phone": random.choice(["휴대전화", "휴대폰", "무선전화", "핸드폰", "연락처", "무선"]) + splt,
@@ -189,9 +189,9 @@ def image_generate(select="random", test_mode=False):
                 "email": random.choice(["메일", "이메일", "전자우편"]) + splt,
                 "site": random.choice(["웹", "사이트", "홈페이지"]) + splt,
                 "license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt,
-                "social": list(pd.read_csv("../data/sns_logo.csv")["images"]),
+                "social_id": list(pd.read_csv("../data/sns_logo.csv")["images"]),
             },
-            {"license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt, "social": list(pd.read_csv("../data/sns_logo.csv")["images"]),},
+            {"license_number": random.choice(["사업자등록번호", "등록번호", "허가번호"]) + splt, "social_id": list(pd.read_csv("../data/sns_logo.csv")["images"]),},
         ]
     )
 
@@ -209,7 +209,7 @@ def image_generate(select="random", test_mode=False):
     includes["site"] = True if get_TF(0.5) else False
     includes["address"] = True if get_TF(0.7) else False
     includes["license_number"] = True if get_TF(0.5) else False
-    includes["social"] = True if get_TF(0.7) else False
+    includes["social_id"] = True if get_TF(0.7) else False
     logo = True if get_TF(0.5) else False
 
     # FOR TEST
@@ -237,7 +237,7 @@ def image_generate(select="random", test_mode=False):
     scale["address"] = option_scale
     scale["site"] = option_scale
     scale["license_number"] = option_scale
-    scale["social"] = option_scale
+    scale["social_id"] = option_scale
 
     colormap = pd.read_csv("../data/colormap.csv")
     c_id = random.randint(0, len(colormap) - 1)
