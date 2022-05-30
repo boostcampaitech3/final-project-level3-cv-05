@@ -42,8 +42,11 @@ main_font_families = glob.glob(f"{main_font_dir}/*.ttf")
 colormap = pd.read_csv("data/colormap.csv")
 
 # 로고 이미지의 경로
-logo_dir = "images"
+logo_dir = "data/images/logo"
 logo = glob.glob(f"{logo_dir}/*.png")
+
+# sns 아이콘 이미지의 경로
+icon = pd.read_csv("data/sns_logo.csv")
 
 
 def make_font_size() -> Dict[str, str]:
@@ -57,7 +60,9 @@ def make_font_size() -> Dict[str, str]:
     font_size["name"] = random.randint(40, 50)
     font_size["phone"] = font_size["tel"] = font_size["website"] = font_size[
         "license_number"
-    ] = font_size["fax"] = font_size["email"] = font_size["address"] = random.randint(
+    ] = font_size["fax"] = font_size["email"] = font_size["address"] = font_size[
+        "social_id"
+    ] = random.randint(
         15, 20
     )
     font_size["position"] = font_size["department"] = random.randint(20, 30)
@@ -93,6 +98,8 @@ def make_font_color() -> Tuple[str, dict]:
         "wise"
     ] = font_color[
         "UNKNOWN"
+    ] = font_color[
+        "social_id"
     ] = Color_Sub
     return Color_BG, font_color
 
@@ -114,6 +121,8 @@ def make_font_family() -> Dict[str, str]:
         "license_number"
     ] = font_family["fax"] = font_family["email"] = font_family[
         "address"
+    ] = font_family[
+        "social_id"
     ] = sub_font_families[
         random.randint(0, sub_length - 1)
     ]
