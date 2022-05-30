@@ -15,19 +15,17 @@ def get_model(checkpoint_path: str = None, config_path: str = None) -> PostOCRLe
     with open(config_path, 'rb') as f:
         cfg = yaml.safe_load(f)
     model = PostOCRLearner(cfg)
-    if checkpoint_path:
-        model.load_from_checkpoint(checkpoint_path, cfg=cfg)
-    model.eval()
+    model.load_state_dict(torch.load(checkpoint_path)['state_dict'])
     return model
 
 
-def inference(post_ocr_model: PostOCRLearner, image, json_data: Dict):
+def inference(post_ocr_model: PostOCRLearner, image: Image, margin: int, json_data: Dict, device):
     feature_df = tab_process(json_data)
-    data = test_loader(feature_df)
+    data = test_loader(feature_df, image, margin)
     ret = []
     for image, ret_data in data:
-        pred = post_ocr_model(image, ret_data).cpu().detach().numpy().astype(np.float)
-        ret.append(pred)
+        pred = post_ocr_model(image.unsqueeze(dim=0).to(device),
+                              ret_data.unsqueeze(dim=0).to(device)).cpu().detach().numpy()
     return np.array(ret)
 
 
