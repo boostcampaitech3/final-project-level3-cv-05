@@ -15,10 +15,10 @@ def makeImage(idx, amount, images_list, annotations_list, number, progress, sele
 
     for i in range(s, e):
         image, image_info, width, height = image_generate(select=select, test_mode=testmode)
-        images_list.append({"width": width, "height": height, "file": f"{i:04}.png", "id": i})
+        images_list.append({"width": width, "height": height, "file": f"{i:05}.png", "id": i})
         annotation = {"image_id": i, "ocr": {"word": image_info}}
         annotations_list.append(annotation)
-        image.save(f"results/images/{i:04}.png")
+        image.save(f"results/images/{i:05}.png")
         progress.value += 1 / number * 100
         print(f"\r▷  Progress is {progress.value:0.2f}% Completed...", end="")
 

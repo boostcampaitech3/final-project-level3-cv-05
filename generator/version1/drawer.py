@@ -266,28 +266,28 @@ def image_generate(select="random", test_mode=False):
     logobox = (
         case["logobox"]["draw_list"],
         case["logobox"]["loc_x"] + get_random_margin(width, 3, 10),
-        case["logobox"]["loc_y"] + get_random_margin(height, 5, 10),
+        case["logobox"]["loc_y"] + get_random_margin(height, 0, 5),
         case["logobox"]["formation"],
         case["logobox"]["axis"],
     )
     namebox = (
         case["namebox"]["draw_list"],
         case["namebox"]["loc_x"] + get_random_margin(width, 3, 5),
-        case["namebox"]["loc_y"] + get_random_margin(height, -2, 2),
+        case["namebox"]["loc_y"] + get_random_margin(height, 0, 2),
         case["namebox"]["formation"],
         case["namebox"]["axis"],
     )
     optionbox1 = (
         case["optionbox1"]["draw_list"],
         case["optionbox1"]["loc_x"] + get_random_margin(width, 3, 5),
-        case["optionbox1"]["loc_y"] + get_random_margin(height, -2, 2),
+        case["optionbox1"]["loc_y"] + get_random_margin(height, 0, 2),
         case["optionbox1"]["formation"],
         case["optionbox1"]["axis"],
     )
     optionbox2 = (
         case["optionbox2"]["draw_list"],
         case["optionbox2"]["loc_x"] + get_random_margin(width, 3, 5),
-        case["optionbox2"]["loc_y"] + get_random_margin(height, -2, 2),
+        case["optionbox2"]["loc_y"] + get_random_margin(height, 0, 2),
         case["optionbox2"]["formation"],
         case["optionbox2"]["axis"],
     )

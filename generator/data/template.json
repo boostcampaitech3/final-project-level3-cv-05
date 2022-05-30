@@ -19,7 +19,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 170,
+            "loc_y": 190,
             "formation": "double",
             "axis": 900
         },
@@ -352,7 +352,7 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 340,
+            "loc_y": 370,
             "formation": "stack",
             "axis": 900
         },
@@ -402,7 +402,7 @@
                 "wise"
             ],
             "loc_x": 0,
-            "loc_y": 340,
+            "loc_y": 370,
             "formation": "stack",
             "axis": 900
         },
@@ -463,7 +463,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 220,
+            "loc_y": 210,
             "formation": "single",
             "axis": 900
         },
@@ -478,7 +478,7 @@
                 "social_id"
             ],
             "loc_x": 0,
-            "loc_y": 270,
+            "loc_y": 255,
             "formation": "grid",
             "axis": 900
         },
@@ -613,7 +613,7 @@
                 "department"
             ],
             "loc_x": 0,
-            "loc_y": 240,
+            "loc_y": 200,
             "formation": "stack",
             "axis": 450
         },
