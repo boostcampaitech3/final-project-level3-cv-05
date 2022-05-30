@@ -25,6 +25,16 @@ parser.add_argument(
     "--test", type=bool, required=False, default=False, help="test mode"
 )
 parser.add_argument("--template_name", default="", required=False, help="template name")
+parser.add_argument(
+    "--split", type=bool, required=False, default=False, help="split mode"
+)
+parser.add_argument(
+    "--split_num",
+    type=int,
+    required=False,
+    default=100,
+    help="the number of images for each template",
+)
 
 #####################
 ### bbox function ###
@@ -838,6 +848,9 @@ def main(args):
         with open(args.dir, "r") as f:
             json_data = json.load(f)
 
+    if args.split is True:
+        progress_bar = [0 for _ in template_name]
+
     for i in tqdm(range(0, int(args.num))):
         info = generate()
         word = []
@@ -863,6 +876,14 @@ def main(args):
         index = random.randint(0, len(template_name) - 1)
         if args.test is True:
             eval(args.template_name)(info).make()
+        elif args.split is True:
+            template_name[index](info).make()
+            progress_bar[index] += 1
+
+            if progress_bar[index] == args.split_num:
+                del template_name[index]
+                del progress_bar[index]
+
         else:
             template_name[index](info).make()
 
