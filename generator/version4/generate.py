@@ -10,6 +10,7 @@ Functions:
     generate(): 랜덤으로 생성한 정보를 반환합니다.
 
 """
+import string
 import random
 import pandas as pd
 from typing import Dict
@@ -85,6 +86,24 @@ def number_generate() -> str:
     return num
 
 
+def sns_id_generate():
+    """
+    mode (ex. kakao, instagram)를 토대로,
+    sns id 문자열을 생성합니다.
+
+    Args:
+        num (int): 문자열 글자 수
+
+    Returns:
+        rand_str (str): 생성된 문자열
+    """
+    sns_id = ""
+    id_length = random.randint(1, 20)
+    for i in range(id_length):
+        sns_id += str(random.choice(string.ascii_lowercase + string.digits))
+    return sns_id
+
+
 def separator(sep: str) -> str:
     """
     구분자를 포함한 숫자 문자열을 생성합니다.
@@ -109,15 +128,14 @@ def generate() -> Dict[str, str]:
     Returns:
         context (dict): 명함 데이터에 적용할 정보
     """
-    # 이름 
+    # 이름
     name = name_df["name"][random.randint(0, len(name_df) - 1)]
-    # 각 글자 사이에 공백 1~2개 추가 가능 
+    # 각 글자 사이에 공백 1~2개 추가 가능
     if random.random() >= 0.7:
         name = " ".join(name)
     elif random.random() >= 0.4:
         name = "  ".join(name)
 
-    
     # 이메일
     email = (
         "".join(
@@ -152,13 +170,18 @@ def generate() -> Dict[str, str]:
     website = site_df["site"][random.randint(0, len(site_df) - 1)]
 
     # 사업자 등록 번호
-    license_number = (random_number(3, 3) + "-" + random_number(2, 2) + "-" + random_number(5, 5))
+    license_number = (
+        random_number(3, 3) + "-" + random_number(2, 2) + "-" + random_number(5, 5)
+    )
 
     # 사훈
     wise = wise_df["wise"][random.randint(0, len(wise_df) - 1)]
 
     # 팩스 번호
     fax = number_generate()
+
+    # sns id
+    social_id = sns_id_generate()
 
     context = {
         "company": company,
@@ -173,5 +196,6 @@ def generate() -> Dict[str, str]:
         "wise": wise,
         "fax": fax,
         "tel": tel,
+        "social_id": social_id,
     }
     return context

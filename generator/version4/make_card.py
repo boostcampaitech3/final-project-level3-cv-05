@@ -37,23 +37,12 @@ def change_font_size(item_type: str, content: str, mode: str, x: int, x_limit: i
         font_scale -= 1
         font = ImageFont.truetype(font_family[item_type], font_scale)
         bbox_width, bbox_height = font.getsize(content)
-        if (
-            mode in ["center", "left"]
-            and x > 0
-            and x + bbox_width < width
-            and bbox_width < abs(x - width)
-        ):
+        if mode in ["center", "left"] and x > 0 and x + bbox_width < width:
             return True, font_scale
-        if (
-            mode == "right"
-            and x > 0
-            and x + bbox_width < width
-            and x_limit <= x
-            and bbox_width < abs(x - width)
-        ):
+        if mode == "right" and x > 0 and x + bbox_width < width and x_limit <= x:
             return True, font_scale
 
-        if font_scale < font_size[item_type] * 0.3:  # 최소한의 크기
+        if font_scale < font_size[item_type] * 0.5:  # 최소한의 크기
             return False, 0
 
 
@@ -161,34 +150,41 @@ def define_num_bbox(start: Tuple[int, int], content: str, item_type: str, mode: 
 
     if item_type == "license_number":
         item_name = "사업자등록번호" + sep
+    elif item_type == "social_id":
+        social = ["kakao", "instagram", "youtube", "facebook"]
+        random_index = random.randint(0, len(social) - 1)
+        item_name = social[random_index] + sep
     else:
         item_name = item_type + sep
 
     check = True
     while True:
+        font = ImageFont.truetype(font_family[item_type], font_scale)
         full_content = item_name + content
-        font = ImageFont.truetype(font_family[item_type], font_size[item_type])
+        bbox_width, bbox_height = font.getsize(full_content)
 
         if mode == "left":
             x, y = start[0], start[1]
         elif mode == "right":
-            x, y = start[0] - font.getsize(full_content)[0], start[1]
+            x, y = start[0] - bbox_width, start[1]
         elif mode == "center":
-            x, y = start[0] - font.getsize(full_content)[0] // 2, start[1]
-
-        bbox_width, bbox_height = font.getsize(full_content)
+            x, y = start[0] - bbox_width // 2, start[1]
 
         if x > 0 and x + bbox_width < width:
             break
         else:
-            # 폰트 크기 변경
+            # 두 바퀴에서도 False 인 경우
             if check is False:
                 return (x, y), full_content, 0
-            check, font_scale = change_font_size(item_type, content, mode, x, 0)
+
+            # 폰트 크기 변경
+            check, font_scale = change_font_size(item_type, full_content, mode, x, 0)
+
             if check is True:
                 break
             # 내용 변경
             content = regenerate(item_type)
+
     return (x, y), full_content, font_scale
 
 
@@ -362,6 +358,8 @@ class NumTemplate:
 
     def make(self):
         draw = ImageDraw.Draw(image)
+
+        global y_margin
         y_margin = height * random.uniform(MIN_Y, MAX_Y)
 
         random_items = list(self.items.keys())
@@ -369,25 +367,24 @@ class NumTemplate:
         for item in random_items:
             item_name, content = item, self.items[item]
 
-            font = ImageFont.truetype(font_family[item_name], font_size[item_name])
-
             # bbox 영역이 범위 내에 존재하는지 확인
             item_bbox, content, font_scale = define_num_bbox(
-                self.start, content, item, self.mode
+                (self.start[0], self.start[1] + y_margin), content, item, self.mode
             )
-
+            font = ImageFont.truetype(font_family[item_name], font_scale)
             num_height = item_bbox[1] + font.getsize(content)[1]
 
             # 숫자 및 기타 정보가 이름 정보의 높이를 넘어가는지 확인
             if font_scale == 0:
-                num_height = item_bbox[1]
+                num_height = self.start[1]
             else:
                 if num_height <= height:
                     draw_and_write(item_bbox, content, item, font, draw)
                 else:
+                    num_height = self.start[1]
                     break
-            self.start = self.start[0], num_height + y_margin
-        return self.start[1]
+            self.start = self.start[0], num_height
+        return num_height
 
 
 ####################
@@ -422,7 +419,7 @@ def dep_pos(info: Dict[str, str], x: int, y: int):
 def num_info(info: Dict[str, str], x: int, y: int):
     index = random.randint(0, len(loc) - 1)
     y = NumTemplate(info, x, y, loc[index]).make()
-    return y
+    return y, loc[index]
 
 
 def logo_info():
@@ -434,6 +431,64 @@ def logo_info():
     return logo_image, logo_size
 
 
+def icon_info(x: int, y: int, font):
+    global icon_size, icon_image
+    icon_index = random.randint(0, len(icon) - 1)
+    icon_dir = "data/" + icon["images"][icon_index]
+    icon_image = Image.open(icon_dir).convert("RGBA")
+    icon_size = font.getsize("|")[1]
+    icon_image = icon_image.resize((icon_size, icon_size))
+
+
+def social_id(info: Dict[str, str], x: int, y: int, mode: str):
+    draw = ImageDraw.Draw(image)
+    content = info["social_id"]
+    if random.random() >= 0:
+        font = ImageFont.truetype(font_family["social_id"], font_size["social_id"])
+        icon_info(x, y, font)
+        while True:
+            bbox_width = font.getsize(content)[0] + icon_size + font.getsize(" ")[0]
+            if mode == "left":
+                x, y = x, y
+            elif mode == "right":
+                x, y = x - bbox_width, y
+            elif mode == "center":
+                x, y = x - bbox_width // 2, y
+
+            if x > 0 and x + bbox_width < width:
+                image.paste(icon_image, (int(x), int(y)), icon_image)
+                draw_and_write(
+                    (x + font.getsize(" ")[0] + icon_size, y),
+                    content,
+                    "social_id",
+                    font,
+                    draw,
+                )
+                height = y + font.getsize(content)[1]
+                break
+
+            content = content[:-1]
+            if len(content) == 0:
+                height = y
+                break
+    else:
+        item_bbox, content, font_scale = define_num_bbox(
+            (x, y), content, "social_id", mode
+        )
+        font = ImageFont.truetype(font_family["social_id"], font_scale)
+        height = item_bbox[1] + font.getsize(content)[1]
+
+        # 숫자 및 기타 정보가 이름 정보의 높이를 넘어가는지 확인
+        if font_scale == 0:
+            height = item_bbox[1]
+        else:
+            if height <= height:
+                draw_and_write(item_bbox, content, "social_id", font, draw)
+            else:
+                height = item_bbox[1]
+    return height
+
+
 class Template1:
     def __init__(
         self,
@@ -443,6 +498,10 @@ class Template1:
 
     def make(self):
         x, y = width * random.uniform(MIN_X, MAX_X), height * random.uniform(0.1, 0.6)
+
+        x = width * random.uniform(MIN_X, MAX_X)
+        y += height * random.uniform(MIN_Y, MAX_Y)
+
         x, y = company(self.items, x, y)
 
         x = width * random.uniform(MIN_X, MAX_X)
@@ -467,7 +526,12 @@ class Template1:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 class Template2:
@@ -506,7 +570,12 @@ class Template2:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 class Template3:
@@ -540,7 +609,12 @@ class Template3:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 class Template4:
@@ -563,7 +637,12 @@ class Template4:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 class Template5:
@@ -586,7 +665,12 @@ class Template5:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
         x = width * random.uniform(MIN_X, MAX_X)
         y += height * random.uniform(MIN_Y, MAX_Y)
@@ -633,7 +717,12 @@ class Template6:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 class Template7:
@@ -688,7 +777,12 @@ class Template7:
             use += use_item(num, 0.7)
         num_list = info_item(self.items, use)
 
-        y = num_info(num_list, x, y)
+        y, mode = num_info(num_list, x, y)
+
+        # social id 추가
+        if "social_id" not in use and random.random() >= 0.5:
+            y += y_margin
+            y = social_id(self.items, x, y, mode)
 
 
 ##################
@@ -705,7 +799,16 @@ def main(args):
     global loc, num
 
     loc = ["center", "right", "left"]
-    num = ["phone", "tel", "website", "license_number", "fax", "email", "address"]
+    num = [
+        "phone",
+        "tel",
+        "website",
+        "license_number",
+        "fax",
+        "email",
+        "address",
+        "social_id",
+    ]
 
     MIN_X, MAX_X, MIN_Y, MAX_Y = 0.05, 0.1, 0, 0.05
 

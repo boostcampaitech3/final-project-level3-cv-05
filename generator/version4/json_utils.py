@@ -17,6 +17,8 @@ import glob
 import json
 from typing import Dict, Any
 
+phone = ["phone", "tel", " fax"]
+
 
 def get_category_id(item: str) -> int:
     """
@@ -28,9 +30,9 @@ def get_category_id(item: str) -> int:
     Returns:
         category_id (int): 정보 항목의 이름에 맞는 category id
     """
-    if item in "name":
+    if item == "name":
         category_id = 1
-    elif item in "phone":
+    elif item in phone:
         category_id = 2
     elif item == "email":
         category_id = 3
@@ -46,6 +48,10 @@ def get_category_id(item: str) -> int:
         category_id = 8
     elif item == "account":
         category_id = 9
+    elif item == "wise":
+        category_id = 10
+    elif item == "social_id":
+        category_id = 11
     else:
         category_id = 0
     return category_id
