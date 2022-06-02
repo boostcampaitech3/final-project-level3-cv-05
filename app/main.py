@@ -18,8 +18,11 @@ def read_imagefile(file) -> BytesIO:
 
 @app.post("/ocr")
 async def classfication(file: UploadFile = File(...)):
-    # files = read_imagefile(await file.read())
+    #files = read_imagefile(await file.read())
     files = {'file': file.file}
-    result = requests.post(api_infos['api_url'], headers=api_infos['headers'], files=files).json()
-    result['ocr']['word'] = word2line.word2line(result['ocr']['word'])
+    ocr = requests.post(api_infos['api_url'], headers=api_infos['headers'], files=files).json()
+    if ocr.get('ocr', 0):
+        result = word2line.word2line(ocr)
+    else:
+        result = []
     return {'result': result}
