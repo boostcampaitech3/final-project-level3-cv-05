@@ -14,9 +14,9 @@ def load_image(image_file):
     return img
 
 
-def draw_rectengle(image, point1, point2):
+def draw_polygon(image, points):
     draw = ImageDraw.Draw(image)
-    draw.rectangle((point1[0], point1[1], point2[0], point2[1]), outline=(255, 30, 30), width=2)
+    draw.polygon(points, outline=(255, 30, 30), width=2)
     return image
 
 def image_to_byte_array(image: Image) -> bytes:
@@ -34,9 +34,9 @@ def to_ocr(byteImage, threshold, invert, angle):
     st.write("Server recognized image")
     st.image(ocr_image)
     if result['ocr']:
-        for i in result['ocr']['word']:
-            f, _, s, _ = i['points']
-            draw_rectengle(ocr_image, f, s)
+        for word in result['ocr']['word']:
+            points = list(map(tuple, word['points']))
+            draw_polygon(ocr_image, points)
         st.write("Output")
         st.image(ocr_image)
     else:
@@ -77,7 +77,7 @@ def main():
                     cropped = angle_fixed.convert("L").convert("RGB")
                     img = angle_fixed.crop((start_x, start_y, end_x, end_y))
                     cropped.paste(img, (start_x, start_y))
-                    cropped = draw_rectengle(cropped, (start_x, start_y), (end_x, end_y))
+                    cropped = draw_polygon(cropped, [(start_x, start_y), (end_x, start_y), (end_x, end_y), (start_x, end_y)])
                 bytes_data = image_to_byte_array(img)
                 invert = 1 if st.checkbox("Invert: Check if image darker than BG.") else 0
                 threshold = st.slider('Change Threshold value', value=180, min_value=0, max_value=255)
