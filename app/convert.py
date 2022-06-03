@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 import io
-from tempfile import SpooledTemporaryFile
+import math
+from scipy import ndimage
 
 def reorder(points):
     left = points[points[:,0].argsort(axis=0)][:2]
@@ -28,11 +29,26 @@ def biggestContour(contours):
     return biggest.squeeze(), max_area
 
 
+def angleFix(image):
+    img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    img_edges = cv2.Canny(img_gray, 100, 100, apertureSize=3)
+    lines = cv2.HoughLinesP(img_edges, 1, math.pi / 180.0, 100, minLineLength=100, maxLineGap=5)
+    angles = []
+    for [[x1, y1, x2, y2]] in lines:
+        angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        angles.append(angle)
+    median_angle = np.median(angles)
+    img_rotated = ndimage.rotate(image, median_angle)
+    return img_rotated
+
+
 def converter(tmpFile, value):
+    threshold, invert, angle = value
     bytes_data = tmpFile.read()
     src = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+    if angle:
+        pass
     src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-    threshold, invert = value
 
     method = cv2.THRESH_BINARY_INV if invert else cv2.THRESH_BINARY
     if threshold == -1:
@@ -55,7 +71,9 @@ def converter(tmpFile, value):
         dst = cv2.warpPerspective(src, pers, (width, height))
         bytes_data = cv2.imencode('.jpg', dst)[1].tobytes()
     else:
-        bytes_data = cv2.imencode('.jpg', src)[1].tobytes()
+        anglefixed = angleFix(src)
+        bytes_data = cv2.imencode('.jpg', anglefixed)[1].tobytes()
+
     bytesImage = io.BytesIO(bytes_data)
     
     return bytesImage
