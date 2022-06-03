@@ -25,12 +25,13 @@ def image_to_byte_array(image: Image) -> bytes:
     return imgByteArr
 
 
-def to_ocr(byteImage, threshold, invert):
-    param = {"threshold":threshold, "invert":invert}
+def to_ocr(byteImage, threshold, invert, angle):
+    param = {"threshold":threshold, "invert":invert, "angle":angle}
     files = {"file": byteImage.getvalue()}
     result = requests.post(f"http://127.0.0.1:8000/ocr/", params=param, files=files).json()
     image = base64.b64decode(result['image'])
     ocr_image = load_image(image)
+    st.write("Server recognized image")
     st.image(ocr_image)
     if result['ocr']:
         for i in result['ocr']['word']:
@@ -54,13 +55,12 @@ def main():
             st.image(image_file)
             submitted = st.button("Submit")
             if submitted:
-                to_ocr(image_file, -1, 0)
-                st.warning("If Not satisfied with Results: Use sidebar menu 'Fix Input' to fix input image by yourself")
+                to_ocr(image_file, -1, 0, 1)
+                st.warning("Use sidebar menu 'Fix Input' to fix input image by yourself")
         if name == "Fix Input":
             col1, col2 = st.columns(2)
             with col1:
                 bytes_data = image_file.getvalue()
-                st.write("clear the check box if you want directly adjust")
                 threshold = -1
                 img = load_image(bytes_data)
                 st.write('Rotate Angle')
@@ -90,7 +90,7 @@ def main():
                         st.write("Submitted Image.")
                         st.image(bytes_data)
             if resubmit:
-                to_ocr(bytes_data, threshold, invert)
+                to_ocr(bytes_data, threshold, invert, 0)
 
     
 if __name__ == '__main__':
