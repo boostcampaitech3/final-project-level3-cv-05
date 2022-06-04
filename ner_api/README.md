@@ -7,7 +7,7 @@
 
 ### 환경 설정
 - AI stage 의 경우
-  - docker in docker issue 로 내부에 docker 를 설치할 수 없기에,  
+  - docker in docker issue 로 내부에서 docker 를 사용할 수 없기에,  
   ```pip install -r requirements.txt``` 을 이용하여 필요 라이브러리 설치
   
 - Local 환경의 경우 (or docker 사용 가능한 경우)
@@ -20,5 +20,5 @@
 - NER Inference 결과 값 요청
   - METHOD : POST
   - URI : /ner
-  - 요쳥 변수 및 사용 example : api_test_examlpy.py (API TEST EXAMPLE) 참조
+  - 요쳥 변수 및 사용 example : [api_test_examlpy.py](https://github.com/boostcampaitech3/final-project-level3-cv-05/blob/ner/ner_api/api_test_example.py) (API TEST EXAMPLE) 참조
 
