@@ -1,6 +1,4 @@
 import sys
-from turtle import onclick
-
 import requests
 import streamlit as st
 from PIL import Image, ImageDraw
@@ -40,7 +38,10 @@ def to_ocr(byteImage, threshold, invert, angle):
         st.write("Output")
         st.image(ocr_image)
     else:
-        st.warning("Can not find any Data")
+        if result.get('detail', 0):
+            st.warning("OCR Server response - " + result['detail'] + " Please try a few minute later.")
+        else:            
+            st.warning("Can not find any Data")
 
 
 
