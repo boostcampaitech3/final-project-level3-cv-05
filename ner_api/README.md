@@ -13,8 +13,16 @@
 - Local 환경의 경우 (or docker 사용 가능한 경우)
   - docker Image 생성 (Dockerfile이 존재하는 경로에서 실행)
     - ```docker build -f Dockerfile -t ner_api-img .```
-  - docker container 생성
+  - docker container 생성 및 실행 (FastAPI 서버 자동 실행)
     - ```docker run —name ner_api-con -p 8000:8000 -d ner_api-img```
+
+### 서버 동작
+- AI stage 의 경우
+  - 환경 설정 완료 후, ner_api directory 에서 (현재 directory 에 app directory 가 존재)   
+  ```python3 -m app``` 실행
+
+- Local 환경의 경우 (or docker 사용 가능한 경우)
+  - docker container 를 동작시키면 자동으로 서버 동작
 
 ### API 명세
 - NER Inference 결과 값 요청
