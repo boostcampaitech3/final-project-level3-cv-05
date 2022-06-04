@@ -34,10 +34,13 @@ def angleFix(image):
     img_edges = cv2.Canny(img_gray, 100, 100, apertureSize=3)
     lines = cv2.HoughLinesP(img_edges, 1, math.pi / 180.0, 100, minLineLength=100, maxLineGap=5)
     angles = []
-    for [[x1, y1, x2, y2]] in lines:
-        angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
-        angles.append(angle)
-    median_angle = np.median(angles)
+    if len(lines) > 1:
+        for [[x1, y1, x2, y2]] in lines:
+            angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+            angles.append(angle)
+        median_angle = np.median(angles)
+    else:
+        median_angle = 0
     img_rotated = ndimage.rotate(image, median_angle)
     return img_rotated
 

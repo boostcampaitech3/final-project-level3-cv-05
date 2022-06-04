@@ -19,13 +19,18 @@ with open('./api_info.json', 'rb') as f:
 async def classfication(threshold:int, invert:int, angle:int, file: UploadFile = File(...)):
     #files = read_imagefile(await file.read())
     byteImage = converter(file.file, (threshold, invert, angle))
-    files = {'file': byteImage}
     
-    ocr = requests.post(api_infos['api_url'], headers=api_infos['headers'], files=files).json()
+    files = {'file': byteImage}
+    try:
+        ocr = requests.post(api_infos['api_url'], headers=api_infos['headers'], files=files).json()
+    except:
+        result = {'detail': "API Server Response Error."}
+
     if ocr.get('ocr', 0):
         result = word2line.word2line(ocr)
     else:
-        result = {}
+        result = ocr
+        result['ocr'] = []
     
     encoded_image_string = base64.b64encode(byteImage.getvalue())
     result['image'] = encoded_image_string
