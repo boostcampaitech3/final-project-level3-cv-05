@@ -17,7 +17,7 @@ import glob
 import json
 from typing import Dict, Any
 
-phone = ["phone", "tel", " fax"]
+phone = ["phone", "tel", "fax", "license_number"]
 
 
 def get_category_id(item: str) -> int:
@@ -30,30 +30,31 @@ def get_category_id(item: str) -> int:
     Returns:
         category_id (int): 정보 항목의 이름에 맞는 category id
     """
-    if item == "name":
-        category_id = 1
-    elif item in phone:
-        category_id = 2
-    elif item == "email":
-        category_id = 3
-    elif item == "position":
-        category_id = 4
-    elif item == "company":
-        category_id = 5
-    elif item == "department":
-        category_id = 6
-    elif item == "address":
-        category_id = 7
-    elif item == "website":
-        category_id = 8
-    elif item == "account":
-        category_id = 9
-    elif item == "wise":
-        category_id = 10
-    elif item == "social_id":
-        category_id = 11
+    categories = {
+        "0": "UNKNOWN",
+        "1": "name",
+        "2": "phone",
+        "3": "email",
+        "4": "position",
+        "5": "company",
+        "6": "department",
+        "7": "address",
+        "8": "site",
+        "9": "account",
+        "10": "wise",
+        "11": "social_id",
+    }
+
+    for key, value in categories.items():
+        if item == value:
+            category_id = int(key)
+            break
     else:
         category_id = 0
+
+    if item in phone:
+        category_id = 2
+
     return category_id
 
 
@@ -83,6 +84,7 @@ def make_json(directory: str) -> Dict[str, Any]:
             "8": "site",
             "9": "account",
             "10": "wise",
+            "11": "social_id",
         },
     )
     json_data["annotations"] = []
