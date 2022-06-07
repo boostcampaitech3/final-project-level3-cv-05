@@ -10,6 +10,7 @@ Functions:
     generate(): 랜덤으로 생성한 정보를 반환합니다.
 
 """
+
 import string
 import random
 import pandas as pd
@@ -68,6 +69,7 @@ def random_number(min_c: int, max_c: int) -> str:
     num_string = "".join(
         [str(random.randint(0, 9)) for _ in range(random.randint(min_c, max_c))]
     )
+
     return num_string
 
 
@@ -83,6 +85,7 @@ def number_generate() -> str:
         num = separator("-")
     else:  # 00.000.0000
         num = separator(".")
+
     return num
 
 
@@ -101,6 +104,7 @@ def sns_id_generate():
     id_length = random.randint(1, 20)
     for i in range(id_length):
         sns_id += str(random.choice(string.ascii_lowercase + string.digits))
+
     return sns_id
 
 
@@ -118,6 +122,7 @@ def separator(sep: str) -> str:
     if random.random() < 0.3:
         countrynum = country_num["num"][random.randint(0, len(country_num) - 1)]
         num = "(" + countrynum + ") " + num
+
     return num
 
 
@@ -198,4 +203,5 @@ def generate() -> Dict[str, str]:
         "tel": tel,
         "social_id": social_id,
     }
+
     return context

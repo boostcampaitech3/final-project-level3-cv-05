@@ -19,17 +19,13 @@ Functions:
                           각 항목에 해당하는 텍스트 내용을 딕셔너리에 담아서 반환합니다.
     regenerate(item_name): 정보 항목의 이름을 전달하면, 
                            이 항목에 해당하는 텍스트 내용을 다시 생성하여 반환합니다.
-
-    # 4) bbox functions
-    make_bbox(font, start, content): 주어진 시작 지점을 토대로, bbox 좌표 리스트를 만듭니다.
- 
 """
 
 import glob
 import random
-from generate import generate
 import pandas as pd
-
+from .json_utils import *
+from generate import generate
 from typing import Dict, Tuple, List
 
 # 글씨체 파일의 경로
@@ -68,6 +64,7 @@ def make_font_size() -> Dict[str, str]:
     font_size["position"] = font_size["department"] = random.randint(20, 30)
     font_size["company"] = random.randint(60, 70)
     font_size["wise"] = random.randint(15, 20)
+
     return font_size
 
 
@@ -101,6 +98,7 @@ def make_font_color() -> Tuple[str, dict]:
     ] = font_color[
         "social_id"
     ] = Color_Sub
+
     return Color_BG, font_color
 
 
@@ -131,6 +129,7 @@ def make_font_family() -> Dict[str, str]:
     ]
     font_family["company"] = main_font_families[random.randint(0, main_length - 1)]
     font_family["wise"] = sub_font_families[random.randint(0, sub_length - 1)]
+
     return font_family
 
 
@@ -147,6 +146,7 @@ def num_separator() -> str:
         item = " "
     else:
         item = ": "
+
     return item
 
 
@@ -161,6 +161,7 @@ def position_separator() -> str:
         item = "|"
     else:
         item = "/"
+
     return item
 
 
@@ -180,6 +181,7 @@ def use_item(items: List[str], threshold: float) -> List[str]:
     for item in items:
         if random.random() < threshold:
             use.append(item)
+
     return use
 
 
@@ -198,6 +200,7 @@ def info_item(info: Dict[str, str], use: List[str]) -> Dict[str, str]:
     content = dict()
     for item in use:
         content[item] = info[item]
+
     return content
 
 
@@ -214,23 +217,94 @@ def regenerate(item_name: str) -> str:
     """
     re_info = generate()
     content = re_info[item_name]
+
     return content
 
 
-def make_bbox(font, start: Tuple[int, int], content: str) -> List[Tuple[int, int]]:
-    """
-    주어진 시작 지점을 토대로, bbox 좌표 리스트를 만듭니다.
+def draw_and_write(
+    bbox_start: Tuple[int, int],
+    content: str,
+    item: str,
+    font,
+    draw,
+    font_color: Dict,
+    word: List,
+):
+    draw.text(
+        bbox_start,
+        content,
+        font=font,
+        fill=font_color[item],
+    )
+    put_word(item, content.strip(), bbox_start, font, word)
 
-    Args:
-        font : 사용한 글씨 정보
-        start (tuple): 시작 지점 (bbox의 왼쪽 상단)
-        content (str): 사용한 텍스트 내용
 
-    Returns:
-        points (list): bbox 좌표 리스트
-    """
-    w, h = font.getsize(content)
-    x, y = start
+def draw_dep_pos(
+    start: Tuple[int, int],
+    department: str,
+    sep: str,
+    position: str,
+    font,
+    draw,
+    font_color: Dict,
+    word: List,
+):
+    item_list = [("department", department), ("position", position)]
+    if random.random() >= 0.5:  # pos + dep 순서
+        item_list = item_list[::-1]
 
-    points = [[x, y], [x + w, y], [x + w, y + h], [x, y + h]]
-    return points
+    # department
+    draw_and_write(
+        start, item_list[0][1], item_list[0][0], font, draw, font_color, word
+    )
+    # sep
+    draw_and_write(
+        (
+            start[0] + font.getsize(item_list[0][1])[0] + font.getsize(" ")[0],
+            start[1],
+        ),
+        sep,
+        "UNKNOWN",
+        font,
+        draw,
+        font_color,
+        word,
+    )
+    # position
+    draw_and_write(
+        (
+            start[0]
+            + font.getsize(item_list[0][1])[0]
+            + font.getsize(" ")[0]
+            + font.getsize(sep)[0]
+            + font.getsize(" ")[0],
+            start[1],
+        ),
+        item_list[1][1],
+        item_list[1][0],
+        font,
+        draw,
+        font_color,
+        word,
+    )
+
+
+def put_word(item: str, content: str, start: Tuple[int, int], font, word: List) -> List:
+    temp_word = dict()
+    temp_word["category_id"] = get_category_id(item)
+    temp_word["orientation"] = "Horizontal"
+    temp_word["text"] = content
+
+    text_width, text_height = int(font.getsize(content)[0]), int(
+        font.getsize(content)[1]
+    )
+    start_x, start_y = int(start[0]), int(start[1])
+    temp_word["points"] = [
+        [start_x, start_y],
+        [start_x + text_width, start_y],
+        [start_x + text_width, start_y + text_height],
+        [start_x, start_y + text_height],
+    ]
+    word.append(temp_word)
+
+    return word

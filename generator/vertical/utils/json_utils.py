@@ -12,6 +12,7 @@ Functions:
 
     check_file_num(directory, ext): 디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다.
 """
+
 import os
 import glob
 import json
@@ -88,6 +89,7 @@ def make_json(directory: str) -> Dict[str, Any]:
     json_data["annotations"] = []
     with open(directory, "w", encoding="utf-8") as make_file:
         json.dump(json_data, make_file, indent="\t")
+
     return json_data
 
 
@@ -116,4 +118,5 @@ def check_file_num(directory: str, ext: str) -> int:
     """
     file_list = glob.glob(f"{directory}/*{ext}")
     length = len(file_list)
+
     return length
