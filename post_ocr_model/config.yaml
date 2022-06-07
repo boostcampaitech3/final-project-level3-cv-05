@@ -3,7 +3,7 @@ epoch: 10
 learning_rate: 0.001
 Model:
   backbone: efficientnet_b0
-  input_feature: 14
+  input_feature: 13
   backbone_out_feature: 1000
   mlp_out_feature: 100
   num_classes: 11
@@ -17,7 +17,7 @@ Dataloader:
   batch_size: 16
   shuffle: true
   num_workers: 4
-  pin_memory: ture
+  pin_memory: true
   drop_last: true
 Loss: cross_entropy
 optim:
