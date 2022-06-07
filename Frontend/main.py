@@ -23,9 +23,19 @@ def image_to_byte_array(image: Image) -> bytes:
     return imgByteArr
 
 
-def to_ocr(byteImage, threshold, invert, angle):
+def to_ocr(bytesImage, threshold, invert, angle):
+    """This function requests to back-end and response image, ocr output.
+    Image is transformed(crop, angle, Etc..) output in back-end.
+    OCR output is also transformed by back-end function 'word2line'.
+
+    Args:
+        bytesImage (Image(type: bytes)): auto inserted
+        threshold (int): auto inserted
+        invert (bool): It True or False from streamlit checkbox
+        angle (int): auto inserted
+    """    
     param = {"threshold":threshold, "invert":invert, "angle":angle}
-    files = {"file": byteImage.getvalue()}
+    files = {"file": bytesImage.getvalue()}
     result = requests.post(f"http://127.0.0.1:8000/ocr/", params=param, files=files).json()
     image = base64.b64decode(result['image'])
     ocr_image = load_image(image)
