@@ -95,3 +95,7 @@ class PostOCRDataLoader(LightningDataModule):
     def val_dataloader(self):
         val_dataset = PostOCRDataset(self.val_dir, self.val_json, self.transform['val'], self.margin)
         return DataLoader(val_dataset, **self.config.Dataloader)
+
+    def predict_dataloader(self):
+        predict_dataset = PostOCRDataset(self.data_dir, self.test_json, self.transform['val'], self.margin)
+        return DataLoader(predict_dataset, **self.config.Dataloader)
