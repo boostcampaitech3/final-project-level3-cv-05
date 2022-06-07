@@ -20,8 +20,8 @@ Fix Input의 경우 이미지의 각도, crop 위치 및 threshold를 직접 지
 
 - Auto Fix
 
-![page_auto](.\README.assets\page_auto.png)
+![page_auto](./README.assets/page_auto.png)
 
 - Fix Input
 
-![page_fix](.\README.assets\page_fix.png)
+![page_fix](./README.assets/page_fix.png)
