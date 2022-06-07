@@ -1,12 +1,13 @@
 import sys
-
 import requests
 import streamlit as st
-from PIL import Image
-from PIL import ImageDraw
+from PIL import Image, ImageDraw
 from streamlit import cli as stcli
 import seaborn as sns
 import pandas as pd
+from io import BytesIO
+import base64
+
 
 cat = {
     0: "UNKNOWN",
@@ -25,40 +26,100 @@ colors = sns.color_palette('bright', 11)
 palette = [tuple([int(i*255) for i in color]) for color in colors]
 
 def load_image(image_file):
-    img = Image.open(image_file)
+    img = Image.open(BytesIO(image_file))
     return img
 
-
-def draw_rectengle(image, point1, point2, color_cat):
+def draw_polygon(image, points):
     draw = ImageDraw.Draw(image)
-    draw.rectangle((point1[0], point1[1], point2[0], point2[1]), outline=palette[color_cat], width=3)
+    draw.polygon(points, outline=(255, 30, 30), width=2)
     return image
+
+def image_to_byte_array(image: Image) -> bytes:
+    imgByteArr = BytesIO()
+    image.save(imgByteArr, format="JPEG")
+    return imgByteArr
+
+
+def to_ocr(bytesImage, threshold, invert, angle):
+    """This function requests to back-end and response image, ocr output.
+    Image is transformed(crop, angle, Etc..) output in back-end.
+    OCR output is also transformed by back-end function 'word2line'.
+
+    Args:
+        bytesImage (Image(type: bytes)): auto inserted
+        threshold (int): auto inserted
+        invert (bool): It True or False from streamlit checkbox
+        angle (int): auto inserted
+    """    
+    param = {"threshold":threshold, "invert":invert, "angle":angle}
+    files = {"file": bytesImage.getvalue()}
+    result = requests.post(f"http://127.0.0.1:8000/ocr/", params=param, files=files).json()
+    image = base64.b64decode(result['image'])
+    ocr_image = load_image(image)
+    st.write("Server recognized image")
+    st.image(ocr_image)
+    if result['ocr']:
+        for word in result['ocr']['word']:
+            points = list(map(tuple, word['points']))
+            draw_polygon(ocr_image, points)
+        st.write("Output")
+        st.image(ocr_image)
+    else:
+        if result.get('detail', 0):
+            st.warning("OCR Server response - " + result['detail'] + " Please try a few minute later.")
+        else:            
+            st.warning("Can not find any Data")
+
 
 
 def main():
     st.sidebar.header("Select service")
-    name = st.sidebar.selectbox("Service", ["ImageNet"])
-
+    name = st.sidebar.selectbox("Service", ["Auto Fix", "Fix Input"])
     st.title("OCR API Test")
-    with st.form('my_form'):
-        image_file = st.file_uploader("Choose an image", type=["png", "jpg", "jpeg"])
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            files = {"file": image_file.getvalue()}
-            st.write("Result")
-            result = requests.post("http://127.0.0.1:8000/ocr", files=files).json()
-            img1 = load_image(image_file)
-            text, category = [], []
-            for i in result['result']['ocr']['word']:
-                f, _, s, _ = i['points']
-                text.append(i['text'])
-                category.append(cat[i["total_cat"]])
-                draw_rectengle(img1, f, s, i['total_cat'])
-            st.image(img1)
-            df = pd.DataFrame.from_dict({"text": text, "category": category})
-            st.dataframe(data=df, width=600, height=500)
+    image_file = st.file_uploader("Choose an image", type=["png", "jpg", "jpeg"])
+    if image_file:
+        if name == "Auto Fix":
+            st.image(image_file)
+            submitted = st.button("Submit")
+            if submitted:
+                to_ocr(image_file, -1, 0, 1)
+                st.warning("Use sidebar menu 'Fix Input' to fix input image by yourself")
+        if name == "Fix Input":
+            col1, col2 = st.columns(2)
+            with col1:
+                bytes_data = image_file.getvalue()
+                threshold = -1
+                img = load_image(bytes_data)
+                st.write('Rotate Angle')
+                angle_fix = st.slider('Fix Angle', value=0, min_value = -180, max_value=180)
+                angle_fixed = img.rotate(-angle_fix)
+                st.write('Crop Position & Length')
+                start_x = st.slider('Start Position of X', value=0, min_value = 0, max_value=img.size[0])
+                start_y = st.slider('Start Position of Y', value=0, min_value = 0, max_value=img.size[1])
+                end_x = st.slider('End Position of X', value=img.size[0], min_value = 0, max_value=img.size[0])
+                end_y = st.slider('End Position of Y', value=img.size[1], min_value = 0, max_value=img.size[1])
+                if start_x > end_x or start_y > end_y:
+                    st.warning("Position Error: fix x, y")
+                else:
+                    cropped = angle_fixed.convert("L").convert("RGB")
+                    img = angle_fixed.crop((start_x, start_y, end_x, end_y))
+                    cropped.paste(img, (start_x, start_y))
+                    cropped = draw_polygon(cropped, [(start_x, start_y), (end_x, start_y), (end_x, end_y), (start_x, end_y)])
+                bytes_data = image_to_byte_array(img)
+                invert = 1 if st.checkbox("Invert: Check if image darker than BG.") else 0
+                threshold = st.slider('Change Threshold value', value=180, min_value=0, max_value=255)
+            resubmit = 0
+            with col2:
+                with st.form('self_fix'):
+                    st.image(cropped)
+                    resubmit = st.form_submit_button("Submit")
+                    if resubmit:
+                        st.write("Submitted Image.")
+                        st.image(bytes_data)
+            if resubmit:
+                to_ocr(bytes_data, threshold, invert, 0)
 
-
+    
 if __name__ == '__main__':
     if st._is_running_with_streamlit:
         main()
