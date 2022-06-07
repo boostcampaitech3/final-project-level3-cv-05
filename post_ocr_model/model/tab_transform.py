@@ -7,6 +7,7 @@ Classes:
 
 from typing import List
 import pandas as pd
+import numpy as np
 import re
 
 class TabTransform:
@@ -19,6 +20,14 @@ class TabTransform:
         self.point_2 = df['point_2']
         self.point_3 = df['point_3']
         self.point_4 = df['point_4']
+        point1_df=pd.DataFrame(df.pop('point_1').tolist(), index=df.index, columns=["X", "Y"])
+        point3_df=pd.DataFrame(df.pop('point_3').tolist(), index=df.index, columns=["X", "Y"])
+        point1_x=point1_df.iloc[:,0]
+        point1_y=point1_df.iloc[:,1]
+        point3_x=point3_df.iloc[:,0]
+        point3_y=point3_df.iloc[:,1]
+        self.center_x = (point1_x/df['image_width'])*0.5 + (point3_x/df['image_width'])*0.5
+        self.center_y = (point1_y/df['image_height'])*0.5 + (point3_y/df['image_height'])*0.5
         self.width = df['points'].transform(self.calculate_width)
         self.height = df['points'].transform(self.calculate_height)
         self.scaled_width = self.width / df['image_width']
@@ -34,7 +43,6 @@ class TabTransform:
         Returns:
             pd.DataFrame: feature engineering이 적용된 DataFrame 결과
         """
-
         df_result = pd.DataFrame()
 
         # features not used for learning
@@ -51,7 +59,7 @@ class TabTransform:
         df_result['ratio(h/w)'] = self.height / self.width
         df_result['area'] = self.scaled_height * self.scaled_width
         df_result['include_AT_SIGN'] = self.text.transform(self.check_include_at_sign)
-        df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
+        # df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
         df_result['is_alpha'] = self.text.transform(self.check_is_alpha)
         df_result['is_alnum'] = self.text.transform(self.check_is_alnum)
         df_result['is_kr'] = self.text.transform(self.check_only_kr)
@@ -59,7 +67,9 @@ class TabTransform:
         df_result['is_krdigit'] = self.text.transform(self.check_krdigit)
         df_result['text_length'] = self.text.transform(self.calculate_text_length)
 
-        # label
+        df_result['center_x'] = self.center_x
+        df_result['center_y'] = self.center_y
+
         df_result['category_id'] = self.label
 
         return df_result
@@ -128,23 +138,24 @@ class TabTransform:
         else:
             return 0
 
+    '''
+    # check_only_digit 과 중복 
     def check_phone_type_text(self, text: str) -> int:
         """
-        text 가 phone type text(숫자, '.', '+', '(', ')', '-', ' ') 로만 이루어졌는지 확인한다
-
+        text 가 phone type text('TELEPHONE', 'MOBILE', 'FAX', 'HP', 'R&D', 'CALL', '전화', '휴대폰', '핸드폰', '고객지원센터' 숫자, ':', '~', '.', '·', '+', '(', ')', '-', ' ') 로만 이루어졌는지 확인한다
         Args:
             text (str): bbox 내의 text
-
         Returns:
-            int: 숫자 or '.' or '+' or '(' or ')' or '-' or ' ' 문자만 포함된 경우 1, 아닌 경우 0을 반환
+            int: phone type text 만 포함된 경우 1, 아닌 경우 0을 반환
         """
 
-        phone_type_char = '0123456789.+()- '
+        phone_type_char = set('TELEPHONEMOBILEFAXHPR&DCALL전화휴대폰핸드폰고객지원센터0123456789:~.·+()- ')
         
-        for c in text:
+        for c in text.upper():
             if c not in phone_type_char:
                 return 0
         return 1
+    '''
 
     def check_is_alpha(self, text: str) -> int:
         """
@@ -157,9 +168,12 @@ class TabTransform:
             int: 0,1 - Text 구성이 알파벳 또는 한글로만 이루어졌는지 여부
         """
 
-        post_text = re.sub('\W+','', text)
+        characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        if post_text.isalpha():
+        text=text.upper()
+        string = ''.join( x for x in text if x not in characters)
+
+        if string.isalpha():
             return 1
         else:
             return 0
@@ -175,9 +189,12 @@ class TabTransform:
             int: 0,1 - 알파벳 또는 한글 또는 숫자로만 이루어졌는지 여부
         """
 
-        post_text = re.sub('\W+','', text)
+        characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
+
+        text=text.upper()
+        string = ''.join( x for x in text if x not in characters)
         
-        if post_text.isalnum():
+        if string.isalnum():
             return 1
         else:
             return 0    
@@ -192,7 +209,7 @@ class TabTransform:
         Returns:
             int: text 길이
         """
-
+        text=re.sub('\W+','', text)
         text_length = len(text)
         
         return text_length
@@ -208,9 +225,12 @@ class TabTransform:
             int: 0,1 - 한글만 포함 여부    
         """
 
-        post_text = re.sub('\W+','', text)
+        characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        for chr in post_text:
+        text=text.upper()
+        string = ''.join( x for x in text if x not in characters)
+
+        for chr in string:
             if ord('가') <= ord(chr) <= ord('힣'):
                 continue
             else:
@@ -228,9 +248,12 @@ class TabTransform:
             int: 0,1 - 숫자만 포함 여부    
         """
 
-        post_text = re.sub('\W+','', text)
+        characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        if post_text.isdigit() :
+        text=text.upper()
+        string = ''.join( x for x in text if x not in characters)
+
+        if string.isdigit() :
             return 1
         else:
             return 0
@@ -246,9 +269,12 @@ class TabTransform:
             int: 0,1 - 한글 및 숫자만 포함 여부    
         """
 
-        post_text = re.sub('\W+','', text)
+        characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        for chr in post_text:
+        text=text.upper()
+        string = ''.join( x for x in text if x not in characters)
+
+        for chr in string:
             if self.check_only_kr(chr) or self.check_only_digit(chr):
                 continue
             else:
