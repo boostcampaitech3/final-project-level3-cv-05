@@ -7,8 +7,3 @@ torch
 torchvision
 pandas
 ```
-
-## Training
-```
-python trainer.py --config [CONFIG DIR]
-```
