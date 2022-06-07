@@ -1,10 +1,10 @@
 # folder structure 
-모델 학습 이미지를 생성하기 위한 이미지 생성 프로그램 version4
+모델 학습 이미지를 생성하기 위한 이미지 생성 프로그램 
 - 세로 명함 
 - 회사 이름/이름/직책&부서/숫자 정보 등에 대해 템플릿 클래스를 만든 후, 이를 랜덤하게 조합하여 명함 이미지 생성 
 
 ```python
-version4/
+vertical/
 ├── 📝 card_utils.py              # 명함 템플릿 생성에 필요한 파일 
 ├── 📝 generate.py                # csv 파일을 토대로 정보 생성 
 ├── 📝 json_utils.py              # json 파일 생성에 필요한 파일 
