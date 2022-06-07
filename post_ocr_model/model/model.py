@@ -95,21 +95,17 @@ class PostOCRLearner(LightningModule):
         self.log("val_accuracy", acc)
         return {"loss": loss, "pred": preds, 'labels': labels}
 
+    def predict_step(self, batch, batch_idx, dataloader_idx: int = None):
+        x, tabs, _ = batch
+        pred = self.feature(x, tabs)
+        return {"pred": pred}
+
     def __share_step(self, batch, mode):
         x, tabs, y = batch
         pred = self.feature(x, tabs)
         loss = self._criterion(pred, y)
         acc = self.accuracy(pred, y)
         return pred, loss, acc, y
-
-    # def training_epoch_end(self, outputs):
-    #     pass
-    #
-    # def validation_epoch_end(self, outputs):
-    #     pass
-    #
-    # def __cal_metrics(self, outputs, mode) -> None:
-    #     pass
 
     def configure_optimizers(self):
         optimizer = eval(self.cfg.optim['name'])(
