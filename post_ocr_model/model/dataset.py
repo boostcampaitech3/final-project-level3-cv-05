@@ -62,9 +62,10 @@ class PostOCRDataset(Dataset):
         data = self.data.iloc[index]
         image = cv2.imread(os.path.join(self.data_dir, data["file_name"]))
 
+        height, width, _ = image.shape
         p1, p3 = data['point_1'], data['point_3']
-        p1 = [max(p1[0]-self.margin, 0), max(p1[1]-self.margin, 0)]
-        p3 = [min(p3[0]+self.margin, 900-1), min(p3[1]+self.margin, 500-1)]
+        p1 = [int(max(p1[0]-self.margin, 0)), int(max(p1[1]-self.margin, 0))]
+        p3 = [int(min(p3[0]+self.margin, width-1)), int(min(p3[1]+self.margin, height-1))]
         image = image[p1[1]:p3[1], p1[0]:p3[0]]
         image = Image.fromarray(image)
         label = data['category_id']
@@ -76,9 +77,10 @@ class PostOCRDataset(Dataset):
 
 
 class PostOCRDataLoader(LightningDataModule):
-    def __init__(self, cfg, data_dir, train_json: str, val_json: str = None, test_json: str = None, margin=3):
+    def __init__(self, cfg, train_dir, val_dir, train_json: str, val_json: str = None, test_json: str = None, margin=3):
         super().__init__()
-        self.data_dir = data_dir
+        self.train_dir = train_dir
+        self.val_dir = val_dir
         self.train_json = train_json
         self.val_json = val_json
         self.test_json = test_json
@@ -87,9 +89,9 @@ class PostOCRDataLoader(LightningDataModule):
         self.margin = margin
 
     def train_dataloader(self):
-        train_dataset = PostOCRDataset(self.data_dir, self.train_json, self.transform['train'], self.margin)
+        train_dataset = PostOCRDataset(self.train_dir, self.train_json, self.transform['train'], self.margin)
         return DataLoader(train_dataset, **self.config.Dataloader)
 
     def val_dataloader(self):
-        val_dataset = PostOCRDataset(self.data_dir, self.val_json, self.transform['val'], self.margin)
+        val_dataset = PostOCRDataset(self.val_dir, self.val_json, self.transform['val'], self.margin)
         return DataLoader(val_dataset, **self.config.Dataloader)
