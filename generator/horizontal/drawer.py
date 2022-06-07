@@ -28,17 +28,39 @@ categories = {
 }
 
 
-def get_TF(prob):
+def get_TF(prob: float):
+    """Get True or False compar with prob
+    Args:
+        prob (float)
+    Returns:
+        bool
+    """
     return True if random.random() < prob else False
 
 
-def get_random_margin(axis, min, max):
+def get_random_margin(axis: int, min: int, max: int):
+    """get random margin for axis size ratio (min, max)
+    Args:
+        axis (int): _description_
+        min (int): _description_
+        max (int): _description_
+    Returns:
+        int
+    """
     min = min / 100
     max = max / 100
     return int(axis * random.uniform(min, max))
 
 
 def get_font(font, scale, font_size=500 // 10 + random.randint(-10, 2)):
+    """get image font
+    Args:
+        font (str): font path
+        scale (float tuple or float): image font size
+        font_size (int, optional): font size. Defaults to 500//10+random.randint(-10, 2).
+    Returns:
+        imagefont
+    """
     if type(scale) == tuple:
         m, M = scale
         scale = random.uniform(m, M)
@@ -47,17 +69,32 @@ def get_font(font, scale, font_size=500 // 10 + random.randint(-10, 2)):
 
 
 def draw_font(feature, imagefont, axis, loc_x, padding=False):
+    """
+    make feature to image and get size
+    """
     if padding and len(feature) < 5:
         for _ in range(random.randint(0, 2)):
             feature = " ".join(feature)
     width, height = imagefont.getsize(feature)
-    # while (axis - loc_x < width or 900 < loc_x + width) and imagefont.size > 10:
-    #    imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
-    #    width, height = imagefont.getsize(feature)
+    while (axis - loc_x < width) and imagefont.size > 10:
+        imagefont = ImageFont.truetype(imagefont.path, imagefont.size - 1)
+        width, height = imagefont.getsize(feature)
     return feature, imagefont, (width, height)
 
 
-def get_annotation(category, x, y, w, h, feature, dir="Horizontal"):
+def get_annotation(category, x: int, y: int, w: int, h: int, feature, dir="Horizontal"):
+    """get annotation with location and Etc
+    Args:
+        category (int): category value
+        x (int): horizontal location of start point
+        y (int): vertical location of start point
+        w (int): width
+        h (int): height
+        feature (var): word or sentence
+        dir (str, optional): Defaults to "Horizontal".
+    Returns:
+        annotation dict
+    """
     if x < 0:
         x = 0
     if y < 0:
@@ -77,6 +114,9 @@ def get_annotation(category, x, y, w, h, feature, dir="Horizontal"):
 
 
 def draw_logo(background, loc_x, loc_y, logo_size, path):
+    """
+    draw logo on background
+    """
     image = Image.open(path).convert("RGBA")
     image = image.resize((logo_size, logo_size))
     background.paste(image, (loc_x, loc_y), image)
@@ -84,6 +124,17 @@ def draw_logo(background, loc_x, loc_y, logo_size, path):
 
 
 def draw_box(background, font, font_color, box_info, infos):  # type = ["grid", "double", "stack", "single"]
+    """_summary_
+    Args:
+        background (image)
+        font (str): font path
+        font_color: auto selected
+        box_info (tuple): write in template (draw_list, box_x, box_y, formation, axis...)
+        infos (tuple): includes, info, header, scale
+
+    Returns:
+        annotations list
+    """
     draw = ImageDraw.Draw(background)
     draw_list, box_x, box_y, formation, axis = box_info
     includes, info, header, scale = infos
@@ -168,6 +219,18 @@ def draw_box(background, font, font_color, box_info, infos):  # type = ["grid", 
 
 
 def image_generate(select="random", test_mode=False):
+    """
+    includes: key = category, value = bool.
+    scale: key = category, value = float tuple 
+
+
+    Args:
+        select (str, optional): random is all case. Else, output is selected case. Defaults to "random".
+        test_mode (bool, optional): if True, set all includes values True. Defaults to False.
+
+    Returns:
+        image, image_info, width, height
+    """
     info = generate()
     keywords = list(info.keys())
     splt = random.choice([".", ":", "", ")"])
