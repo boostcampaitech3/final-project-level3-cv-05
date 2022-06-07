@@ -1,3 +1,11 @@
+## requirements
+```
+timm==0.5.4
+torch
+torchvision
+pandas
+```
+
 # Train
 ```
 # model 경로에서 
