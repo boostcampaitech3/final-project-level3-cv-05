@@ -8,8 +8,10 @@
 2. `drawer.py` 내에 `scale`이 지정되어 있으므로 이를 참고하여 위치 시킵니다.
 3. `logo`에 대해서는 삽입 방법 개선 중입니다.
 4. 노트북 파일 또는 `make_image.py` 실행
-   - 파이썬 파일 실행시 `--number [이미지 생성 수]` 기본 1000장에서 원하는 수 만큼 생성
-   - `py` 파일에 multiprocessing이 적용되어 있으므로 테스트가 아니면 해당 파일 추천
+   - 파이썬 파일 실행시 `--number [이미지 생성 수]` 기본 1000장에서 원하는 수 만큼 생성합니다.
+   - `py` 파일에 multiprocessing이 적용되어 있으므로 테스트가 아니면 해당 파일 추천합니다.
+   - `--select case{n}` argument로 n번째 case를 생성할 수 있습니다.
+   - `--testmode {bool}` argument로 테스트용 데이터를 확인할 수 있습니다. True로 설정 시 가능한 모든 정보가 포함된 데이터가 생성됩니다.
 
 ```python
 generator/
