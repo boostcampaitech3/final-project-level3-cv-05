@@ -41,7 +41,7 @@ generator/
 
 ### workflow
 
-![workflow](./workflow.png)
+![workflow](./README.asset/workflow.png)
 
 ### caution
 
@@ -78,6 +78,6 @@ generator/
 
 ### Template case
 
-![case1](.\case1.JPG)
+![case1](./README.asset/case1.JPG)
 
-![case2](./case2.JPG)
+![case2](./README.asset/case2.JPG)
