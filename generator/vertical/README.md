@@ -5,25 +5,32 @@
 
 ```python
 vertical/
-├── 📝 card_utils.py              # 명함 템플릿 생성에 필요한 파일 
-├── 📝 generate.py                # csv 파일을 토대로 정보 생성 
-├── 📝 json_utils.py              # json 파일 생성에 필요한 파일 
-├── 📝 make_card.py               # 명함 이미지를 생성하는 파일 
-├── 📝 data_visualization.ipynb   # 생성된 명함 이미지를 시각화하는 파일
+├── 📂 make
+│    ├── 📝 make_component.py       # 정보 box (ex. name, company) 생성
+│    └── 📝 make_template.py        # 정보 box를 토대로 템플릿 클래스 생성 
+│
+├── 📂 utils
+│    ├── 📝 bbox_utils.py           # bbox 생성 및 영역 확인에 필요한 파일
+│    ├── 📝 card_utils.py           # 명함 이미지 생성에 필요한 파일 
+│    └── 📝 json_utils.py           # json 파일 생성에 필요한 파일 
+│
+├── 📝 data_visualization.ipynb     # 생성된 명함 이미지 시각화
+├── 📝 generate.py                  # csv 파일을 토대로 정보 생성 
+├── 📝 main.py                      # 템플릿을 토대로 명함 이미지 생성 
 │
 └── 📂 example
-    ├── 📂 images
-    └── 📄 *.png                  # sample images folder 
-    └── 📄 info.json              # sample annotations file  
+    ├── 📂 images                   # sample images folder 
+    │    └── 📄 *.png                    
+    └── 📄 info.json                # sample annotations file  
 ```
 ### 실행
 아래와 같이 명령어를 작성하여 실행
 ```
-python make_card --num [생성될 이미지 개수] --dir [json 파일 경로] --width [이미지 크기의 너비]
+python main.py --num [생성될 이미지 개수] --dir [json 파일 경로] --width [이미지 크기의 너비]
 ```   
 각 템플릿 별로 생성되는 이미지를 확인하고 싶은 경우, 아래와 같이 명령어를 작성하여 실행 
 ```
-python make_card --num [생성될 이미지 개수] --dir [json 파일 경로] --width [이미지 크기의 너비] \
+python main.py --num [생성될 이미지 개수] --dir [json 파일 경로] --width [이미지 크기의 너비] \
 --test True --template_name [Template{숫자}]
 ```
 
