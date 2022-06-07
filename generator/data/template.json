@@ -789,5 +789,52 @@
             "formation": "stack",
             "axis": 450
         }
+    },
+    "test": {
+        "width": 2200,
+        "height": 300,
+        "logobox": {
+            "draw_list": [],
+            "loc_x": 450,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "namebox": {
+            "draw_list": [
+                "company",
+                "wise",
+                "name",
+                "position",
+                "department",
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "double",
+            "axis": 2000
+        },
+        "optionbox1": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 210,
+            "formation": "stack",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 450
+        }
     }
 }

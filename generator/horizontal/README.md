@@ -1,4 +1,4 @@
-# Image Generator - version1
+# Image Generator - Horizontal
 
 모델 학습 이미지를 생성하기 위한 이미지 생성 프로그램입니다.
 
@@ -28,7 +28,7 @@ generator/
     📄 generator_notebook.ipynb		# 이미지 생성용 노트북 파일
     📄 make_image.py				# 이미지 생성용 py 파일
     📄 sample.json					# 최초 생성에 사용하는 template json
-    📄 viewer.ipynb					# 이미지 확인용 노트북 파일(EDA 예정)
+    📄 viewer.ipynb					# 이미지 확인용 노트북 파일
     │
     │
     │
@@ -71,3 +71,13 @@ generator/
     - `grid`: 2열로 정보를 구성합니다.
   - `axis`
     - 반전 축을 지정합니다. `stack`으로 두 열을 생성했을 때, 왼쪽 열은 450, 오른 쪽 열은 1350으로 지정하면 됩니다. 기본 값은 이미지 `width`인 900으로 설정합니다.
+
+
+
+
+
+### Template case
+
+![case1](.\case1.JPG)
+
+![case2](./case2.JPG)
