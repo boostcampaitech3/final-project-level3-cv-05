@@ -124,7 +124,7 @@ def main():
                     st.write("Submitted Image.")
                     st.image(bytes_data)
         if resubmit:
-            to_ocr(bytes_data, threshold, invert, 0)
+            to_ocr(bytes_data)
 
 
 if __name__ == '__main__':
