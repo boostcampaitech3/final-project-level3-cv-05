@@ -1,0 +1,840 @@
+{
+    "case1": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 190,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 435,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case2": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 170,
+            "formation": "stack",
+            "axis": 460
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 450,
+            "loc_y": 170,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 405,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case3": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 450,
+            "loc_y": 170,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 170,
+            "formation": "stack",
+            "axis": 460
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 405,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case4": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 370,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 305,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case5": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 460,
+            "loc_y": 250,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 250,
+            "formation": "stack",
+            "axis": 460
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 170,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case6": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [],
+            "loc_x": 9999,
+            "loc_y": 9999,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 70,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 230,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 405,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case7": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [],
+            "loc_x": 9999,
+            "loc_y": 9999,
+            "formation": "double",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 70,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 355,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 290,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case8": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 370,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "stack",
+            "axis": 460
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 450,
+            "loc_y": 120,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 10,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case9": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 370,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 450,
+            "loc_y": 150,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "stack",
+            "axis": 460
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 30,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case10": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 210,
+            "formation": "single",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 255,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 405,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case11": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 220,
+            "formation": "single",
+            "axis": 900
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 355,
+            "formation": "grid",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 285,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case12": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 450
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 450,
+            "loc_y": 50,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 450,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 450
+        }
+    },
+    "case13": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 200,
+            "formation": "stack",
+            "axis": 450
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 450,
+            "loc_y": 200,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 305,
+            "formation": "stack",
+            "axis": 1350
+        }
+    },
+    "case14": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 900
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "stack",
+            "axis": 450
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 350,
+            "formation": "double",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [
+                "address",
+                "license_number"
+            ],
+            "loc_x": 0,
+            "loc_y": 415,
+            "formation": "stack",
+            "axis": 900
+        }
+    },
+    "case15": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 0,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 450
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 450,
+            "loc_y": 20,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 210,
+            "formation": "stack",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 450
+        }
+    },
+    "case16": {
+        "width": 900,
+        "height": 500,
+        "logobox": {
+            "draw_list": [
+                "company",
+                "wise"
+            ],
+            "loc_x": 450,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "namebox": {
+            "draw_list": [
+                "name",
+                "position",
+                "department"
+            ],
+            "loc_x": 0,
+            "loc_y": 20,
+            "formation": "stack",
+            "axis": 450
+        },
+        "optionbox1": {
+            "draw_list": [
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 210,
+            "formation": "stack",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 450
+        }
+    },
+    "test": {
+        "width": 2200,
+        "height": 300,
+        "logobox": {
+            "draw_list": [],
+            "loc_x": 450,
+            "loc_y": 0,
+            "formation": "stack",
+            "axis": 1350
+        },
+        "namebox": {
+            "draw_list": [
+                "company",
+                "wise",
+                "name",
+                "position",
+                "department",
+                "phone",
+                "call",
+                "fax",
+                "email",
+                "site",
+                "address",
+                "license_number",
+                "social_id",
+                "social_id"
+            ],
+            "loc_x": 0,
+            "loc_y": 150,
+            "formation": "double",
+            "axis": 2000
+        },
+        "optionbox1": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 210,
+            "formation": "stack",
+            "axis": 900
+        },
+        "optionbox2": {
+            "draw_list": [],
+            "loc_x": 0,
+            "loc_y": 280,
+            "formation": "stack",
+            "axis": 450
+        }
+    }
+}
