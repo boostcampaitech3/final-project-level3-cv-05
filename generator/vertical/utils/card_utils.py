@@ -1,24 +1,6 @@
 # card_utils.py
 """
-글씨 정보, 구분자, 명함에 적용할 정보 생성 및 확인, bbox 생성 및 확인에 관한 모듈입니다. 
-
-Functions:
-    # 1) font functions
-    make_font_size(): 각 정보 항목별 글씨 크기를 지정합니다.
-    make_font_color(): 각 정보 항목별 글씨 색상을 지정합니다.
-    make_font_family(): 각 정보 항목별 글씨체를 지정합니다.
-
-    # 2) separator functions
-    num_separator(): 숫자 및 기타 정보 문자열의 구분자를 지정합니다.
-    position_separator(): 직책 및 부서 문자열의 구분자를 지정합니다. 
-
-    # 3) info generate functions
-    use_item(items, threshold): 선택 후보가 되는 정보 항목의 이름 리스트를 전달하면, 
-                                그 중에서 사용할 항목 이름을 랜덤으로 선택하여 리스트로 반환합니다.
-    info_item(info, use): 정보 항목의 이름 리스트를 전달하면, 
-                          각 항목에 해당하는 텍스트 내용을 딕셔너리에 담아서 반환합니다.
-    regenerate(item_name): 정보 항목의 이름을 전달하면, 
-                           이 항목에 해당하는 텍스트 내용을 다시 생성하여 반환합니다.
+폰트 정보, 구분자, 명함에 적용할 정보 생성 및 확인에 관한 모듈입니다. 
 """
 
 import glob
@@ -26,7 +8,7 @@ import random
 import pandas as pd
 from .json_utils import *
 from generate import generate
-from typing import Dict, Tuple, List
+from typing import Tuple, List, Dict
 
 # 글씨체 파일의 경로
 sub_font_dir = "font/sub"
@@ -37,21 +19,20 @@ main_font_families = glob.glob(f"{main_font_dir}/*.ttf")
 # 컬러맵 파일의 경로
 colormap = pd.read_csv("data/colormap.csv")
 
-# 로고 이미지의 경로
-logo_dir = "data/images/logo"
-logo = glob.glob(f"{logo_dir}/*.png")
 
-# sns 아이콘 이미지의 경로
-icon = pd.read_csv("data/sns_logo.csv")
+#####################
+### make function ###
+#####################
 
 
-def make_font_size() -> Dict[str, str]:
+def make_font_size() -> Dict:
     """
-    각 정보 항목별 글씨 크기를 지정합니다.
+    각 카테고리별 글씨 크기를 지정합니다.
 
     Returns:
-        font_size (dict): 각 정보 항목별 글씨 크기
+        Dict: 각 카테고리별 글씨 크기
     """
+
     font_size = dict()
     font_size["name"] = random.randint(40, 50)
     font_size["phone"] = font_size["tel"] = font_size["website"] = font_size[
@@ -68,13 +49,14 @@ def make_font_size() -> Dict[str, str]:
     return font_size
 
 
-def make_font_color() -> Tuple[str, dict]:
+def make_font_color() -> Tuple:
     """
-    각 정보 항목별 글씨 색상을 지정합니다.
+    각 카테고리별 글씨 색상을 지정합니다.
 
     Returns:
-        Color_BG (str), font_color (dict): 명함 이미지 배경색, 각 정보 항목별 글씨 색상
+        Tuple: 명함 이미지 배경색, 각 카테고리별 글씨 색상
     """
+
     font_color = dict()
 
     c_id = random.randint(0, len(colormap) - 1)
@@ -102,13 +84,14 @@ def make_font_color() -> Tuple[str, dict]:
     return Color_BG, font_color
 
 
-def make_font_family() -> Dict[str, str]:
+def make_font_family() -> Dict:
     """
-    각 정보 항목별 글씨체를 지정합니다.
+    각 카테고리별 글씨체를 지정합니다.
 
     Returns:
-        font_family (dict): 각 정보 항목별 글씨체
+        Dict: 각 카테고리별 글씨체
     """
+
     font_family = dict()
 
     sub_length = len(sub_font_families)
@@ -133,13 +116,19 @@ def make_font_family() -> Dict[str, str]:
     return font_family
 
 
+##########################
+### separator function ###
+##########################
+
+
 def num_separator() -> str:
     """
     숫자 및 기타 정보 문자열의 구분자를 지정합니다.
 
     Returns:
-        item (str): 사용할 구분자
+        str: 사용할 구분자
     """
+
     if random.random() > 0.7:
         item = ". "
     elif random.random() > 0.4:
@@ -155,8 +144,9 @@ def position_separator() -> str:
     직책 및 부서 문자열의 구분자를 지정합니다.
 
     Returns:
-        item (str): 사용할 구분자
+        str: 사용할 구분자
     """
+
     if random.random() > 0.5:
         item = "|"
     else:
@@ -165,18 +155,24 @@ def position_separator() -> str:
     return item
 
 
-def use_item(items: List[str], threshold: float) -> List[str]:
+#####################
+### item function ###
+#####################
+
+
+def use_item(items: List, threshold: float) -> List:
     """
-    선택 후보가 되는 정보 항목의 이름 리스트를 전달하면,
+    선택 후보가 되는 카테고리의 이름 리스트를 전달하면,
     그 중에서 사용할 항목을 랜덤으로 선택하여 리스트로 반환합니다.
 
     Args:
-        items (list): 선택 후보가 되는 정보 항목의 이름 리스트
-        threshold (float): 각 정보 항목이 선택될 확률
+        items (List): 선택 후보가 되는 카테고리의 이름 리스트
+        threshold (float): 각 카테고리가 선택될 확률
 
     Returns:
-        use (list): 선택된 정보 항목의 이름 리스트
+        List: 선택된 카테고리의 이름
     """
+
     use = []
     for item in items:
         if random.random() < threshold:
@@ -185,17 +181,17 @@ def use_item(items: List[str], threshold: float) -> List[str]:
     return use
 
 
-def info_item(info: Dict[str, str], use: List[str]) -> Dict[str, str]:
+def info_item(info: Dict, use: List) -> Dict:
     """
-    정보 항목의 이름 리스트를 전달하면,
+    카테고리의 이름 리스트를 전달하면,
     각 항목에 해당하는 텍스트 내용을 딕셔너리에 담아서 반환합니다.
 
     Args:
-        info (dict): 전체 정보를 저장하고 있는 딕셔너리
-        use (list): 사용할 정보 항목의 이름 리스트
+        info (Dict): 전체 정보를 저장하고 있는 딕셔너리
+        use (List): 사용할 카테고리의 이름 리스트
 
     Returns:
-        content (dict): 사용할 정보 항목의 텍스트 내용을 담은 딕셔너리
+        Dict: 사용할 카테고리의 텍스트 내용을 담은 딕셔너리
     """
     content = dict()
     for item in use:
@@ -206,14 +202,14 @@ def info_item(info: Dict[str, str], use: List[str]) -> Dict[str, str]:
 
 def regenerate(item_name: str) -> str:
     """
-    정보 항목의 이름을 전달하면,
+    카테고리의 이름을 전달하면,
     이 항목에 해당하는 텍스트 내용을 다시 생성하여 반환합니다.
 
     Args:
-        item_name (str): 정보 항목의 이름
+        item_name (str): 카테고리의 이름
 
     Returns:
-        content (str): 정보 항목에 해당하는 텍스트 내용
+        str: 카테고리에 해당하는 텍스트 내용
     """
     re_info = generate()
     content = re_info[item_name]
@@ -221,8 +217,13 @@ def regenerate(item_name: str) -> str:
     return content
 
 
+#############################
+### draw & write function ###
+#############################
+
+
 def draw_and_write(
-    bbox_start: Tuple[int, int],
+    start: Tuple,
     content: str,
     item: str,
     font,
@@ -230,17 +231,33 @@ def draw_and_write(
     font_color: Dict,
     word: List,
 ):
+    """
+    명함 이미지에 텍스트 내용을 작성하고,
+    json 파일에 annotation 정보를 저장합니다.
+    (단, 직책 및 부서가 동시에 포함되는 경우,
+    두 가지 카테고리를 모두 고려해야 하므로 함수를 따로 생성했습니다.)
+
+    Args:
+        start (Tuple): 텍스트 bbox 시작 지점 (bbox의 좌측 상단)
+        content (str): 해당 카테고리의 텍스트 내용
+        item (str): 해당 카테고리의 이름
+        font: 텍스트에 대한 폰트 정보
+        draw: 이미지에 정보를 그리는 (표기하는) 객체
+        font_color (Dict): 명함 내 정보의 글씨 색상 정보를 저장
+        word (List): json 파일에 저장할 bbox 정보를 담은 리스트
+    """
+
     draw.text(
-        bbox_start,
+        start,
         content,
         font=font,
         fill=font_color[item],
     )
-    put_word(item, content.strip(), bbox_start, font, word)
+    put_word(item, content.strip(), start, font, word)
 
 
 def draw_dep_pos(
-    start: Tuple[int, int],
+    start: Tuple,
     department: str,
     sep: str,
     position: str,
@@ -249,6 +266,21 @@ def draw_dep_pos(
     font_color: Dict,
     word: List,
 ):
+    """
+    명함 이미지에 '직책 및 부서'에 대한 텍스트 내용을 작성하고,
+    json 파일에 annotation 정보를 저장합니다.
+
+    Args:
+        start (Tuple): 텍스트 bbox 시작 지점 (bbox의 좌측 상단)
+        department (str): 부서 텍스트 내용
+        sep (str): 구분자 텍스트 내용
+        position (str): 직책 텍스트 내용
+        font: 텍스트에 대한 폰트 정보
+        draw: 이미지에 정보를 그리는 (표기하는) 객체
+        font_color (Dict): 명함 내 정보의 글씨 색상 정보를 저장
+        word (List): json 파일에 저장할 bbox 정보를 담은 리스트
+    """
+
     item_list = [("department", department), ("position", position)]
     if random.random() >= 0.5:  # pos + dep 순서
         item_list = item_list[::-1]
@@ -257,6 +289,7 @@ def draw_dep_pos(
     draw_and_write(
         start, item_list[0][1], item_list[0][0], font, draw, font_color, word
     )
+
     # sep
     draw_and_write(
         (
@@ -270,6 +303,7 @@ def draw_dep_pos(
         font_color,
         word,
     )
+
     # position
     draw_and_write(
         (
@@ -289,7 +323,22 @@ def draw_dep_pos(
     )
 
 
-def put_word(item: str, content: str, start: Tuple[int, int], font, word: List) -> List:
+def put_word(item: str, content: str, start: Tuple, font, word: List) -> List:
+    """
+    json 파일에 저장할 bbox 정보를 담은 리스트인 word에,
+    새로 추가하려는 카테고리의 bbox와 텍스트 내용을 추가합니다.
+
+    Args:
+        item (str): 해당 카테고리의 이름
+        content (str): 해당 카테고리의 텍스트 내용
+        start (Tuple): 텍스트 bbox 시작 지점 (bbox의 좌측 상단)
+        font: 텍스트에 대한 폰트 정보
+        word (List): json 파일에 저장할 bbox 정보를 담은 리스트
+
+    Returns:
+        List: json 파일에 저장할 bbox 정보를 담은 리스트
+    """
+
     temp_word = dict()
     temp_word["category_id"] = get_category_id(item)
     temp_word["orientation"] = "Horizontal"

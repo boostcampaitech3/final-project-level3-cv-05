@@ -1,9 +1,16 @@
+# make_template.py
+"""
+템플릿 생성에 관한 모듈입니다. 
+"""
+
 import random
 from .make_component import *
+from typing import List, Dict
 
-
+# 정보 box의 시작 x, y 좌표 범위
 MIN_X, MAX_X, MIN_Y, MAX_Y = 0.05, 0.1, 0, 0.05
 
+# 부가 정보에 포함되는 카테고리
 num = [
     "phone",
     "tel",
@@ -15,15 +22,21 @@ num = [
     "social_id",
 ]
 
+
 ####################
 ## template class ##
 ####################
 
 
 class Template1:
+    """
+    회사명 (company), 직책 (position), 부서 (department),
+    이름 (name), 부가 정보 (num info), SNS ID (social id) 를 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -122,6 +135,7 @@ class Template1:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -158,9 +172,14 @@ class Template1:
 
 
 class Template2:
+    """
+    로고 (logo), 직책 (position), 부서 (department),
+    이름 (name), 부가 정보 (num info), SNS ID (social id) 를 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -246,6 +265,7 @@ class Template2:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -282,9 +302,14 @@ class Template2:
 
 
 class Template3:
+    """
+    직책 (position), 부서 (department),
+    이름 (name), 부가 정보 (num info), SNS ID (social id) 를 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -365,6 +390,7 @@ class Template3:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -401,9 +427,13 @@ class Template3:
 
 
 class Template4:
+    """
+    이름 (name), 부가 정보 (num info), SNS ID (social id) 를 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -440,6 +470,7 @@ class Template4:
         x += self.width * random.uniform(-MIN_X, MIN_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -476,9 +507,14 @@ class Template4:
 
 
 class Template5:
+    """
+    회사명 (company), 부가 정보 (num info),
+    SNS ID (social id), 이름 (name) 을 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -515,6 +551,7 @@ class Template5:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -566,9 +603,14 @@ class Template5:
 
 
 class Template6:
+    """
+    로고 (logo), 회사명 (company), 이름 (name), 직책 (position), 부서 (department),
+    부가 정보 (num info), SNS ID (social id), 이름 (name) 을 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -669,6 +711,7 @@ class Template6:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -705,9 +748,14 @@ class Template6:
 
 
 class Template7:
+    """
+    로고 (logo), 회사명 (company), 이름 (name), 직책 (position), 부서 (department),
+    부가 정보 (num info), SNS ID (social id), 이름 (name) 을 토대로 생성하는 템플릿
+    """
+
     def __init__(
         self,
-        items: Dict[str, str],
+        items: Dict,
         width: int,
         height: int,
         image,
@@ -820,6 +868,7 @@ class Template7:
         x = self.width * random.uniform(MIN_X, MAX_X)
         y += self.height * random.uniform(MIN_Y, MAX_Y)
 
+        # 부가 정보 중 명함 이미지에 적용할 항목을 랜덤하게 선택
         use = []
         while not use:
             use += use_item(num, 0.7)
@@ -855,6 +904,7 @@ class Template7:
             )
 
 
+# 생성된 템플릿 클래스 이름
 template_name = [
     Template1,
     Template2,

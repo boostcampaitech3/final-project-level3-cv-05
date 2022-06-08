@@ -1,14 +1,6 @@
 # generate.py
 """
 명함 이미지에 포함될 정보를 생성하는 모듈입니다. 
-
-Functions:
-    random_number(min_c, max_c): (min_c, max_c) 범위의 정수 중 하나를 랜덤으로 선택하여,
-                                 이를 길이로 하는 숫자 문자열을 생성합니다.
-    number_generate(): 구분자를 랜덤으로 선택하여, 숫자 문자열을 생성합니다.
-    separator(sep): 구분자를 포함한 숫자 문자열을 생성합니다.
-    generate(): 랜덤으로 생성한 정보를 반환합니다.
-
 """
 
 import string
@@ -63,7 +55,7 @@ def random_number(min_c: int, max_c: int) -> str:
         max_c (int): 생성될 문자열 길이의 최댓값
 
     Returns:
-        num_string (str): 생성된 숫자 문자열
+        str: 생성된 숫자 문자열
     """
 
     num_string = "".join(
@@ -79,8 +71,9 @@ def number_generate() -> str:
     숫자 문자열을 생성합니다.
 
     Returns:
-        num (str): 생성된 문자열
+        str: 생성된 문자열
     """
+
     if random.random() >= 0.5:  # 00-000-0000
         num = separator("-")
     else:  # 00.000.0000
@@ -98,8 +91,9 @@ def sns_id_generate():
         num (int): 문자열 글자 수
 
     Returns:
-        rand_str (str): 생성된 문자열
+        str: 생성된 문자열
     """
+
     sns_id = ""
     id_length = random.randint(1, 20)
     for i in range(id_length):
@@ -116,8 +110,9 @@ def separator(sep: str) -> str:
         sep (str): 사용할 구분자
 
     Returns:
-        num (str): 생성된 문자열
+        str: 생성된 문자열
     """
+
     num = random_number(3, 4) + sep + random_number(4, 4)
     if random.random() < 0.3:
         countrynum = country_num["num"][random.randint(0, len(country_num) - 1)]
@@ -131,8 +126,9 @@ def generate() -> Dict[str, str]:
     랜덤으로 생성한 정보를 반환합니다.
 
     Returns:
-        context (dict): 명함 데이터에 적용할 정보
+        Dict: 명함 데이터에 적용할 정보
     """
+
     # 이름
     name = name_df["name"][random.randint(0, len(name_df) - 1)]
     # 각 글자 사이에 공백 1~2개 추가 가능

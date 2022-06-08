@@ -1,17 +1,19 @@
 # main.py
+"""
+명함 이미지과 이에 대한 json 파일을 생성하는 메인 모듈입니다.
+"""
 
 import os
 import json
 import random
 import argparse
 from tqdm import tqdm
-from make.make_template import *
+from PIL import Image
 from utils.card_utils import *
 from utils.bbox_utils import *
 from utils.json_utils import *
 from generate import generate
-from typing import Tuple, Dict
-from PIL import Image
+from make.make_template import *
 
 # main.py 파일이 위치한 디렉토리
 current_dir = os.getcwd()
@@ -46,10 +48,6 @@ parser.add_argument(
 
 
 def main(args):
-    global font_family, font_size, font_color
-    global word
-    global draw
-
     if args.test is True:
         example_directory = f"{current_dir}/test"
     else:

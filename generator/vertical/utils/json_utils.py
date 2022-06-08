@@ -1,25 +1,17 @@
 # json_utils.py
 """
 json 파일 생성에 필요한 모듈입니다.
-
-Functions:
-    get_category_id(item): 정보 항목의 이름에 맞는 category_id를 반환합니다.
-
-    make_json(directory): 디렉토리에 json 파일을 새로 생성하고,
-                          json 파일에 들어갈 내용을 딕셔너리에 담아 반환합니다.
-    make_dir(directory): 디렉토리 존재 여부를 확인하고,
-                              없으면 디렉토리를 새로 생성합니다.
-
-    check_file_num(directory, ext): 디렉토리에 존재하는 특정 확장자 파일의 개수를 반환합니다.
 """
 
 import os
 import glob
 import json
-from typing import Dict, Any
+from typing import Dict
 
+# phone 카테고리에 포함되는 카테고리
 phone = ["phone", "tel", "fax", "license_number"]
 
+# category_id 를 key로 갖는 딕셔너리
 categories = {
     "0": "UNKNOWN",
     "1": "name",
@@ -35,6 +27,7 @@ categories = {
     "11": "social_id",
 }
 
+# category_name 를 key로 갖는 딕셔너리
 category_ids = {
     "UNKNOWN": 0,
     "name": 1,
@@ -59,7 +52,7 @@ def get_category_id(item: str) -> int:
         item (str): 정보 항목의 이름
 
     Returns:
-        category_id (int): 정보 항목의 이름에 맞는 category id
+        int: 정보 항목의 이름에 맞는 category id
     """
 
     if item in phone:
@@ -72,7 +65,7 @@ def get_category_id(item: str) -> int:
     return category_id
 
 
-def make_json(directory: str) -> Dict[str, Any]:
+def make_json(directory: str) -> Dict:
     """
     디렉토리에 json 파일을 새로 생성하고,
     json 파일에 들어갈 내용을 딕셔너리에 담아 반환합니다.
@@ -81,12 +74,14 @@ def make_json(directory: str) -> Dict[str, Any]:
         directory (str): json 파일의 디렉토리
 
     Returns:
-        json_data (dict): json 파일에 들어갈 내용 저장
+        Dict: json 파일에 들어갈 내용 저장
     """
+
     json_data = {}
     json_data["images"] = []
     json_data["categories"] = categories
     json_data["annotations"] = []
+
     with open(directory, "w", encoding="utf-8") as make_file:
         json.dump(json_data, make_file, indent="\t")
 
@@ -101,6 +96,7 @@ def make_dir(directory: str):
     Args:
         directory (str): 확인 및 생성할 디렉토리
     """
+
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
@@ -114,8 +110,9 @@ def check_file_num(directory: str, ext: str) -> int:
         ext (str): 확인할 확장자명
 
     Returns:
-        length (int): 디렉토리에 존재하는 파일의 개수
+        int: 디렉토리에 존재하는 파일의 개수
     """
+
     file_list = glob.glob(f"{directory}/*{ext}")
     length = len(file_list)
 

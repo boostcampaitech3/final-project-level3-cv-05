@@ -136,7 +136,7 @@ ex. **tel.** 000-0000-0000
 
 
 ```
-height = int(width * random.uniform(1.0, 1.8)) # width의 1.0배~1.8배로 조정
+height = int(width * random.uniform(1.0, 1.8)) # width의 1.0배 ~ 1.8배로 조정
 ```
 
 ### **생성한 이미지 시각화**
