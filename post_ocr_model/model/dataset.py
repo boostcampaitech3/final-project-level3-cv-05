@@ -10,7 +10,7 @@ import torchvision.transforms as transform
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
-import feature_engineering
+from .feature_engineering import tab_process
 
 
 def insert_image_id(word: Dict, image_id) -> Dict:
