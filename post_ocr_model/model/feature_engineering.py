@@ -6,8 +6,10 @@ Functions:
 """
 
 import pandas as pd
-from tab_utils import convert_to_dataframe
-from tab_transform import TabTransform
+from .tab_utils import convert_to_dataframe
+from .tab_transform import TabTransform
+from typing import Dict
+
 
 def tab_process(json_info: Dict) -> pd.DataFrame:
     """

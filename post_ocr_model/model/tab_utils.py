@@ -29,7 +29,7 @@ def _json_to_dataframe(info: dict, pre_features: List[str]) -> pd.DataFrame:
         temp_dict = {}
 
         for word in words:
-            category_id = word['category_id']
+            category_id = word['category_id'] if 'category_id' in word.keys() else None
             points = word['points']
             point_1, point_2, point_3, point_4 = word['points']
             orientation = word['orientation']
@@ -52,10 +52,9 @@ def _json_to_dataframe(info: dict, pre_features: List[str]) -> pd.DataFrame:
     return df_result
 
 
-def convert_to_dataframe(paths: List[str], pre_features: List[str]) -> pd.DataFrame:
+def convert_to_dataframe(json_infos: List[dict], pre_features: List[str]) -> pd.DataFrame:
     df_infos = []
-    for path in paths:
-        json_info = _read_json(path)
+    for json_info in json_infos:
         df_info = _json_to_dataframe(json_info, pre_features)
         df_infos.append(df_info)
 

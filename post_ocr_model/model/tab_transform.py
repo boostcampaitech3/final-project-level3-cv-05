@@ -5,10 +5,11 @@ Classes:
     TabTransform: Feature Engineering 연산 및 적용
 """
 
-from typing import List
-import pandas as pd
 import numpy as np
+import pandas as pd
 import re
+from typing import List
+
 
 class TabTransform:
     """
@@ -20,14 +21,14 @@ class TabTransform:
         self.point_2 = df['point_2']
         self.point_3 = df['point_3']
         self.point_4 = df['point_4']
-        point1_df=pd.DataFrame(df.pop('point_1').tolist(), index=df.index, columns=["X", "Y"])
-        point3_df=pd.DataFrame(df.pop('point_3').tolist(), index=df.index, columns=["X", "Y"])
-        point1_x=point1_df.iloc[:,0]
-        point1_y=point1_df.iloc[:,1]
-        point3_x=point3_df.iloc[:,0]
-        point3_y=point3_df.iloc[:,1]
-        self.center_x = (point1_x/df['image_width'])*0.5 + (point3_x/df['image_width'])*0.5
-        self.center_y = (point1_y/df['image_height'])*0.5 + (point3_y/df['image_height'])*0.5
+        point1_df = pd.DataFrame(df.pop('point_1').tolist(), index=df.index, columns=["X", "Y"])
+        point3_df = pd.DataFrame(df.pop('point_3').tolist(), index=df.index, columns=["X", "Y"])
+        point1_x = point1_df.iloc[:, 0]
+        point1_y = point1_df.iloc[:, 1]
+        point3_x = point3_df.iloc[:, 0]
+        point3_y = point3_df.iloc[:, 1]
+        self.center_x = (point1_x / df['image_width']) * 0.5 + (point3_x / df['image_width']) * 0.5
+        self.center_y = (point1_y / df['image_height']) * 0.5 + (point3_y / df['image_height']) * 0.5
         self.width = df['points'].transform(self.calculate_width)
         self.height = df['points'].transform(self.calculate_height)
         self.scaled_width = self.width / df['image_width']
@@ -35,7 +36,7 @@ class TabTransform:
         self.file_name = df['file_name']
         self.text = df['text']
         self.label = df['category_id']
-    
+
     def transform(self) -> pd.DataFrame:
         """
         선정한 feature engineering 방법들을 적용한 결과를 반환한다
@@ -59,7 +60,7 @@ class TabTransform:
         df_result['ratio(h/w)'] = self.height / self.width
         df_result['area'] = self.scaled_height * self.scaled_width
         df_result['include_AT_SIGN'] = self.text.transform(self.check_include_at_sign)
-        # df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
+        df_result['is_phone_type_text'] = self.text.transform(self.check_phone_type_text)
         df_result['is_alpha'] = self.text.transform(self.check_is_alpha)
         df_result['is_alnum'] = self.text.transform(self.check_is_alnum)
         df_result['is_kr'] = self.text.transform(self.check_only_kr)
@@ -87,7 +88,7 @@ class TabTransform:
 
         point_1, point_2, _, _ = points
         width = abs(point_2[0] - point_1[0])
-        
+
         return width
 
     def calculate_height(self, points: List) -> float:
@@ -103,7 +104,7 @@ class TabTransform:
 
         point_1, _, _, point_4 = points
         height = abs(point_1[1] - point_4[1])
-        
+
         return height
 
     def calculate_ratio(self, width: float, height: float) -> float:
@@ -119,7 +120,7 @@ class TabTransform:
         """
 
         ratio = height / width
-        
+
         return ratio
 
     def check_include_at_sign(self, text: str) -> int:
@@ -138,7 +139,6 @@ class TabTransform:
         else:
             return 0
 
-    '''
     # check_only_digit 과 중복 
     def check_phone_type_text(self, text: str) -> int:
         """
@@ -150,12 +150,11 @@ class TabTransform:
         """
 
         phone_type_char = set('TELEPHONEMOBILEFAXHPR&DCALL전화휴대폰핸드폰고객지원센터0123456789:~.·+()- ')
-        
+
         for c in text.upper():
             if c not in phone_type_char:
                 return 0
         return 1
-    '''
 
     def check_is_alpha(self, text: str) -> int:
         """
@@ -170,8 +169,8 @@ class TabTransform:
 
         characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        text=text.upper()
-        string = ''.join( x for x in text if x not in characters)
+        text = text.upper()
+        string = ''.join(x for x in text if x not in characters)
 
         if string.isalpha():
             return 1
@@ -191,13 +190,13 @@ class TabTransform:
 
         characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        text=text.upper()
-        string = ''.join( x for x in text if x not in characters)
-        
+        text = text.upper()
+        string = ''.join(x for x in text if x not in characters)
+
         if string.isalnum():
             return 1
         else:
-            return 0    
+            return 0
 
     def calculate_text_length(self, text: str) -> int:
         """
@@ -209,11 +208,11 @@ class TabTransform:
         Returns:
             int: text 길이
         """
-        text=re.sub('\W+','', text)
+        text = re.sub('\W+', '', text)
         text_length = len(text)
-        
+
         return text_length
-    
+
     def check_only_kr(self, text: str) -> int:
         """
         한글로만 이뤄졌는지 체크한다
@@ -227,8 +226,8 @@ class TabTransform:
 
         characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        text=text.upper()
-        string = ''.join( x for x in text if x not in characters)
+        text = text.upper()
+        string = ''.join(x for x in text if x not in characters)
 
         for chr in string:
             if ord('가') <= ord(chr) <= ord('힣'):
@@ -236,7 +235,7 @@ class TabTransform:
             else:
                 return 0
         return 1
-    
+
     def check_only_digit(self, text: str) -> int:
         """
         숫자로만 이뤄졌는지 체크한다
@@ -250,10 +249,10 @@ class TabTransform:
 
         characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        text=text.upper()
-        string = ''.join( x for x in text if x not in characters)
+        text = text.upper()
+        string = ''.join(x for x in text if x not in characters)
 
-        if string.isdigit() :
+        if string.isdigit():
             return 1
         else:
             return 0
@@ -271,12 +270,12 @@ class TabTransform:
 
         characters = "TELEPHONEMOBILEFAXHPR&DCALLEMAIL전화휴대폰팩스핸드폰이메일고객지원센터:~.·+()- "
 
-        text=text.upper()
-        string = ''.join( x for x in text if x not in characters)
+        text = text.upper()
+        string = ''.join(x for x in text if x not in characters)
 
         for chr in string:
             if self.check_only_kr(chr) or self.check_only_digit(chr):
                 continue
             else:
                 return 0
-        return 1 
+        return 1

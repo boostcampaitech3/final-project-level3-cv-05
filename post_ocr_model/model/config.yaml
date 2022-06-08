@@ -3,7 +3,7 @@ epoch: 10
 learning_rate: 0.001
 Model:
   backbone: efficientnet_b0
-  input_feature: 13
+  input_feature: 14
   backbone_out_feature: 1000
   mlp_out_feature: 100
   num_classes: 11

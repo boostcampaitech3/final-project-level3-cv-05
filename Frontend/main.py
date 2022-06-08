@@ -74,7 +74,7 @@ def to_ocr(bytesImage):
     files = {"file": bytesImage}
     st.write("Result")
     result = requests.post("http://127.0.0.1:8000/ocr", files=files).json()
-    img1 = load_image(image_file)
+    img1 = load_image(bytesImage)
     text, category = [], []
     for i in result['result']['ocr']['word']:
         f, _, s, _ = i['points']
