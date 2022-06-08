@@ -59,3 +59,8 @@ generator/
 > [글꼴 다운로드](https://drive.google.com/file/d/1DG2EJLKO-e9_tXyqEhh0aRguG21YKaBH/view?usp=sharing)(177MB)
 
 크게 가로형([horizontal](horizontal)) 명함과 세로형([vertical](vertical)) 명함이 존재합니다. 상세한 내용과 사용법은 각 폴더 내 README파일을 확인하시기 바랍니다.
+
+#### 3. 필요한 라이브러리 설치
+```bash
+pip install -r requirements.txt
+```

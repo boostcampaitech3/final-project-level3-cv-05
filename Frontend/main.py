@@ -30,9 +30,9 @@ def load_image(image_file):
     return img
 
 
-def draw_polygon(image, points):
+def draw_rectangle(image, point1, point2, color_cat):
     draw = ImageDraw.Draw(image)
-    draw.polygon(points, outline=(255, 30, 30), width=2)
+    draw.rectangle((point1[0], point1[1], point2[0], point2[1]), outline=palette[color_cat], width=3)
     return image
 
 
@@ -80,7 +80,7 @@ def to_ocr(bytesImage):
         f, _, s, _ = i['points']
         text.append(i['text'])
         category.append(cat[i["total_cat"]])
-        draw_rectengle(img1, f, s, i['total_cat'])
+        draw_rectangle(img1, f, s, i['total_cat'])
     st.image(img1)
     df = pd.DataFrame.from_dict({"text": text, "category": category})
     st.dataframe(data=df, width=600, height=500)
