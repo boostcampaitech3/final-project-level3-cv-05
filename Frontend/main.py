@@ -30,9 +30,9 @@ def load_image(image_file):
     return img
 
 
-def draw_polygon(image, points):
+def draw_rectangle(image, point1, point2, color_cat):
     draw = ImageDraw.Draw(image)
-    draw.polygon(points, outline=(255, 30, 30), width=2)
+    draw.rectangle((point1[0], point1[1], point2[0], point2[1]), outline=palette[color_cat], width=3)
     return image
 
 
@@ -60,6 +60,7 @@ def to_crop(bytesImage, threshold, invert, angle):
     ocr_image = load_image(image)
     st.write("Server recognized image")
     st.image(ocr_image)
+    return image
 
 
 def to_ocr(bytesImage):
@@ -79,7 +80,7 @@ def to_ocr(bytesImage):
         f, _, s, _ = i['points']
         text.append(i['text'])
         category.append(cat[i["total_cat"]])
-        draw_rectengle(img1, f, s, i['total_cat'])
+        draw_rectangle(img1, f, s, i['total_cat'])
     st.image(img1)
     df = pd.DataFrame.from_dict({"text": text, "category": category})
     st.dataframe(data=df, width=600, height=500)
@@ -91,7 +92,7 @@ def main():
     image_file = st.file_uploader("Choose an image", type=["png", "jpg", "jpeg"])
     if image_file:
         to_crop(image_file, -1, 0, 1)
-        st.warning("Use sidebar menu 'Fix Input' to fix input image by yourself")
+        st.warning("Use sidebar menu to fix input image by yourself")
         col1, col2 = st.columns(2)
         with col1:
             bytes_data = image_file.getvalue()
