@@ -512,7 +512,7 @@ def logo_info() -> Tuple:
     """
 
     # 로고 이미지의 경로
-    logo_dir = "data/images/logo"
+    logo_dir = "../data/images/logo"
 
     logo = glob.glob(f"{logo_dir}/*.png")
     logo_index = random.randint(0, len(logo) - 1)
@@ -535,10 +535,10 @@ def icon_info(font) -> Tuple:
     """
 
     # SNS 아이콘 이미지의 경로
-    icon = pd.read_csv("data/sns_logo.csv")
+    icon = pd.read_csv("../data/sns_logo.csv")
 
     icon_index = random.randint(0, len(icon) - 1)
-    icon_dir = "data/" + icon["images"][icon_index]
+    icon_dir = "../data/" + icon["images"][icon_index]
     icon_image = Image.open(icon_dir).convert("RGBA")
     icon_size = font.getsize("|")[1]  # SNS 아이콘의 크기는 글씨 크기에 맞추어서 결정
     icon_image = icon_image.resize((icon_size, icon_size))

@@ -11,13 +11,13 @@ from generate import generate
 from typing import Tuple, List, Dict
 
 # 글씨체 파일의 경로
-sub_font_dir = "font/sub"
-main_font_dir = "font/main"
+sub_font_dir = "../font/sub"
+main_font_dir = "../font/main"
 sub_font_families = glob.glob(f"{sub_font_dir}/*.ttf")
 main_font_families = glob.glob(f"{main_font_dir}/*.ttf")
 
 # 컬러맵 파일의 경로
-colormap = pd.read_csv("data/colormap.csv")
+colormap = pd.read_csv("../data/colormap.csv")
 
 
 #####################

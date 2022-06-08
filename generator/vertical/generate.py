@@ -9,7 +9,7 @@ import pandas as pd
 from typing import Dict
 
 # 이름
-name_df = pd.read_csv("data/name.csv")
+name_df = pd.read_csv("../data/name.csv")
 
 # 이메일
 id_word = (
@@ -21,28 +21,28 @@ id_word = (
     + list(map(chr, range(65, 91)))
     + list(map(chr, range(48, 57)))
 )
-domain = pd.read_csv("data/domain.csv")
+domain = pd.read_csv("../data/domain.csv")
 
 # 사이트
-site_df = pd.read_csv("data/site.csv")
+site_df = pd.read_csv("../data/site.csv")
 
 # 전화번호
-country_num = pd.read_csv("data/country_num.csv")
+country_num = pd.read_csv("../data/country_num.csv")
 
 # 회사명
-company_df = pd.read_csv("data/company.csv")
+company_df = pd.read_csv("../data/company.csv")
 
 # 회사 주소
-address_df = pd.read_csv("data/address.csv")
+address_df = pd.read_csv("../data/address.csv")
 
 # 직책
-position_df = pd.read_csv("data/position.csv")
+position_df = pd.read_csv("../data/position.csv")
 
 # 부서
-department_df = pd.read_csv("data/department.csv")
+department_df = pd.read_csv("../data/department.csv")
 
 # 사훈
-wise_df = pd.read_csv("data/wise.csv")
+wise_df = pd.read_csv("../data/wise.csv")
 
 
 def random_number(min_c: int, max_c: int) -> str:
