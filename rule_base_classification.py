@@ -1,10 +1,10 @@
 """
 Rule Base Classification 을 위한 모듈 
-
 Classes:
     RuleBaseClassification : Rule Base classification 적용 
 """
 from xmlrpc.client import Boolean
+from typing import Union
 
 
 address_si=['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충청북도','충북','충청남도','충북','전라북도','전북','전라남도','전남','경상북도','경북','경상남도','경남','제주']
@@ -27,67 +27,77 @@ address_gu=list(set(address_gu_lst))
 
 
 class RuleBaseClassification:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, text: str) -> None:
+        self.text = text
 
-
-    def check_email(self, text: str) -> Boolean:
+    def rulebase_label(self) -> Union[int, None]:
         """
-        이메일 형식인지 아닌지 체크한다
-
+        rule base에 따라 bbox text의 라벨을 구분 한다. 
         Args:
             text (str): 전달받은 text 
+        Returns:
+            int: 예측한 category_id 
+        """
+        
+        if self.check_email(self.text) :
+            return 3
+        elif self.check_address(self.text) :
+            return 7
+        elif self.check_site(self.text) :
+            return 8
+        else:
+            return None
 
+
+    def check_email(self, text: str) -> bool:
+        """
+        이메일 형식인지 아닌지 체크한다
+        Args:
+            text (str): 전달받은 text 
         Returns:
             Boolean: TF - 이메일 형식 포함 여부  
         """
 
-        if ('@' in self)  and ('.' in self) :
+        if ('@' in text) and ('.' in text) :
             return True
         else:
             return False
 
-    def check_site(self, text: str) -> Boolean:
+    def check_site(self, text: str) -> bool:
         """
         사이트 주소 형식인지 아닌지 체크한다
-
         Args:
             text (str): 전달받은 text 
-
         Returns:
             Boolean: TF - 사이트주소 형식 포함 여부 
         """
-        if ('www' in self)  or ('.co.' in self) :
+        if ('www' in text)  or ('.co.' in text) or ('http:' in text) or ('https:' in text) :
             return True
         else:
             return False
 
-    def check_address_si(self, text: str) -> Boolean:
+    def check_address_si(self, text: str, element: str) -> bool:
         """
         check_address에서 활용하기 위해, 한국 시도 주소 정보의 포함 여부를 체크한다
-
         Args:
             text (str): 전달받은 text 
-
         Returns:
             Boolean: TF - 한국 시도 주소 포함 여부 
         """
-        if text in self: 
+        if element in text: 
             return True
         else:
             return False
 
-    def check_address_gu(self, text: str) -> Boolean:
+    def check_address_gu(self, text: str, element: str) -> Boolean:
         """
         check_address에서 활용하기 위해, 한국 시군구 주소 정보의 포함 여부를 체크한다
-
         Args:
             text (str): 전달받은 text 
-
         Returns:
             Boolean: TF - 한국 시군구 주소 포함 여부
         """
-        if text in self: 
+        if element in text: 
             return True
         else: 
             return False
@@ -95,10 +105,8 @@ class RuleBaseClassification:
     def check_address(self, text: str) -> Boolean:
         """
         한국 주소 정보의 포함 여부를 체크한다
-
         Args:
             text (str): 전달받은 text 
-
         Returns:
             Boolean: TF - 한국 주소 포함 여부
         """
@@ -114,23 +122,3 @@ class RuleBaseClassification:
                 continue
 
         return False
-
-
-    def rulebase_label(self, text: str) -> int:
-        """
-        rule base에 따라 bbox text의 라벨을 구분 한다. 
-
-        Args:
-            text (str): 전달받은 text 
-
-        Returns:
-            int: 예측한 category_id 
-        """
-        if self.check_email(text) :
-            return 3
-        elif self.check_address(text) :
-            return 7
-        elif self.check_site(text) :
-            return 8
-        else:
-            return None
