@@ -55,7 +55,7 @@ def to_crop(bytesImage, threshold, invert, angle):
     """
     param = {"threshold": threshold, "invert": invert, "angle": angle}
     files = {"file": bytesImage.getvalue()}
-    result = requests.post(f"http://127.0.0.1:8000/crop/", params=param, files=files).json()
+    result = requests.post(f"http://127.0.0.1:8000/crop", params=param, files=files).json()
     image = base64.b64decode(result['image'])
     ocr_image = load_image(image)
     st.write("Server recognized image")
@@ -71,11 +71,18 @@ def to_ocr(bytesImage):
         bytesImage (Image(type: bytes)): auto inserted
     """
     files = {"file": bytesImage.getvalue()}
-    result = requests.post(f"http://127.0.0.1:8000/ocr", files=files).json()
-    image = base64.b64decode(result['image'])
-    ocr_image = load_image(image)
-    st.write("Server recognized image")
-    st.image(ocr_image)
+    st.write("Result")
+    result = requests.post("http://127.0.0.1:8000/ocr", files=files).json()
+    img1 = load_image(image_file)
+    text, category = [], []
+    for i in result['result']['ocr']['word']:
+        f, _, s, _ = i['points']
+        text.append(i['text'])
+        category.append(cat[i["total_cat"]])
+        draw_rectengle(img1, f, s, i['total_cat'])
+    st.image(img1)
+    df = pd.DataFrame.from_dict({"text": text, "category": category})
+    st.dataframe(data=df, width=600, height=500)
 
 
 def main():
