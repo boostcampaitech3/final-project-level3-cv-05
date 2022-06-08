@@ -9,7 +9,7 @@ from munch import Munch
 from pytorch_lightning import LightningModule
 from timm import create_model
 
-from loss import create_criterion
+from .loss import create_criterion
 
 
 class BackboneBlock(nn.Module):
@@ -75,9 +75,9 @@ class PostOCRLearner(LightningModule):
     def __init__(self, cfg: Munch):
         super(PostOCRLearner, self).__init__()
         self.cfg = cfg
-        self.feature = PostOCRModel(**cfg.Model)
-        self._criterion = create_criterion(cfg.Loss)
-        self.learning_rate = self.cfg.learning_rate
+        self.feature = PostOCRModel(**cfg['Model'])
+        self._criterion = create_criterion(cfg['Loss'])
+        self.learning_rate = self.cfg['learning_rate']
         self.accuracy = torchmetrics.Accuracy()
 
     def forward(self, x, tabs):

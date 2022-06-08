@@ -7,6 +7,7 @@ from io import BytesIO
 
 import word2line
 from convert import converter
+from rule_base_classification import RuleBaseClassification
 
 app = FastAPI()
 
@@ -31,7 +32,7 @@ async def crop(threshold: int, invert: int, angle: int, file: UploadFile = File(
     #     result['ocr'] = []
 
     encoded_image_string = base64.b64encode(byteImage.getvalue())
-    result['image'] = encoded_image_string
+    result = {'image': encoded_image_string}
     return result
 
 
@@ -40,7 +41,7 @@ async def ocr(file: UploadFile = File(...)):
     file_data = await file.read()
     files = {'file': file_data}
     json_result = requests.post(api_infos['api_url'], headers=api_infos['headers'], files=files).json()
-    json_data = word2line_new.word2line(json_result)
+    json_data = word2line.word2line(json_result)
     files = {
         'ocr': (None, json.dumps(json_data), 'application/json'),
         'file': file_data
