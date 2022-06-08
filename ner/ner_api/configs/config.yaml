@@ -1,0 +1,4 @@
+tok_path : ./app/ptr_lm_model/tokenizer_78b3253a26.model
+checkpoint_path : ./checkpoints/best-epoch-12-step-1000-acc-0.961.bin
+model_dir : ./configs
+model_config : ./configs/config.json

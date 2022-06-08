@@ -1,0 +1,35 @@
+Seed: 42
+epoch: 10
+learning_rate: 0.001
+Model:
+  backbone: efficientnet_b0
+  input_feature: 13
+  backbone_out_feature: 1000
+  mlp_out_feature: 100
+  num_classes: 11
+  depth: 4
+Dataset:
+  train_dir: ./data/train
+  val_dir: ./data/val
+  train_json: ./data/info_train.json
+  val_json: ./data/info_val.json
+  margin: 30
+Dataloader:
+  batch_size: 16
+  shuffle: true
+  num_workers: 4
+  pin_memory: true
+  drop_last: true
+Loss: cross_entropy
+optim:
+  name: optim.AdamW
+sche:
+  name: lr_scheduler.StepLR
+  params:
+    step_size: 2
+    gamma: 0.5
+trainer:
+  gpus: 1
+  accumulate_grad_batches: 1
+  fast_dev_run: false
+  precision: 16
