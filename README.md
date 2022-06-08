@@ -85,8 +85,7 @@ Demo Front-end는 Streamlit을 통해 구현하였습니다. Streamlit Front-end
 
 ### **Pipeline**
 
-<image width = "100%" src = "https://user-images.githubusercontent.com/90603530/172541912-c1d1795a-67bf-4380-b1a7-65f9c1b5ac4b.jpg">
-
+<image width = "100%" src = "https://user-images.githubusercontent.com/90603530/172560268-2ac7458b-5607-49db-888c-222b21832e45.png">
 
 - **Data Pre-processing**       
   사용자가 이미지를 제출하면, 가능한 경우 Back-end 서버에서 이미지의 각도와 범위를 보정합니다. 
