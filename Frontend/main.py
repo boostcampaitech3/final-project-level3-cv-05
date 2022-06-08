@@ -57,9 +57,10 @@ def to_crop(bytesImage, threshold, invert, angle):
     files = {"file": bytesImage.getvalue()}
     result = requests.post(f"http://127.0.0.1:8000/crop", params=param, files=files).json()
     image = base64.b64decode(result['image'])
-    ocr_image = load_image(image)
+    cropped_image = load_image(image)
     st.write("Server recognized image")
-    st.image(ocr_image)
+    st.image(cropped_image)
+    return image
 
 
 def to_ocr(bytesImage):
@@ -70,7 +71,7 @@ def to_ocr(bytesImage):
     Args:
         bytesImage (Image(type: bytes)): auto inserted
     """
-    files = {"file": bytesImage.getvalue()}
+    files = {"file": bytesImage}
     st.write("Result")
     result = requests.post("http://127.0.0.1:8000/ocr", files=files).json()
     img1 = load_image(image_file)
@@ -90,41 +91,39 @@ def main():
     st.title("OCR API Test")
     image_file = st.file_uploader("Choose an image", type=["png", "jpg", "jpeg"])
     if image_file:
-        to_crop(image_file, -1, 0, 1)
-        st.warning("Use sidebar menu 'Fix Input' to fix input image by yourself")
-        col1, col2 = st.columns(2)
-        with col1:
-            bytes_data = image_file.getvalue()
-            threshold = -1
-            img = load_image(bytes_data)
-            st.write('Rotate Angle')
-            angle_fix = st.slider('Fix Angle', value=0, min_value=-180, max_value=180)
-            angle_fixed = img.rotate(-angle_fix)
-            st.write('Crop Position & Length')
-            start_x = st.slider('Start Position of X', value=0, min_value=0, max_value=img.size[0])
-            start_y = st.slider('Start Position of Y', value=0, min_value=0, max_value=img.size[1])
-            end_x = st.slider('End Position of X', value=img.size[0], min_value=0, max_value=img.size[0])
-            end_y = st.slider('End Position of Y', value=img.size[1], min_value=0, max_value=img.size[1])
-            if start_x > end_x or start_y > end_y:
-                st.warning("Position Error: fix x, y")
-            else:
-                cropped = angle_fixed.convert("L").convert("RGB")
-                img = angle_fixed.crop((start_x, start_y, end_x, end_y))
-                cropped.paste(img, (start_x, start_y))
-                cropped = draw_polygon(cropped,
-                                       [(start_x, start_y), (end_x, start_y), (end_x, end_y), (start_x, end_y)])
-            bytes_data = image_to_byte_array(img)
-            invert = 1 if st.checkbox("Invert: Check if image darker than BG.") else 0
-            threshold = st.slider('Change Threshold value', value=180, min_value=0, max_value=255)
-        with col2:
-            with st.form('self_fix'):
-                st.image(cropped)
-                resubmit = st.form_submit_button("Submit")
-                if resubmit:
-                    st.write("Submitted Image.")
-                    st.image(bytes_data)
-        if resubmit:
-            to_ocr(bytes_data)
+        with st.form('self_fix'):
+            cropped_image = to_crop(image_file, -1, 0, 1)
+            bytes_data = cropped_image
+            st.warning("if you want fix image press fix button")
+            if st.form_submit_button("Fix"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    threshold = -1
+                    img = load_image(bytes_data)
+                    st.write('Rotate Angle')
+                    angle_fix = st.slider('Fix Angle', value=0, min_value=-180, max_value=180)
+                    angle_fixed = img.rotate(-angle_fix)
+                    st.write('Crop Position & Length')
+                    start_x = st.slider('Start Position of X', value=0, min_value=0, max_value=img.size[0])
+                    start_y = st.slider('Start Position of Y', value=0, min_value=0, max_value=img.size[1])
+                    end_x = st.slider('End Position of X', value=img.size[0], min_value=0, max_value=img.size[0])
+                    end_y = st.slider('End Position of Y', value=img.size[1], min_value=0, max_value=img.size[1])
+                    if start_x > end_x or start_y > end_y:
+                        st.warning("Position Error: fix x, y")
+                    else:
+                        cropped = angle_fixed.convert("L").convert("RGB")
+                        img = angle_fixed.crop((start_x, start_y, end_x, end_y))
+                        cropped.paste(img, (start_x, start_y))
+                        cropped = draw_polygon(cropped,
+                                               [(start_x, start_y), (end_x, start_y), (end_x, end_y), (start_x, end_y)])
+                    bytes_data = image_to_byte_array(img)
+                    invert = 1 if st.checkbox("Invert: Check if image darker than BG.") else 0
+                    threshold = st.slider('Change Threshold value', value=180, min_value=0, max_value=255)
+                with col2:
+                    st.image(cropped)
+            resubmit = st.form_submit_button("Submit")
+            if resubmit:
+                to_ocr(bytes_data)
 
 
 if __name__ == '__main__':
