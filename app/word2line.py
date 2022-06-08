@@ -1,3 +1,8 @@
+# word2line.py
+"""
+OCR API로부터 나온 결과를 모델이 학습하기에 적합하도록 전처리하는 모듈입니다.
+"""
+
 from typing import Dict, List
 
 ##############################
@@ -15,6 +20,7 @@ def standard_y(word_list: List) -> int:
     Returns:
         int: 해당 라인의 y좌표 중 가장 작은 값
     """
+
     y = int(1e9)
 
     for word in word_list:
@@ -34,6 +40,7 @@ def delete_line(temp_words: List, line: List) -> List:
     Returns:
         List: 같은 라인에 위치한 word 정보가 제거된 리스트
     """
+
     for item in line:
         temp_words.remove(item)
 
@@ -50,6 +57,7 @@ def sort_json(json_data: Dict) -> List:
     Returns:
         List: 정렬이 완료된 json_data 정보를 담은 리스트
     """
+
     temp_words = json_data["ocr"]["word"]
     temp_words = [word for word in temp_words]
     words = []
@@ -91,6 +99,7 @@ def check_height(word1: Dict, word2: Dict, threshold: float) -> bool:
     Returns:
         bool: 기준 통과 여부
     """
+
     word1_text_height = abs(word1["points"][0][1] - word1["points"][2][1])
     word2_text_height = abs(word2["points"][0][1] - word2["points"][2][1])
 
@@ -118,6 +127,7 @@ def check_y(word1: Dict, word2: Dict, threshold: float) -> bool:
     Returns:
         bool: 기준 통과 여부
     """
+
     word1_start_y = word1["points"][0][1]
     word2_start_y = word2["points"][0][1]
     y_gap = abs(word1_start_y - word2_start_y)
@@ -148,6 +158,7 @@ def check_slope(word1: Dict, word2: Dict, threshold: float) -> bool:
     Returns:
         bool: 기준 통과 여부
     """
+
     word1_text_height = abs(word1["points"][0][1] - word1["points"][2][1])
     word2_text_height = abs(word2["points"][0][1] - word2["points"][2][1])
 
@@ -172,6 +183,7 @@ def check_font_size(word1: Dict, word2: Dict, threshold: float) -> bool:
     Returns:
         bool: 기준 통과 여부
     """
+
     font_size_ratio = (
         font_width(word1) / font_width(word2)
         if font_width(word1) <= font_width(word2)
@@ -201,6 +213,7 @@ def font_width(word: Dict) -> float:
     Returns:
         float: 단어의 폰트 크기
     """
+
     text_height = abs(word["points"][0][1] - word["points"][3][1])
 
     return text_height * 0.58  # 기준 설정 필요
@@ -218,6 +231,7 @@ def font_space(word1: Dict, word2: Dict) -> float:
     Returns:
         float: 단어의 띄어쓰기 간격
     """
+
     word1_text_height = abs(word1["points"][0][1] - word1["points"][2][1])
     word2_text_height = abs(word2["points"][0][1] - word2["points"][2][1])
 
@@ -240,6 +254,7 @@ def make_bbox(word1: Dict, word2: Dict) -> List:
     Returns:
         List: 두 단어를 합친 후의 bbox 좌표
     """
+
     start_x = word1["points"][0][0]
     start_y = min(word1["points"][0][1], word2["points"][0][1])
     end_x = word2["points"][1][0]
@@ -253,13 +268,20 @@ def make_bbox(word1: Dict, word2: Dict) -> List:
 ##############################
 
 # 글자 단위로 합침 # 띄어쓰기 고려할 필요 없음 # 높이 고려할 필요 없음
-def connect_character():
+def connect_character(words: List) -> List:
     """
     같은 단어에 포함되어야 하는 글자를 합쳐 줌
 
     '같은' 단어에 포함되어야 하므로,
     각 글자 사이의 간격만 고려하여 합침
+
+    Args:
+        words (List): json_data 정보를 담은 리스트
+
+    Returns:
+        List: 글자를 합친 과정 이후, json_data 정보를 담은 리스트
     """
+
     while True:
         for index in range(0, len(words) - 1):
             gap = abs(words[index + 1]["points"][0][0] - words[index]["points"][1][0])
@@ -274,11 +296,20 @@ def connect_character():
         else:
             break
 
+    return words
 
-def delete_sep():
+
+def delete_sep(words: List) -> List:
     """
     특수문자 한 글자만 존재할 경우 삭제
+
+    Args:
+        words (List): json_data 정보를 담은 리스트
+
+    Returns:
+        List: 특수문자 제거하는 과정 이후, json_data 정보를 담은 리스트
     """
+
     sep = "■:/|."
     while True:
         for index in range(0, len(words)):
@@ -288,8 +319,10 @@ def delete_sep():
         else:
             break
 
+    return words
 
-def connect_name_company():
+
+def connect_name_company(words: List) -> List:
     """
     이름/회사명이 간격이 넓게 한 글자씩 떨어져 있는 경우, 이를 합쳐줌
     단, 한 글자씩 곧바로 합치는 대신, 각 글자를 모아서 추후 한 번에 합쳐줌
@@ -298,7 +331,14 @@ def connect_name_company():
     2) 두 단어 사이의 간격의 기울기 확인
     3) 두 단어가 같은 줄에 위치하는지 확인
     4) 두 단어가 같은 폰트 크기인지 확인
+
+    Args:
+        words (List): json_data 정보를 담은 리스트
+
+    Returns:
+        List: 특수문자 제거하는 과정 이후, json_data 정보를 담은 리스트
     """
+
     while True:
         name = []
         for index in range(0, len(words) - 1):
@@ -329,6 +369,7 @@ def connect_name_company():
             break
 
         start_index = name[0][0]
+        bbox_start, bbox_end = name[0][1], name[-1][1]
         name = name[::-1]
         text = ""
 
@@ -339,10 +380,12 @@ def connect_name_company():
         text = name[-1][1]["text"] + text
 
         words[start_index]["text"] = text
-        words[start_index]["points"] = make_bbox(name[0][1], name[-1][1])
+        words[start_index]["points"] = make_bbox(bbox_start, bbox_end)
+
+    return words
 
 
-def connect_word():
+def connect_word(words: List) -> List:
     """
     같은 카테고리에 포함되어야 하는 두 단어를 합쳐 줌
 
@@ -350,7 +393,14 @@ def connect_word():
     2) 두 단어 사이의 간격의 기울기 확인
     3) 두 단어가 같은 줄에 위치하는지 확인
     4) 두 단어가 같은 폰트 크기인지 확인
+
+    Args:
+        words (List): json_data 정보를 담은 리스트
+
+    Returns:
+        List: 특수문자 제거하는 과정 이후, json_data 정보를 담은 리스트
     """
+
     while True:
         for index in range(0, len(words) - 1):
             gap = abs(words[index]["points"][1][0] - words[index + 1]["points"][0][0])
@@ -369,6 +419,8 @@ def connect_word():
         else:
             break
 
+    return words
+
 
 ############################
 #### word2line function ####
@@ -386,14 +438,13 @@ def word2line(json_data: Dict) -> Dict:
     Returns:
         Dict: word2line()을 거쳐 변경된 bbox 정보
     """
-    global words
+    
     words = sort_json(json_data)
 
-    connect_character()
-    delete_sep()
-    connect_name_company()
-    connect_word()
+    words = connect_character(words)
+    words = delete_sep(words)
+    words = connect_name_company(words)
+    words = connect_word(words)
 
-    json_ocr = {"word": words}
-    json_result = {"ocr": json_ocr}
+    json_result = {"ocr": {"word": words}}
     return json_result
