@@ -10,7 +10,7 @@ import torchvision.transforms as transform
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
-from .feature_engineering import tab_process
+from feature_engineering import tab_process
 
 
 def insert_image_id(word: Dict, image_id) -> Dict:
@@ -51,7 +51,7 @@ class PostOCRDataset(Dataset):
                  transforms: transform = None,
                  margin: int = 3):
         self.data_dir = data_dir
-        self.data = feature_engineering.tab_process(json_dir)
+        self.data = tab_process(json_dir)
         self.transform = transforms
         self.margin = margin
 

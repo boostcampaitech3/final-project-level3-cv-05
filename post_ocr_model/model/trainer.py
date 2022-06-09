@@ -40,7 +40,7 @@ def main():
     datamodule = PostOCRDataLoader(cfg, **cfg.Dataset)
     model = PostOCRLearner(cfg)
 
-    logger = WandbLogger(project="project name", entity="wandb id", name='running name')
+    logger = WandbLogger(project="Post OCR", entity="convinsight", name='test_exp')
     
     """ 
     [ Checkpoint Callback ]
@@ -53,7 +53,7 @@ def main():
     ['train_loss', 'train_accuracy', 'val_loss', 'val_accuracy', 'epoch', 'step']
     mode: 지정한 metric의 어떤 기준(ex. min, max)으로 체크포인트를 저장할지 지정
     """   
-    callbacks = pl.callbacks.ModelCheckpoint(filename='{epoch}_{val_accuracy:.4f}',save_top_k=2, monitor='val_accuracy', mode='max')
+    callbacks = pl.callbacks.ModelCheckpoint(filename='{epoch}_{val_accuracy:.4f}',save_top_k=2, monitor='name_val_acc', mode='max')
 
     trainer = pl.Trainer(
         logger=logger,

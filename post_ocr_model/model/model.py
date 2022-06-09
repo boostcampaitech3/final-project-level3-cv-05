@@ -9,7 +9,7 @@ from munch import Munch
 from pytorch_lightning import LightningModule
 from timm import create_model
 
-from .loss import create_criterion
+from loss import create_criterion
 
 
 class BackboneBlock(nn.Module):
@@ -56,7 +56,8 @@ class PostOCRModel(nn.Module):
         self.cnn_feature = BackboneBlock(backbone, backbone_out_feature)
         self.mlp_feature = MlpBlock(input_feature, mlp_out_feature, depth)
         self.classifier = MlpBlock(backbone_out_feature + mlp_out_feature, num_classes, depth)
-        self.accuracy = torchmetrics.Accuracy()
+        #self.accuracy = torchmetrics.Accuracy()
+        self.accuracy = torchmetrics.Accuracy(num_classes=12, average='none')
 
     def forward(self, x, tab):
         """
@@ -78,7 +79,9 @@ class PostOCRLearner(LightningModule):
         self.feature = PostOCRModel(**cfg['Model'])
         self._criterion = create_criterion(cfg['Loss'])
         self.learning_rate = self.cfg['learning_rate']
-        self.accuracy = torchmetrics.Accuracy()
+        #self.accuracy = torchmetrics.Accuracy()
+        self.accuracy = torchmetrics.Accuracy(num_classes=12, average='none')
+        self.categories = {0: "UNKNOWN",1: "name",2: "phone",3: "email",4: "position",5: "company",6: "department",7: "address",8: "site",9: "account",10: "wise",11: "social_id"}
 
     def forward(self, x, tabs):
         return self.feature(x, tabs)
@@ -86,14 +89,25 @@ class PostOCRLearner(LightningModule):
     def training_step(self, batch, batch_idx):
         preds, loss, acc, labels = self.__share_step(batch, 'train')
         self.log("train_loss", loss)
-        self.log("train_accuracy", acc)
+        for i in range(len(acc)):
+            self.log(f"{self.categories[i]}_train_acc", acc[i])
         return {"loss": loss, "pred": preds.detach(), 'labels': labels.detach()}
+    
+
 
     def validation_step(self, batch, batch_idx):
         preds, loss, acc, labels = self.__share_step(batch, 'val')
         self.log("val_loss", loss)
-        self.log("val_accuracy", acc)
+        for i in range(len(acc)):
+            self.log(f"{self.categories[i]}_val_acc", acc[i])
         return {"loss": loss, "pred": preds, 'labels': labels}
+
+    #def validation_epoch_end(self, validation_step_outputs):
+    #    # validation_step_outputs
+    #    all_preds = torch.stack(validation_step_outputs)
+
+        
+
 
     def predict_step(self, batch, batch_idx, dataloader_idx: int = None):
         x, tabs, _ = batch

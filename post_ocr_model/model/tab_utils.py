@@ -52,10 +52,11 @@ def _json_to_dataframe(info: dict, pre_features: List[str]) -> pd.DataFrame:
     return df_result
 
 
-def convert_to_dataframe(json_infos: List[dict], pre_features: List[str]) -> pd.DataFrame:
+def convert_to_dataframe(json_infos: List[str], pre_features: List[str]) -> pd.DataFrame:
     df_infos = []
     for json_info in json_infos:
-        df_info = _json_to_dataframe(json_info, pre_features)
+        json_dict = _read_json(json_info)
+        df_info = _json_to_dataframe(json_dict, pre_features)
         df_infos.append(df_info)
 
     df_result = pd.concat(df_infos)
