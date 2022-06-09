@@ -95,15 +95,6 @@ def get_annotation(category, x: int, y: int, w: int, h: int, feature, dir="Horiz
     Returns:
         annotation dict
     """
-    if x < 0:
-        x = 0
-    if y < 0:
-        y = 0
-    if 900 < x + w:
-        w = 900 - x
-    if 500 < y + h:
-        h = 500 - y
-
     annotation = {
         "category_id": category,
         "orientation": dir,
@@ -183,26 +174,30 @@ def draw_box(background, font, font_color, box_info, infos):  # type = ["grid", 
                         head_feature, head_font, (head_width, head_height) = draw_font(social_header, var_head_font, axis, loc_x)
                         fix += head_width + x_gap
                         head_x = axis - loc_x - width - fix if align else loc_x
-                        draw.text((head_x, line_y), head_feature, fill=font_color, font=head_font)
-                        annotation.append(get_annotation(categories[var], head_x, line_y, head_width + x_gap + width, head_height, social_header + word))
+                        if head_x < 900:
+                            draw.text((head_x, line_y), head_feature, fill=font_color, font=head_font)
+                            annotation.append(get_annotation(categories[var], head_x, line_y, head_width + x_gap + width, head_height, social_header + word))
                     else:
                         icon_path = "../data/" + random.choice(header[var])
                         head_width = var_font.size
                         fix += head_width + x_gap
                         icon_x = axis - loc_x - width - fix if align else loc_x
-                        background = draw_logo(background, icon_x, line_y, head_width, icon_path)
-                        annotation.append(get_annotation(categories[var], icon_x + x_gap + head_width, line_y, width, height, word))
+                        if icon_x < 900:
+                            background = draw_logo(background, icon_x, line_y, head_width, icon_path)
+                            annotation.append(get_annotation(categories[var], icon_x + x_gap + head_width, line_y, width, height, word))
                 else:
                     var_head_font = get_font(font, scale[var])
                     head_feature, head_font, (head_width, head_height) = draw_font(header[var], var_head_font, axis, loc_x)
                     fix += head_width + x_gap
                     head_x = axis - loc_x - width - fix if align else loc_x
-                    draw.text((head_x, line_y), head_feature, fill=font_color, font=head_font)
-                    annotation.append(get_annotation(categories[var], head_x, line_y, head_width + x_gap + width, head_height, header[var] + word))
+                    if head_x < 900:
+                        draw.text((head_x, line_y), head_feature, fill=font_color, font=head_font)
+                        annotation.append(get_annotation(categories[var], head_x, line_y, head_width + x_gap + width, head_height, header[var] + word))
             fix_x = axis - loc_x - width if align else loc_x + fix
-            draw.text((fix_x, line_y), feature, fill=font_color, font=var_font)
-            if not fix:
-                annotation.append(get_annotation(categories[var], fix_x, line_y, width, height, word))
+            if fix_x < 900:
+                draw.text((fix_x, line_y), feature, fill=font_color, font=var_font)
+                if not fix:
+                    annotation.append(get_annotation(categories[var], fix_x, line_y, width, height, word))
 
             if formation == "grid" and col:
                 col = 0
