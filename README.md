@@ -2,6 +2,9 @@
 
 ![demo](https://user-images.githubusercontent.com/90603530/172541502-36019954-a31a-488b-8f61-a03a823e4b7e.gif)
 
+# 실행영상 <img width="40" height="35" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-play"/>    
+
+[![구현 녹화 화면](https://img.youtube.com/vi/jzreJ7wzC80/0.jpg)](https://youtu.be/jzreJ7wzC80)
 
 # Project Overview 📑
 
